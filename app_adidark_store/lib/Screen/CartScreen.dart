@@ -1,3 +1,5 @@
+import 'package:app_adidark_store/Screen/OrderAddressScreen.dart';
+import 'package:app_adidark_store/Screen/OrderScreen.dart';
 import 'package:app_adidark_store/View/ItemCart.dart';
 import 'package:flutter/material.dart';
 
@@ -96,6 +98,14 @@ class _CartScreenState extends State<CartScreen> {
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
             GestureDetector(
+              onTap: () {
+                if(slspchon>0){
+                   Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderAddressScreen()));
+                }
+              },
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
