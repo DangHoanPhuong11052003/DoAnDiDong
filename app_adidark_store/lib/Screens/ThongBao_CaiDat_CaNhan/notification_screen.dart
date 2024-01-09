@@ -19,6 +19,7 @@ class NotificationScreen extends StatelessWidget {
             ),
           ),
         ),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Container(

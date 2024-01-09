@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/Screens/SignUp_In/Verification_OTP.dart';
 import 'package:flutter/material.dart';
 
 class Verification_Email extends StatefulWidget {
@@ -9,6 +10,7 @@ class Verification_Email extends StatefulWidget {
 
 class VerificationState extends State<Verification_Email> {
   final emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +75,13 @@ class VerificationState extends State<Verification_Email> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Center(
                 child: InkWell(
-                  onTap: null,
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Verification_OTP(),
+                        ));
+                  },
                   borderRadius: BorderRadius.circular(50),
                   child: Ink(
                     decoration: BoxDecoration(

@@ -1,4 +1,6 @@
 import 'package:app_adidark_store/Items/BottomMenu.dart';
+import 'package:app_adidark_store/Screens/SignUp_In/SignUpScreen.dart';
+import 'package:app_adidark_store/Screens/SignUp_In/Verifcation_Email.dart';
 import 'package:flutter/material.dart';
 
 class Login_Screen extends StatefulWidget {
@@ -9,11 +11,11 @@ class Login_Screen extends StatefulWidget {
 }
 
 class _Login_ScreenState extends State<Login_Screen> {
-  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
   final passwordController = TextEditingController();
   bool _check = false;
   void _SignIn() {
-    String email = emailController.text;
+    String email = phoneController.text;
     String password = passwordController.text;
     if (email == '123' && password == 'abc') {
       _check = true;
@@ -41,7 +43,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                 children: [
                   Image(
                     height: 100,
-                    image: AssetImage('asset/logo/logo.jpg'),
+                    image: AssetImage('assets/logo/logo.jpg'),
                   ),
                   SizedBox(width: 10.0),
                   Expanded(
@@ -118,7 +120,8 @@ class _Login_ScreenState extends State<Login_Screen> {
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: emailController,
+                      controller: phoneController,
+                      keyboardType: TextInputType.phone,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Số điện thoại',
@@ -177,12 +180,20 @@ class _Login_ScreenState extends State<Login_Screen> {
               const SizedBox(height: 18),
               SizedBox(height: 5.0),
               Container(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Quên mật khẩu ?',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const Verification_Email()));
+                    },
+                    child: Text(
+                      'Quên mật khẩu ?',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  )),
               SizedBox(height: 35.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -242,7 +253,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               Image.asset(
-                                "asset/logo/google.png",
+                                "assets/logo/google.png",
                                 height: 40,
                               ),
                               const Text('Google',
@@ -267,11 +278,19 @@ class _Login_ScreenState extends State<Login_Screen> {
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
-                  SizedBox(width: 10.0), // Khoảng cách giữa hai dòng văn bản
-                  Text(
-                    'Đăng ký',
-                    style: TextStyle(color: Colors.blue),
-                  ),
+                  SizedBox(width: 10.0),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUp()));
+                    },
+                    child: Text(
+                      'Đăng ký',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  )
                 ],
               ),
             ],

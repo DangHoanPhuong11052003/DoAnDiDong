@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'SignInScreen.dart';
+
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -8,6 +10,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool _obscureText = true;
@@ -25,7 +29,7 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   Image(
                     height: 100,
-                    image: AssetImage('asset/logo/logo.jpg'),
+                    image: AssetImage('assets/logo/logo.jpg'),
                   ),
                   SizedBox(width: 10.0),
                   Expanded(
@@ -102,7 +106,7 @@ class _SignUpState extends State<SignUp> {
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: emailController,
+                      controller: nameController,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Họ và Tên',
@@ -131,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: emailController,
+                      controller: phoneController,
                       keyboardType: TextInputType.phone,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
@@ -337,7 +341,7 @@ class _SignUpState extends State<SignUp> {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               Image.asset(
-                                "asset/logo/google.png",
+                                "assets/logo/google.png",
                                 height: 40,
                               ),
                               const Text('Google',
@@ -363,10 +367,18 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   SizedBox(width: 10.0), // Khoảng cách giữa hai dòng văn bản
-                  Text(
-                    'Đăng nhập',
-                    style: TextStyle(color: Colors.blue),
-                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Login_Screen()));
+                    },
+                    child: Text(
+                      'Đăng nhập',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  )
                 ],
               ),
             ],

@@ -1,9 +1,8 @@
-import 'package:app_adidark_store/view/notification_screen.dart';
-import 'package:app_adidark_store/view/setting_screen.dart';
 import 'package:flutter/material.dart';
-
 import '../Screens/Gio_Hang/CartScreen.dart';
-import '../Screens/SignUp_In/HomePage.dart';
+import '../Screens/ThongBao_CaiDat_CaNhan/notification_screen.dart';
+import '../Screens/ThongBao_CaiDat_CaNhan/setting_screen.dart';
+import '../Screens/TrangChu/HomePage.dart';
 
 class BottomMenu extends StatefulWidget {
   BottomMenu({
@@ -39,13 +38,13 @@ class _BottomMenuState extends State<BottomMenu> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopify),
-            tooltip: "Tất cả thiết bị",
-            label: "Tất cả thiết bị",
+            tooltip: "Giỏ hàng",
+            label: "Giỏ hàng",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            tooltip: "Trang cá nhân",
-            label: "Trang cá nhân",
+            tooltip: "Thông báo",
+            label: "Thông báo",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

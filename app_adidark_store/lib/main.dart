@@ -1,4 +1,4 @@
-import 'package:app_adidark_store/Screens/SignUp_In/HomePage.dart';
+import 'package:app_adidark_store/Screens/SignUp_In/SignInScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomePage(),
+        home: Login_Screen(),
+        // sdt: 123
+        // pas: abc
         debugShowCheckedModeBanner: false,
       ));
 }
