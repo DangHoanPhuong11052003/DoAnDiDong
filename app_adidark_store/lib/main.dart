@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       ),
       home: ProfileScreen(
           name: "Hào Lý",
-          email: "haoly123@gmail.com",
+          email: "haoly12345@gmail.com",
           img: "https://avatars.githubusercontent.com/u/134797173?v=4"),
       // home: const SettingScreen(),
       // home: const NotificationScreen(),
