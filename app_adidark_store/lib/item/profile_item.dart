@@ -6,17 +6,17 @@ class ProfileItem extends StatelessWidget {
     required this.icon,
     required this.title,
     this.sub = "",
-    // required this.onTap,
+    required this.onTap,
   });
 
   final IconData icon;
   final String title, sub;
-  // final Function() onTap;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: onTap,
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
         child: Container(

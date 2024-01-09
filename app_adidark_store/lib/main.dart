@@ -1,6 +1,7 @@
 import 'package:app_adidark_store/view/notification_screen.dart';
 import 'package:app_adidark_store/view/profile_screen.dart';
 import 'package:app_adidark_store/view/setting_screen.dart';
+import 'package:app_adidark_store/view/success_fail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           img: "https://avatars.githubusercontent.com/u/134797173?v=4"),
       // home: const SettingScreen(),
       // home: const NotificationScreen(),
+      // home: const SuccessFailScreen(state: true),
     );
   }
 }

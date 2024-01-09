@@ -11,7 +11,7 @@ class NotificationScreen extends StatelessWidget {
         backgroundColor: Color.fromRGBO(203, 233, 255, 0.4),
         title: Center(
           child: Text(
-            "My Profile",
+            "Notifications",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
