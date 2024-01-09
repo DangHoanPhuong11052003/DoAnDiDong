@@ -1,4 +1,4 @@
-import 'package:app_adidark_store/screen/Reset_Password.dart';
+import 'package:app_adidark_store/Screens/SignUp_In/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const ResetPassword(),
+        home: const HomePage(),
         debugShowCheckedModeBanner: false,
       ));
 }

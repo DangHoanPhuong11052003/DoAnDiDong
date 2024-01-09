@@ -1,7 +1,7 @@
 //import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../TrangThaiGiaoHang_Screens/ChoXacNhan_Screen.dart';
+import '../TrangThaiGiaoHang/ChoXacNhan_Screen.dart';
 
 class HoaDon_Screen extends StatefulWidget {
   const HoaDon_Screen({super.key});

@@ -1,4 +1,9 @@
+import 'package:app_adidark_store/view/notification_screen.dart';
+import 'package:app_adidark_store/view/setting_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../Screens/Gio_Hang/CartScreen.dart';
+import '../Screens/SignUp_In/HomePage.dart';
 
 class BottomMenu extends StatefulWidget {
   BottomMenu({
@@ -13,9 +18,10 @@ class _BottomMenuState extends State<BottomMenu> {
   int current_index = 0;
 
   final pages = [
-    // const HomeScreen(),
-    // const AllDevices(),
-    // Profile(),
+    const HomePage(),
+    const CartScreen(),
+    const NotificationScreen(),
+    const SettingScreen()
   ];
 
   @override
@@ -32,9 +38,14 @@ class _BottomMenuState extends State<BottomMenu> {
             label: "Trang chủ",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined),
+            icon: Icon(Icons.shopify),
             tooltip: "Tất cả thiết bị",
             label: "Tất cả thiết bị",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            tooltip: "Trang cá nhân",
+            label: "Trang cá nhân",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
