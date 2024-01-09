@@ -1,7 +1,9 @@
-import 'package:app_adidark_store/View/ItemSelectedColor.dart';
-import 'package:app_adidark_store/View/ItemSelectedSize.dart';
-import 'package:app_adidark_store/View/TextWrapper.dart';
+
 import 'package:flutter/material.dart';
+
+import '../../Items/ItemSelectedColor.dart';
+import '../../Items/ItemSelectedSize.dart';
+import '../../Items/TextWrapper.dart';
 
 class ProDetailScreen extends StatefulWidget {
   const ProDetailScreen({super.key});

@@ -1,7 +1,6 @@
-import 'package:app_adidark_store/Screen/OrderAddressScreen.dart';
-import 'package:app_adidark_store/Screen/OrderScreen.dart';
-import 'package:app_adidark_store/View/ItemCart.dart';
 import 'package:flutter/material.dart';
+import '../../Items/ItemCart.dart';
+import '../Thanh_Toan/OrderAddressScreen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:app_adidark_store/Model/ClassAddress.dart';
-import 'package:app_adidark_store/Screen/PaymentMethodsScreen.dart';
+import 'package:app_adidark_store/Screen/Thanh_Toan/PaymentMethodsScreen.dart';
 import 'package:flutter/material.dart';
 
 class ItemInforOrder extends StatefulWidget {

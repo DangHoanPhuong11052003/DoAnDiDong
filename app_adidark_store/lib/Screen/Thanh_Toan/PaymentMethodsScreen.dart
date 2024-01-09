@@ -1,6 +1,7 @@
 import 'package:app_adidark_store/Model/ClassAddress.dart';
-import 'package:app_adidark_store/Screen/OrderScreen.dart';
 import 'package:flutter/material.dart';
+
+import 'OrderScreen.dart';
 
 class PaymentMethodsScreen extends StatefulWidget {
    PaymentMethodsScreen({super.key, this.address,this.payMethod});

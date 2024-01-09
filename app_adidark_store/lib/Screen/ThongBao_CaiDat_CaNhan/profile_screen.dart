@@ -1,7 +1,8 @@
-import 'package:app_adidark_store/item/profile_item.dart';
 import 'package:app_adidark_store/view/notification_screen.dart';
 import 'package:app_adidark_store/view/setting_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../../Items/profile_item.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {

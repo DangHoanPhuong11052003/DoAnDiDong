@@ -1,5 +1,6 @@
-import 'package:app_adidark_store/item/notice_item.dart';
 import 'package:flutter/material.dart';
+
+import '../../Items/notice_item.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
