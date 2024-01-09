@@ -14,7 +14,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   Widget build(BuildContext context) => ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
