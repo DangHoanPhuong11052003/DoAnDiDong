@@ -3,6 +3,8 @@ import 'package:app_adidark_store/Screens/SignUp_In/SignUpScreen.dart';
 import 'package:app_adidark_store/Screens/SignUp_In/Verifcation_Email.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../Provider/google_sign_in.dart';
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});
@@ -27,65 +29,6 @@ class _Login_ScreenState extends State<Login_Screen> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => BottomMenu()));
     }
-  }
-
-  Future<void> signIn_Google() async {
-    // try sign in
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: phoneController.text,
-        password: passwordController.text,
-      );
-    } on FirebaseAuthException catch (e) {
-      // pop the loading circle
-      // WRONG EMAIL
-      if (e.code == 'user-not-found') {
-        // show error to user
-        wrongEmailMessage();
-      }
-
-      // WRONG PASSWORD
-      else if (e.code == 'wrong-password') {
-        // show error to user
-        wrongPasswordMessage();
-      }
-    }
-  }
-
-  // wrong email message popup
-  void wrongEmailMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          backgroundColor: Colors.deepPurple,
-          title: Center(
-            child: Text(
-              'Incorrect Phone',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  // wrong password message popup
-  void wrongPasswordMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          backgroundColor: Colors.deepPurple,
-          title: Center(
-            child: Text(
-              'Incorrect Password',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   bool _obscureText = true;
@@ -297,7 +240,12 @@ class _Login_ScreenState extends State<Login_Screen> {
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
                 child: Center(
                   child: InkWell(
-                    onTap: signIn_Google,
+                    onTap: () {
+                      final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false);
+                      provider.signInWithGoogle();
+                    },
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
                       decoration: BoxDecoration(

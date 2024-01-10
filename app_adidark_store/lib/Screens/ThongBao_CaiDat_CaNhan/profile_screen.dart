@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../Items/profile_item.dart';
+import '../../Provider/google_sign_in.dart';
 import 'notification_screen.dart';
 import 'setting_screen.dart';
 
@@ -26,6 +28,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Padding(
@@ -109,7 +113,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            final provider = Provider.of<GoogleSignInProvider>(
+                                context,
+                                listen: false);
+                            provider.Logout();
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Color.fromRGBO(203, 233, 255, 0.7),

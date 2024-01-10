@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Screens/Gio_Hang/CartScreen.dart';
 import '../Screens/ThongBao_CaiDat_CaNhan/notification_screen.dart';
-import '../Screens/ThongBao_CaiDat_CaNhan/setting_screen.dart';
+import '../Screens/ThongBao_CaiDat_CaNhan/profile_screen.dart';
 import '../Screens/TrangChu/HomePage.dart';
 
 class BottomMenu extends StatefulWidget {
@@ -20,7 +20,7 @@ class _BottomMenuState extends State<BottomMenu> {
     const HomePage(),
     const CartScreen(),
     const NotificationScreen(),
-    const SettingScreen()
+    const ProfileScreen()
   ];
 
   @override
