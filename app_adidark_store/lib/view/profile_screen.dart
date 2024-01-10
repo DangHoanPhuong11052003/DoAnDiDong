@@ -32,10 +32,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(203, 233, 255, 0.4),
         title: const Center(
           child: Text(
-            "My Profile",
+            "Thông tin cá nhân",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -44,15 +43,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       body: Center(
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(203, 233, 255, 0.4),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Column(
-              children: [
-                Container(
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            children: [
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
                       Padding(
@@ -67,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width / 1.5,
+                        width: MediaQuery.of(context).size.width / 1.6,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -91,75 +88,72 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ProfileItem(
-                          icon: Icons.settings,
-                          title: "Setting",
-                          onTap: () {
-                            Navigator.popUntil(
-                                context, (route) => route.isFirst);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SettingScreen()));
-                          },
-                        ),
-                        ProfileItem(
-                          icon: Icons.notifications_none,
-                          title: "Notifications",
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NotificationScreen()));
-                          },
-                        ),
-                        ProfileItem(
-                          icon: Icons.access_time,
-                          title: "Order History",
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ProfileItem(
+                        icon: Icons.account_circle,
+                        title: "Tài khoản",
+                        sub: "Tài khoản & Bảo mật",
+                        onTap: () {},
+                      ),
+                      ProfileItem(
+                        icon: Icons.language,
+                        title: "Ngôn ngữ / Language",
+                        sub: "Tiếng Việt",
+                        onTap: () {},
+                      ),
+                      ProfileItem(
+                        icon: Icons.notifications_none,
+                        title: "Thông báo",
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const NotificationScreen()));
+                        },
+                      ),
+                      ProfileItem(
+                        icon: Icons.access_time,
+                        title: "Lịch sử giao dịch",
+                        onTap: () {},
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
+                        child: GestureDetector(
                           onTap: () {},
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.logout_rounded,
-                                      size:
-                                          MediaQuery.of(context).size.width / 9,
-                                    ),
-                                    Text(
-                                      "Logout",
-                                      style: TextStyle(fontSize: 20),
-                                    )
-                                  ],
-                                ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(203, 233, 255, 0.7),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.logout_rounded,
+                                    size: MediaQuery.of(context).size.width / 9,
+                                  ),
+                                  Text(
+                                    "Đăng xuất",
+                                    style: TextStyle(fontSize: 20),
+                                  )
+                                ],
                               ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

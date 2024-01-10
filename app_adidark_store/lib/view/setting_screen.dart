@@ -10,12 +10,13 @@ class SettingScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(203, 233, 255, 0.4),
         title: Text(
-          "Setting",
+          "Cài đặt",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
+        centerTitle: true,
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -28,27 +29,15 @@ class SettingScreen extends StatelessWidget {
             child: Column(
               children: [
                 ProfileItem(
-                  icon: Icons.vpn_key,
-                  title: "Account",
-                  sub: "Privacy, Securiry",
+                  icon: Icons.account_circle,
+                  title: "Tài khoản",
+                  sub: "Tài khoản & Bảo mật",
                   onTap: () {},
                 ),
                 ProfileItem(
                   icon: Icons.language,
-                  title: "App Language",
-                  sub: "English",
-                  onTap: () {},
-                ),
-                ProfileItem(
-                  icon: Icons.notifications_none,
-                  title: "Notifications",
-                  sub: "Messages",
-                  onTap: () {},
-                ),
-                ProfileItem(
-                  icon: Icons.phone_outlined,
-                  title: "Help",
-                  sub: "Contact us, Privacy Policy",
+                  title: "Ngôn ngữ / Language",
+                  sub: "Tiếng Việt",
                   onTap: () {},
                 ),
               ],
