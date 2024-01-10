@@ -10,7 +10,7 @@ class NotificationScreen extends StatelessWidget {
       appBar: AppBar(
         title: Center(
           child: Text(
-            "Notifications",
+            "Thông báo",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,

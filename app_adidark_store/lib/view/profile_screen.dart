@@ -62,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             Text(
-                              "haoly012345@gmail.com",
+                              "h*******@gmail.com",
                               style: const TextStyle(
                                 fontSize: 15,
                               ),
@@ -82,13 +82,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: Icons.account_circle,
                         title: "Tài khoản",
                         sub: "Tài khoản & Bảo mật",
-                        onTap: () {},
-                      ),
-                      ProfileItem(
-                        icon: Icons.language,
-                        title: "Ngôn ngữ / Language",
-                        sub: "Tiếng Việt",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.popUntil(context, (route) => route.isFirst);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AccountSetting()));
+                        },
                       ),
                       ProfileItem(
                         icon: Icons.notifications_none,
