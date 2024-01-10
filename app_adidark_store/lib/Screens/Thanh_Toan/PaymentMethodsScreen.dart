@@ -24,7 +24,8 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       appBar: AppBar(
         title: Text("Chọn phương thức thanh toán",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        child: Padding(
         padding:const EdgeInsets.all(10),
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,6 +178,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         
       ],
     ),
+      ),
       ),
       bottomNavigationBar: GestureDetector(
         onTap: () {

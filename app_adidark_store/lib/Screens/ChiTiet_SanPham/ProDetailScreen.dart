@@ -1,6 +1,7 @@
 
+import 'package:app_adidark_store/items/ItemImgPro.dart';
 import 'package:flutter/material.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import '../../Items/ItemSelectedColor.dart';
 import '../../Items/ItemSelectedSize.dart';
 import '../../Items/TextWrapper.dart';
@@ -13,6 +14,13 @@ class ProDetailScreen extends StatefulWidget {
 }
 
 class _ProDetailScreenState extends State<ProDetailScreen> {
+  var snackBarSucc =const SnackBar(
+    content: Text('Đã thêm vào giỏ hàng!'),
+  );
+  var snackBarFail =const SnackBar(
+    backgroundColor: Color.fromARGB(255, 230, 117, 108),
+    content: Text('Vui lòng chọn số lượng, màu và size giày!'),
+  );
   int sttbuy=0;
   int slColor=10;
   int slSize=13;
@@ -30,11 +38,18 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
         child:
           Column(
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 300,
-            child:const Image(image: NetworkImage("https://drake.vn/image/catalog/H%C3%ACnh%20content/gia%CC%80y%20Converse%20da%20bo%CC%81ng/giay-converse-da-bong-5.jpg")),
-          ),
+          CarouselSlider(
+              options: CarouselOptions(
+                viewportFraction: 0.9,
+                initialPage: 0,
+                enableInfiniteScroll: true,
+                reverse: false,
+                scrollDirection: Axis.horizontal,
+              ),
+              items: [
+                for(var i=0;i<5;i++)
+                  ItemImgPro(linkImg: "https://drake.vn/image/catalog/H%C3%ACnh%20content/gia%CC%80y%20Converse%20da%20bo%CC%81ng/giay-converse-da-bong-5.jpg")
+              ]),
           Padding(padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,22 +224,34 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           GestureDetector(
+            onTap: () {
+              if(seledtedColorId==-1||seledtedSizeId==-1||sttbuy<=0){
+                ScaffoldMessenger.of(context).showSnackBar(snackBarFail);
+              }
+            },
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: seledtedColorId==-1||seledtedSizeId==-1?Colors.grey:const Color.fromARGB(255, 103, 183, 248)
+                color: seledtedColorId==-1||seledtedSizeId==-1||sttbuy<=0?Colors.grey:const Color.fromARGB(255, 103, 183, 248)
               ),
               height: 50,
               width: 200,
-              child: Text("MUA NGAY", style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
+              child: const Text("MUA NGAY", style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
             ),
           ),
           GestureDetector(
+            onTap: () {
+              if(seledtedColorId==-1||seledtedSizeId==-1||sttbuy<=0){
+                ScaffoldMessenger.of(context).showSnackBar(snackBarFail);
+              }else{
+                ScaffoldMessenger.of(context).showSnackBar(snackBarSucc);
+              }
+            },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: seledtedColorId==-1||seledtedSizeId==-1?Colors.grey:const Color.fromARGB(255, 103, 183, 248)
+                color: seledtedColorId==-1||seledtedSizeId==-1||sttbuy<=0?Colors.grey:const Color.fromARGB(255, 103, 183, 248)
               ),
               height: 50,
               width: 120,
