@@ -3,7 +3,6 @@ import '../../Items/profile_item.dart';
 import 'notification_screen.dart';
 import 'setting_screen.dart';
 
-// ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     super.key,
