@@ -76,7 +76,7 @@ class _Verification_OTPState extends State<Verification_OTP> {
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Color(0xFFADDDFF),
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(color: Colors.white, width: 2.0),
                       ),

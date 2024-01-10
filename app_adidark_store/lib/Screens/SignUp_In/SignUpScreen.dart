@@ -38,7 +38,7 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 28.0,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
@@ -56,7 +56,7 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 28.0,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
@@ -65,17 +65,17 @@ class _SignUpState extends State<SignUp> {
                       Text(
                         "với",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.black,
+                            fontSize: 28.0,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: "Mulish"),
                       ),
                       Text(
                         " AdidarkVipro",
                         style: TextStyle(
                           color: Colors.blue,
                           fontSize: 28.0,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ],
@@ -83,7 +83,7 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
               const Text(
-                "Chào bạn, đăng nhập để tiếp tục",
+                "Chào bạn, ký để tiếp tục",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 22.0,
@@ -291,7 +291,7 @@ class _SignUpState extends State<SignUp> {
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Color(0xFFADDDFF),
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(color: Colors.white, width: 2.0),
                       ),
@@ -369,14 +369,14 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(width: 10.0), // Khoảng cách giữa hai dòng văn bản
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Login_Screen()));
                     },
                     child: Text(
                       'Đăng nhập',
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: Color(0xFFADDDFF)),
                     ),
                   )
                 ],

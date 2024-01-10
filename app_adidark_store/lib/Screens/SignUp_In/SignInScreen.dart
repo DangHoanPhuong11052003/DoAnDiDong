@@ -52,7 +52,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 28.0,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
@@ -70,7 +70,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 28.0,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
@@ -79,17 +79,17 @@ class _Login_ScreenState extends State<Login_Screen> {
                       Text(
                         "với",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.black,
+                            fontSize: 28.0,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: "Mulish"),
                       ),
                       Text(
                         " AdidarkVipro",
                         style: TextStyle(
                           color: Colors.blue,
                           fontSize: 28.0,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ],
@@ -134,7 +134,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                   ),
                 ),
               ),
-              SizedBox(height: 30.0),
+              SizedBox(height: 20.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
                 child: Container(
@@ -183,7 +183,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
@@ -203,7 +203,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Color(0xFFADDDFF),
                         borderRadius: BorderRadius.circular(50),
                         border: Border.all(color: Colors.white, width: 2.0),
                       ),
@@ -281,7 +281,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                   SizedBox(width: 10.0),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const SignUp()));

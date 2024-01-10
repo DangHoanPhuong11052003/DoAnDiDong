@@ -76,7 +76,7 @@ class VerificationState extends State<Verification_Email> {
               child: Center(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const Verification_OTP(),
@@ -85,7 +85,7 @@ class VerificationState extends State<Verification_Email> {
                   borderRadius: BorderRadius.circular(50),
                   child: Ink(
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Color(0xFFADDDFF),
                       borderRadius: BorderRadius.circular(50),
                       border: Border.all(color: Colors.white, width: 2.0),
                     ),
