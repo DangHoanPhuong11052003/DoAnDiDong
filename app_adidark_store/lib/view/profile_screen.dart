@@ -5,15 +5,9 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({
+  const ProfileScreen({
     super.key,
-    required this.name,
-    required this.email,
-    required this.img,
   });
-
-  final String img;
-  String name, email;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -22,14 +16,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    if (widget.email.length > 27) {
-      widget.email = "${widget.email.substring(0, 27)}...";
-    }
-
-    if (widget.name.length > 20) {
-      widget.name = "${widget.name.substring(0, 20)}...";
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -56,10 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.only(right: 10),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
-                          child: Image.network(
-                            widget.img,
-                            width: MediaQuery.of(context).size.width / 4,
-                            fit: BoxFit.fill,
+                          child: Icon(
+                            Icons.account_circle,
+                            size: MediaQuery.of(context).size.width / 4,
                           ),
                         ),
                       ),
@@ -70,14 +55,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              widget.name,
+                              "Hào Lý",
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              widget.email,
+                              "haoly012345@gmail.com",
                               style: const TextStyle(
                                 fontSize: 15,
                               ),
