@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/Screens/SignUp_In/SignInScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +19,9 @@ class AuthPage extends StatelessWidget {
             return BottomMenu();
           } else if (snapshot.hasError) {
             return const Center(child: Text('Something Went Wrong !'));
+          } else {
+            return const Login_Screen();
           }
-          //  else {
-          //   // return const IntroScreen();
-          // }
-          return BottomMenu();
         },
       ),
     );
