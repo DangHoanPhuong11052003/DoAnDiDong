@@ -32,7 +32,7 @@ class _OrderScreenState extends State<OrderScreen> {
             const Padding(padding: EdgeInsets.only(bottom: 10)),
             //Danh sách đơn hàng
             for(var i=0;i<3;i++)
-              ItemProOrder(price: i*1000000),
+              ItemProOrder(price: i*100000000),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
             const Text("Địa chỉ nhận hàng", style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
@@ -52,12 +52,11 @@ class _OrderScreenState extends State<OrderScreen> {
                           ],
                           ),
               child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width/1.3,
-                  height: 60,
+                  width: MediaQuery.of(context).size.width/1.5,
                   child: Text(widget.address!.detail,style: TextStyle(fontSize: 15),),
                 ),
                 IconButton(
@@ -95,25 +94,16 @@ class _OrderScreenState extends State<OrderScreen> {
                           ],
                           ),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          
-                          width: MediaQuery.of(context).size.width/1.3,
-                          height: 60,
-                          child: Row(
+                        Row(
                             children: [
                               Icon(widget.payMethod!?Icons.credit_card:Icons.attach_money_outlined),
                               const Padding(padding: EdgeInsets.only(right: 8)),
-                              Text(widget.payMethod!?"Thẻ tín dụng/Ghi nợ":"Thanh toán khi nhận hàng",style: TextStyle(fontSize: 15),)
+                              Text(widget.payMethod!?"Thẻ tín dụng/Ghi nợ":"Thanh toán khi nhận hàng",style: TextStyle(fontSize: 15,),textAlign: TextAlign.center,)
                             ],
                           ),
-                        ),
                         IconButton(
                           onPressed: () async{
                             result= await Navigator.push(
@@ -127,10 +117,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           }, 
                           icon:const Icon(Icons.mode_edit_outlined,color:  Color.fromARGB(255, 114, 233, 249),))
                       ],
-                    )
-              
-          ],
-        )),
+                    ),),
         const Padding(padding: EdgeInsets.only(bottom: 10)),
         const Text("Chi tiết thanh toán", style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
         Row(

@@ -17,10 +17,10 @@ class ItemProOrder extends StatelessWidget {
         borderRadius: BorderRadius.circular(15)
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width/2.8,
+            width: MediaQuery.of(context).size.width/3,
             height: MediaQuery.of(context).size.width/2.8,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -57,7 +57,7 @@ class ItemProOrder extends StatelessWidget {
               //số lượng sp
               Text(slsp<10?"Số lượng: 0$slsp":"Số lượng: $slsp",style: TextStyle(fontSize: 15)),
                   //Giá
-              Text("${price*slsp} VND",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+              Text("${price*slsp} VND",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold)),
             ],
           )
             ],
