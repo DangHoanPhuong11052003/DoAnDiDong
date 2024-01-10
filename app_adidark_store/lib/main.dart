@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/Screens/ChiTiet_SanPham/ProDetailScreen.dart';
 import 'package:app_adidark_store/Screens/SignUp_In/SignInScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Login_Screen(),
+        home: ProDetailScreen(),
         // sdt: 123
         // pas: abc
         debugShowCheckedModeBanner: false,
