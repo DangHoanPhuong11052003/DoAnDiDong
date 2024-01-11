@@ -12,7 +12,7 @@ class ChiTietHoaDon_List extends StatefulWidget {
 class _ChiTietHoaDon_ListState extends State<ChiTietHoaDon_List> {
   @override
   Widget build(BuildContext context) {
-     return GridView.count(
+    return GridView.count(
       childAspectRatio: 1.47,
       crossAxisCount: 1,
       shrinkWrap: true,
@@ -21,9 +21,7 @@ class _ChiTietHoaDon_ListState extends State<ChiTietHoaDon_List> {
         ChiTietHoaDon_Item(),
         ChiTietHoaDon_Item(),
         ChiTietHoaDon_Item(),
-       
       ],
-
     );
   }
 }
