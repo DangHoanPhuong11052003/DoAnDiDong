@@ -1,8 +1,8 @@
+import 'package:app_adidark_store/Screens/HoaDon/HoaDon_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Items/profile_item.dart';
 import '../../Provider/google_sign_in.dart';
-import 'notification_screen.dart';
 import 'setting_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -58,14 +58,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Hào Lý",
+                              "DeLe",
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              "h*******@gmail.com",
+                              "d*******@gmail.com",
                               style: const TextStyle(
                                 fontSize: 15,
                               ),
@@ -86,7 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: "Tài khoản",
                         sub: "Tài khoản & Bảo mật",
                         onTap: () {
-                          Navigator.popUntil(context, (route) => route.isFirst);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -95,20 +94,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                       ),
                       ProfileItem(
-                        icon: Icons.notifications_none,
-                        title: "Thông báo",
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const NotificationScreen()));
-                        },
-                      ),
-                      ProfileItem(
                         icon: Icons.access_time,
                         title: "Lịch sử giao dịch",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HoaDon_Screen()));
+                        },
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),

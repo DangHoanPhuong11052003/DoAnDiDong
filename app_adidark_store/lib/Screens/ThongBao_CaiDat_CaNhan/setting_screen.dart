@@ -1,4 +1,3 @@
-import 'package:app_adidark_store/main.dart';
 import 'package:flutter/material.dart';
 
 class AccountSetting extends StatefulWidget {

@@ -48,16 +48,11 @@ class _ItemCartState extends State<ItemCart> {
         height: 200,
         decoration: BoxDecoration(
             border: Border.all(
-                width: 1, color: isPressed ? Colors.red : Colors.grey),
+                width: 2, color: isPressed ? Colors.red : Colors.black),
             borderRadius: BorderRadius.circular(15)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (isPressed)
-              const Icon(
-                Icons.task_alt_outlined,
-                color: Color.fromARGB(255, 237, 94, 84),
-              ),
             const Padding(padding: EdgeInsets.only(left: 8)),
             Container(
               width: MediaQuery.of(context).size.width / 2.5,
@@ -144,11 +139,25 @@ class _ItemCartState extends State<ItemCart> {
             ),
             Container(
               alignment: Alignment.bottomRight,
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   //Giá
-
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Column(
+                      children: [
+                        if (isPressed)
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: const Icon(
+                              Icons.task_alt_outlined,
+                              color: Color.fromARGB(255, 237, 94, 84),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                   IconButton(
                       //Xóa sản phẩm
                       onPressed: () {},
@@ -159,7 +168,7 @@ class _ItemCartState extends State<ItemCart> {
                       ))
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

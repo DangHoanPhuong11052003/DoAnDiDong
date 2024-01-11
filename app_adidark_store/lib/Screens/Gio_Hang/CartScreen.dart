@@ -18,12 +18,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Giỏ hàng",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800),
-        ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
+        title: Text("Giỏ hàng"),
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(10),
@@ -56,7 +51,7 @@ class _CartScreenState extends State<CartScreen> {
         },
       ),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(10),
         width: 200,
         height: 190,
         child: Column(
@@ -102,7 +97,7 @@ class _CartScreenState extends State<CartScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Số lượng đơn hàng đã chọn:",
+                    Text("Số đơn hàng đã chọn: ",
                         style: TextStyle(fontSize: 18)),
                     Text(
                       "$slspchon sản phẩm",
@@ -138,15 +133,17 @@ class _CartScreenState extends State<CartScreen> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: slspchon == 0 ? Colors.grey : Color(0xFFADDDFF)),
+                    color: slspchon == 0
+                        ? Colors.grey
+                        : const Color.fromARGB(255, 103, 183, 248)),
                 height: 50,
                 width: 200,
                 child: Text(
-                  "TIẾP TỤC",
+                  "ĐẶT HÀNG",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                      color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
               ),
