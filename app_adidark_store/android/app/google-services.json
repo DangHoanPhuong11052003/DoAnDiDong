@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "775012999034",
+    "firebase_url": "https://appadidarkstore-default-rtdb.firebaseio.com",
+    "project_id": "appadidarkstore",
+    "storage_bucket": "appadidarkstore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775012999034:android:2deb5e0c538e28016080c3",
+        "android_client_info": {
+          "package_name": "com.example.app_adidark_store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775012999034-58jc5qt5eun80h3k2p2lpokjl72kkdlo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfCF4G_FdB22iaARycjGBX0rMAM4XOlHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775012999034-58jc5qt5eun80h3k2p2lpokjl72kkdlo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
