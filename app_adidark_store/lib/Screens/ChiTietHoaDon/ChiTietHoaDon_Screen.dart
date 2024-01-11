@@ -12,45 +12,97 @@ class ChiTietHoaDon_Screen extends StatefulWidget {
 class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: Text("Chi tiết hóa đơn"),       
+        title: Text(
+          "Chi tiết hóa đơn",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w800),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(         
-            crossAxisAlignment: CrossAxisAlignment.start, 
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Mã hóa đơn: 1345" ,style: TextStyle(fontWeight: FontWeight.bold , fontSize: 16),),
-              const Text("Ngày đặt hàng: 30/7/2023" ,style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),),
-              SizedBox(height: 10,),
+              const Text(
+                "Mã hóa đơn: 1345",
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+              ),
+              const Text(
+                "Ngày đặt hàng: 30/7/2023",
+                style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                 height: 230,
                 child: SingleChildScrollView(
                   child: Column(
-                    children: [
-                     ChiTietHoaDon_List()
-                    ],
+                    children: [ChiTietHoaDon_List()],
                   ),
                 ),
               ),
-             const SizedBox(height: 15,),
-             const Text("Địa chỉ giao hàng" ,style: TextStyle(fontWeight: FontWeight.bold , fontSize: 16),),
-             const Text("Huỳnh Thúc Kháng, Quận 1, TP Hồ Chí Minh",style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),),
-             SizedBox(height: 15,),
-             Divider(),
-             SizedBox(height: 15,),
-             Text("Thanh Toán" ,style: TextStyle(fontWeight: FontWeight.bold , fontSize: 16),),
-             Text("Tổng tiền: 24.000.000",style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),),
-             Text("Chiết khấu: 100.00 VND",style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),),
-             Text("Phí vận chuyển: 0 VND",style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),),
-             SizedBox(height: 15,),
-             Divider(),
-             SizedBox(height: 15,),
-             Text("Tổng hóa đơn: 23.900.000 VND " ,style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-             
-              
+              const SizedBox(
+                height: 15,
+              ),
+              const Text(
+                "Địa chỉ giao hàng",
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+              ),
+              const Text(
+                "Huỳnh Thúc Kháng, Quận 1, TP Hồ Chí Minh",
+                style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Divider(
+                color: Colors.black,
+                height: 15,
+              ),
+              Text(
+                "Thanh Toán",
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+              ),
+              Text(
+                "Tổng tiền: 24.000.000",
+                style: TextStyle(
+                    color: Color(0xFF7F7F7F),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600),
+              ),
+              Text(
+                "Chiết khấu: 100.00 VND",
+                style: TextStyle(
+                    color: Color(0xFF7F7F7F),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600),
+              ),
+              Text(
+                "Phí vận chuyển: 0 VND",
+                style: TextStyle(
+                    color: Color(0xFF7F7F7F),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Divider(
+                color: Colors.black,
+                height: 2,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                "Tổng hóa đơn: 23.900.000 VND ",
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+              ),
             ],
           ),
         ),
