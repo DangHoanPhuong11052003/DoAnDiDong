@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/Screens/HoaDon/HoaDon_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Items/profile_item.dart';
@@ -85,7 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: "Tài khoản",
                         sub: "Tài khoản & Bảo mật",
                         onTap: () {
-                          Navigator.popUntil(context, (route) => route.isFirst);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -96,7 +96,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileItem(
                         icon: Icons.access_time,
                         title: "Lịch sử giao dịch",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HoaDon_Screen()));
+                        },
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
