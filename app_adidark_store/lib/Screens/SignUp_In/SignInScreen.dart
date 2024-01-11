@@ -26,6 +26,7 @@ class _Login_ScreenState extends State<Login_Screen> {
       _check = false;
     }
     if (_check) {
+      Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => BottomMenu()));
     }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Items/profile_item.dart';
 import '../../Provider/google_sign_in.dart';
-import 'notification_screen.dart';
 import 'setting_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -58,14 +57,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Hào Lý",
+                              "DeLe",
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              "h*******@gmail.com",
+                              "d*******@gmail.com",
                               style: const TextStyle(
                                 fontSize: 15,
                               ),
@@ -92,17 +91,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       const AccountSetting()));
-                        },
-                      ),
-                      ProfileItem(
-                        icon: Icons.notifications_none,
-                        title: "Thông báo",
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const NotificationScreen()));
                         },
                       ),
                       ProfileItem(
