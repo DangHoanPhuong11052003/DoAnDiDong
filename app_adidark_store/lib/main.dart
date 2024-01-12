@@ -8,18 +8,19 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-      create: (context) => GoogleSignInProvider(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-        home: const SignUp(),
-        // sdt: 123
-        // pas: abc
-        debugShowCheckedModeBanner: false,
-      ));
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
+      home: const Login_Screen(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
 }

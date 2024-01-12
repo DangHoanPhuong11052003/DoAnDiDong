@@ -106,10 +106,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
                         child: GestureDetector(
                           onTap: () {
-                            final provider = Provider.of<GoogleSignInProvider>(
-                                context,
-                                listen: false);
-                            provider.Logout();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Login_Screen()),
+                            );
                           },
                           child: Padding(
                             padding:
