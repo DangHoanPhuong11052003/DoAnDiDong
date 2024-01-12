@@ -18,6 +18,7 @@ class _HoaDon_ScreenState extends State<HoaDon_Screen> {
         child: Scaffold(
           appBar: AppBar(
             title: Text("Hóa đơn"),
+            centerTitle: true,
             actions: [
               IconButton(onPressed: () {}, icon: const Icon(Icons.search))
             ],
