@@ -16,7 +16,6 @@ class _ChiTietHoaDon_ListState extends State<ChiTietHoaDon_List> {
       childAspectRatio: 1.47,
       crossAxisCount: 1,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
       children: [
         ChiTietHoaDon_Item(),
         ChiTietHoaDon_Item(),
