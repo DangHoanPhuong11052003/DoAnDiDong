@@ -1,4 +1,6 @@
 import 'package:app_adidark_store/Screens/HoaDon/HoaDon_Screen.dart';
+import 'package:app_adidark_store/Screens/SignUp_In/SignUpScreen.dart';
+import 'package:app_adidark_store/Screens/ThongBao_CaiDat_CaNhan/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-        home: const HoaDon_Screen(),
+        home: const SignUp(),
         // sdt: 123
         // pas: abc
         debugShowCheckedModeBanner: false,
