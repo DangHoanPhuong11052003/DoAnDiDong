@@ -310,7 +310,6 @@ com/google/protobuf/ExperimentalApi.class
 com/google/protobuf/InlineMe.class
 io/flutter/FlutterInjector.class
 io/flutter/app/FlutterApplication.class
-io/flutter/app/FlutterMultiDexApplication.class
 io/flutter/embedding/engine/loader/FlutterLoader.class
 io/grpc/CallOptions.class
 io/grpc/EquivalentAddressGroup$Attr.class

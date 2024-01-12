@@ -1,7 +1,7 @@
-#Fri Jan 12 17:55:06 ICT 2024
-base.0=D\:\\DoanDiDong\\DoAnDiDongGit\\DoAnDiDong\\app_adidark_store\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-base.1=D\:\\DoanDiDong\\DoAnDiDongGit\\DoAnDiDong\\app_adidark_store\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
-base.2=D\:\\DoanDiDong\\DoAnDiDongGit\\DoAnDiDong\\app_adidark_store\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
+#Fri Jan 12 22:33:58 ICT 2024
+base.0=C\:\\Users\\delam\\OneDrive\\Documents\\GitHub\\DoAnDiDong\\app_adidark_store\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+base.1=C\:\\Users\\delam\\OneDrive\\Documents\\GitHub\\DoAnDiDong\\app_adidark_store\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes2.dex
+base.2=C\:\\Users\\delam\\OneDrive\\Documents\\GitHub\\DoAnDiDong\\app_adidark_store\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes3.dex
 path.0=classes.dex
 path.1=classes2.dex
 path.2=classes3.dex

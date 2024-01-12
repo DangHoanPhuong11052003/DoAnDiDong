@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import '../Screens/Gio_Hang/CartScreen.dart';
-import '../Screens/ThongBao_CaiDat_CaNhan/notification_screen.dart';
-import '../Screens/ThongBao_CaiDat_CaNhan/profile_screen.dart';
-import '../Screens/TrangChu/HomePage.dart';
-import '../Screens/TrangChu/HomePageFix.dart';
-import '../Screens/HoaDon/HoaDon_Screen.dart';
+import '../views/Gio_Hang/CartScreen.dart';
+import '../views/ThongBao_CaiDat_CaNhan/notification_screen.dart';
+import '../views/ThongBao_CaiDat_CaNhan/profile_screen.dart';
+import '../views/TrangChu/HomePageFix.dart';
 
 
 class BottomMenu extends StatefulWidget {

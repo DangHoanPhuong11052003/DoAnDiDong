@@ -1,5 +1,8 @@
-import 'package:app_adidark_store/Model/ClassAddress.dart';
+
 import 'package:flutter/material.dart';
+import '../models/ClassAddress.dart';
+
+
 
 class ItemInforAddress extends StatefulWidget {
    ItemInforAddress({super.key, required this.address,required this.addressSelected,required this.changeSelectedId});
