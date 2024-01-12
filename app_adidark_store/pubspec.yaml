@@ -44,7 +44,6 @@ dependencies:
   provider: ^6.1.1
   pinput: ^3.0.1
   carousel_slider: ^4.2.1
-  lottie: ^3.0.0
 
 
 
@@ -76,7 +75,10 @@ flutter:
     - assets/logo/google.png
     - assets/icons/Account.png
     - assets/icons/
-    - assets/animations/
+    - data/db.json
+    - assets/images/hqc.jpg
+    - assets/images/hqc1.jpg
+    - assets/images/hqc2.jpg
  
 
   # An image asset can refer to one or more resolution-specific "variants", see

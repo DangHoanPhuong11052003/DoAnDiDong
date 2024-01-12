@@ -3,6 +3,9 @@ import '../Screens/Gio_Hang/CartScreen.dart';
 import '../Screens/ThongBao_CaiDat_CaNhan/notification_screen.dart';
 import '../Screens/ThongBao_CaiDat_CaNhan/profile_screen.dart';
 import '../Screens/TrangChu/HomePage.dart';
+import '../Screens/TrangChu/HomePageFix.dart';
+import '../Screens/HoaDon/HoaDon_Screen.dart';
+
 
 class BottomMenu extends StatefulWidget {
   BottomMenu({
@@ -17,7 +20,7 @@ class _BottomMenuState extends State<BottomMenu> {
   int current_index = 0;
 
   final pages = [
-    const HomePage(),
+    const HomePageFix(),
     const CartScreen(),
     const NotificationScreen(),
     const ProfileScreen()
