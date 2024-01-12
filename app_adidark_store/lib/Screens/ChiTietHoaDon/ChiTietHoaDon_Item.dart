@@ -19,8 +19,8 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
       width: 400,
       decoration: BoxDecoration(
          border: Border.all(
-                color: Colors.grey,  // Viền màu đen
-                width: 0.75,             // Độ dày viền là 3
+                color: Colors.grey,  
+                width: 0.75,            
               ),
         
         borderRadius: BorderRadius.circular(15)

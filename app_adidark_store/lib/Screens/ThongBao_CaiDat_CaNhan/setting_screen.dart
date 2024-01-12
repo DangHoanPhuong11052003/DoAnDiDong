@@ -113,7 +113,8 @@ class _AccountSettingState extends State<AccountSetting> {
                 ),
             ],
           );
-        });
+        }
+        );
   }
 
   @override

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.app_adidark_store.app-mergeDebugResources-13:/values-nl/values-nl.xml",
+            "outputFile": "com.example.app_adidark_store.app-mergeDebugResources-14:/values-nl/values-nl.xml",
             "map": [
                 {
                     "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\7e9df2ac2213a6bd3cef0f2f27870d79\\transformed\\core-1.6.0\\res\\values-nl\\values-nl.xml",
@@ -21,23 +21,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\58aa1384bde170d075503b845cfcf44c\\transformed\\jetified-play-services-basement-18.1.0\\res\\values-nl\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "138",
-                        "endOffsets": "333"
-                    },
-                    "to": {
-                        "startLines": "10",
-                        "startColumns": "4",
-                        "startOffsets": "1080",
-                        "endColumns": "142",
-                        "endOffsets": "1218"
-                    }
-                },
-                {
                     "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\6d3bbaf4594b8ed85e4722883be764b3\\transformed\\browser-1.4.0\\res\\values-nl\\values-nl.xml",
                     "from": {
                         "startLines": "2,3,4,5",
@@ -52,6 +35,23 @@
                         "startOffsets": "2357,2460,2561,2672",
                         "endColumns": "102,100,110,98",
                         "endOffsets": "2455,2556,2667,2766"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\f5aeeb70e4aa208ac830e747eaf33ddc\\transformed\\jetified-play-services-basement-18.2.0\\res\\values-nl\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "138",
+                        "endOffsets": "333"
+                    },
+                    "to": {
+                        "startLines": "10",
+                        "startColumns": "4",
+                        "startOffsets": "1080",
+                        "endColumns": "142",
+                        "endOffsets": "1218"
                     }
                 },
                 {

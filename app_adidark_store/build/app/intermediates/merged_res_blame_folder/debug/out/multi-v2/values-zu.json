@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.app_adidark_store.app-mergeDebugResources-13:/values-zu/values-zu.xml",
+            "outputFile": "com.example.app_adidark_store.app-mergeDebugResources-14:/values-zu/values-zu.xml",
             "map": [
                 {
                     "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\aba8f806953ea3dd8f794da3aeb78a12\\transformed\\jetified-play-services-base-18.0.1\\res\\values-zu\\values.xml",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\58aa1384bde170d075503b845cfcf44c\\transformed\\jetified-play-services-basement-18.1.0\\res\\values-zu\\values.xml",
+                    "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\f5aeeb70e4aa208ac830e747eaf33ddc\\transformed\\jetified-play-services-basement-18.2.0\\res\\values-zu\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.app_adidark_store.app-mergeDebugResources-13:/values-nb/values-nb.xml",
+            "outputFile": "com.example.app_adidark_store.app-mergeDebugResources-14:/values-nb/values-nb.xml",
             "map": [
                 {
                     "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\6d3bbaf4594b8ed85e4722883be764b3\\transformed\\browser-1.4.0\\res\\values-nb\\values-nb.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "2269,2379,2480,2592",
                         "endColumns": "109,100,111,96",
                         "endOffsets": "2374,2475,2587,2684"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\58aa1384bde170d075503b845cfcf44c\\transformed\\jetified-play-services-basement-18.1.0\\res\\values-nb\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "125",
-                        "endOffsets": "320"
-                    },
-                    "to": {
-                        "startLines": "10",
-                        "startColumns": "4",
-                        "startOffsets": "1064",
-                        "endColumns": "129",
-                        "endOffsets": "1189"
                     }
                 },
                 {
@@ -69,6 +52,23 @@
                         "startOffsets": "55,161,320,446,555,711,841,961,1194,1348,1455,1616,1744,1886,2062,2129,2191",
                         "endColumns": "105,158,125,108,155,129,119,102,153,106,160,127,141,175,66,61,77",
                         "endOffsets": "156,315,441,550,706,836,956,1059,1343,1450,1611,1739,1881,2057,2124,2186,2264"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\LONG GIANG\\.gradle\\caches\\transforms-3\\f5aeeb70e4aa208ac830e747eaf33ddc\\transformed\\jetified-play-services-basement-18.2.0\\res\\values-nb\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "125",
+                        "endOffsets": "320"
+                    },
+                    "to": {
+                        "startLines": "10",
+                        "startColumns": "4",
+                        "startOffsets": "1064",
+                        "endColumns": "129",
+                        "endOffsets": "1189"
                     }
                 }
             ]

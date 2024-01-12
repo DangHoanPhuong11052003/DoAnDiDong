@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.app_adidark_store.app-mergeDebugResources-13:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.app_adidark_store.app-mergeDebugResources-14:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\DoanDiDong\\DoAnDiDong\\app_adidark_store\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "D:\\DoanDiDong\\DoAnDiDongGit\\DoAnDiDong\\app_adidark_store\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
