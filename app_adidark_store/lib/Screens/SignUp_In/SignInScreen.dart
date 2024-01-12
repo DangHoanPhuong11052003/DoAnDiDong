@@ -1,11 +1,7 @@
 import 'package:app_adidark_store/Items/BottomMenu.dart';
 import 'package:app_adidark_store/Screens/SignUp_In/SignUpScreen.dart';
-import 'package:app_adidark_store/Screens/SignUp_In/Verifcation_Email.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
-import '../../Provider/google_sign_in.dart';
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});

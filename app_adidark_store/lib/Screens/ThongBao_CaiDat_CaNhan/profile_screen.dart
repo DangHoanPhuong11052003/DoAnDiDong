@@ -1,9 +1,7 @@
 import 'package:app_adidark_store/Screens/HoaDon/HoaDon_Screen.dart';
 import 'package:app_adidark_store/Screens/SignUp_In/SignInScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../Items/profile_item.dart';
-import '../../Provider/google_sign_in.dart';
 import 'setting_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
