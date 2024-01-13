@@ -1,7 +1,9 @@
-import 'package:app_adidark_store/Model/ClassAddress.dart';
+
 import 'package:flutter/material.dart';
 
-import '../Screens/Thanh_Toan/PaymentMethodsScreen.dart';
+import '../models/ClassAddress.dart';
+import '../views/Thanh_Toan/PaymentMethodsScreen.dart';
+
 
 class ItemInforOrder extends StatefulWidget {
    ItemInforOrder({super.key, this.address,this.payMethod,this.changePayMethod});
