@@ -48,8 +48,9 @@ class _ItemCartState extends State<ItemCart> {
         height: 200,
         decoration: BoxDecoration(
             border: Border.all(
-                width: 2, color: isPressed ? Colors.red : Colors.black),
-            borderRadius: BorderRadius.circular(15)),
+                width: 1, color: isPressed ? Colors.red : Colors.grey),
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -158,14 +159,21 @@ class _ItemCartState extends State<ItemCart> {
                       ],
                     ),
                   ),
-                  IconButton(
-                      //Xóa sản phẩm
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.delete_outlined,
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        Icons.delete,
                         color: Colors.red,
-                        size: 35,
-                      ))
+                        size: 20,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

@@ -17,8 +17,10 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Giỏ hàng"),
+        title: Text("Giỏ hàng", style: TextStyle(fontWeight: FontWeight.w800),),
+        centerTitle: true,
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(10),
@@ -132,18 +134,18 @@ class _CartScreenState extends State<CartScreen> {
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(15),
                     color: slspchon == 0
                         ? Colors.grey
-                        : const Color.fromARGB(255, 103, 183, 248)),
+                        : const  Color(0xFFADDDFF)),
                 height: 50,
                 width: 200,
-                child: Text(
+                child: const Text(
                   "ĐẶT HÀNG",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
               ),
