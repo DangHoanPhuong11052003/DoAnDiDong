@@ -42,6 +42,7 @@ class DataCartUser{
     });
   }
 
+  //tạo mới sản phẩm vào giỏ hàng
   static Future<void> CreateData(CartUser cartUser,String acc) async {
     final databaseReference = FirebaseDatabase.instance.ref();
     databaseReference.child('Cart/$acc/product/${cartUser.id}').set({
@@ -55,7 +56,7 @@ class DataCartUser{
        "idPro": cartUser.idPro,
        "price":cartUser.price,
       "cate":cartUser.cate,
-      "status":cartUser.status
+      "status":1
     });
   }
 }
