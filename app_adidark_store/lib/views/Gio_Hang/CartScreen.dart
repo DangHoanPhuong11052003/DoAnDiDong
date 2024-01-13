@@ -52,7 +52,12 @@ class _CartScreenState extends State<CartScreen> {
         title: Text("Giỏ hàng", style: TextStyle(fontWeight: FontWeight.w800),),
         centerTitle: true,
       ),
-      body: ListView.builder(
+      body: lstCarts.isEmpty?
+            Container(
+              alignment: Alignment.center,
+              child: Text("Hiện chưa có sản phẩm nào!",style: TextStyle(fontSize: 25),)
+            ):
+            ListView.builder(
         padding: EdgeInsets.all(10),
         itemCount: lstCarts.length,
         itemBuilder: (context, index) {

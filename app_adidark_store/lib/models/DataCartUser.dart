@@ -11,7 +11,7 @@ class DataCartUser{
 
     List<CartUser> allCarts=[];
     List<CartUser> carts=[];
-    List<dynamic?> values = snapshot.value as List<dynamic?>;
+    List<dynamic> values = snapshot.value as List<dynamic>;
         values.forEach((element) {
           allCarts.add(CartUser.fromJson(element as Map<Object?,Object?>));
         });
