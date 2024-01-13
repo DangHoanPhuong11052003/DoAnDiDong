@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-      home: const HoaDon_Screen(),
+      home: const Login_Screen(),
+      // email: abc@gmail.com
+      // pass: 123
       debugShowCheckedModeBanner: false,
     );
   }
