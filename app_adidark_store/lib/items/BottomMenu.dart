@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import '../views/Gio_Hang/CartScreen.dart';
 import '../views/ThongBao_CaiDat_CaNhan/notification_screen.dart';
@@ -6,8 +7,7 @@ import '../views/TrangChu/HomePageFix.dart';
 
 
 class BottomMenu extends StatefulWidget {
-  BottomMenu({
-    Key? key,
+  const BottomMenu({super.key, 
   });
 
   @override
@@ -27,39 +27,21 @@ class _BottomMenuState extends State<BottomMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[current_index],
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: const Color(0xFF0597F2),
-        unselectedItemColor: Colors.black,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            tooltip: "Trang chủ",
-            label: "Trang chủ",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopify),
-            tooltip: "Giỏ hàng",
-            label: "Giỏ hàng",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            tooltip: "Thông báo",
-            label: "Thông báo",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            tooltip: "Trang cá nhân",
-            label: "Trang cá nhân",
-          ),
-        ],
-        currentIndex: current_index,
+      bottomNavigationBar: CurvedNavigationBar(
+      backgroundColor: Color(0xFFADDDFF),
+       items: const [
+            Icon(Icons.home, size: 30),
+            Icon(Icons.shopify, size: 30),
+            Icon(Icons.notifications, size: 30),
+            Icon(Icons.person, size: 30),
+          ],
         onTap: (index) {
           setState(() {
             current_index = index;
           });
         },
       ),
+      body: pages[current_index],
     );
   }
 }
