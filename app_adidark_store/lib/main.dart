@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-      home: const Login_Screen(),
+      home: const CartScreen(),
       // email: abc@gmail.com
       // pass: 123
       debugShowCheckedModeBanner: false,

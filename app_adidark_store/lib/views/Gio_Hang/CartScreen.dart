@@ -1,21 +1,51 @@
+import 'dart:math';
+
+import 'package:app_adidark_store/models/ClassCartUser.dart';
+import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:flutter/material.dart';
-import '../../Items/ItemCart.dart';
+import '../../items/ItemCart.dart';
 import '../Thanh_Toan/OrderAddressScreen.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  const CartScreen({super.key,this.acc="123"});
+  final String acc;
 
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
+  List<CartUser> lstCarts=[];
   List lst_vtSum = [];
-  int totalPrice = 0;
+  double totalPrice = 0;
   int slspchon = 0;
   bool isSelectedAll = false;
+
+  _setupData() async{
+    List<CartUser> lstCartsData=await DataCartUser.getData(widget.acc);
+    setState(() {
+      lstCarts=lstCartsData;
+    });
+  }
+
+  _updatePrice(){
+    totalPrice=0;
+    lstCarts.forEach((element) {
+      if(lst_vtSum.contains(element.id)){
+        totalPrice+=element.price*element.quantity;
+      }
+    },);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+     _setupData();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _updatePrice();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -24,29 +54,34 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(10),
-        itemCount: 3,
+        itemCount: lstCarts.length,
         itemBuilder: (context, index) {
           return ItemCart(
-            price: 1000000 * index,
-            idCart: index,
+            setupData: () {
+              _setupData();
+            },
+            updatePrice: () {
+              setState(() {
+                _updatePrice();
+              });
+            },
+            acc: widget.acc,
+            cart: lstCarts[index],
             lst_vtSelected: lst_vtSum,
-            isPressedAll: isSelectedAll,
             sumPrice: () {
               setState(() {
-                lst_vtSum.add(index);
-                totalPrice += 1000000 * index;
+                lst_vtSum.add(lstCarts[index].id);
                 slspchon++;
-                if (lst_vtSum.length == 3) {
+                if (lst_vtSum.length == lstCarts.length) {
                   isSelectedAll = true;
                 }
               });
             },
             minusPrice: () {
               setState(() {
-                lst_vtSum.remove(index);
-                totalPrice -= 1000000 * index;
+                lst_vtSum.remove(lstCarts[index].id);
                 slspchon--;
-                isSelectedAll ? isSelectedAll = false : null;
+                isSelectedAll = false;
               });
             },
           );
@@ -63,11 +98,10 @@ class _CartScreenState extends State<CartScreen> {
                 setState(() {
                   isSelectedAll = !isSelectedAll;
                   if (isSelectedAll) {
-                    totalPrice = 3 * 1000000;
-                    slspchon = 3;
-                    for (var i = 0; i < 3; i++) {
-                      lst_vtSum.add(i);
-                    }
+                     lstCarts.forEach((element) {
+                      lst_vtSum.add(element.id);
+                    });
+                    slspchon = lstCarts.length;
                   } else {
                     totalPrice = 0;
                     slspchon = 0;
