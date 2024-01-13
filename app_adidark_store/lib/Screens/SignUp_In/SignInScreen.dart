@@ -1,10 +1,7 @@
 import 'package:app_adidark_store/Items/BottomMenu.dart';
 import 'package:app_adidark_store/Screens/SignUp_In/SignUpScreen.dart';
-import 'package:app_adidark_store/Screens/SignUp_In/Verifcation_Email.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../Provider/google_sign_in.dart';
+import 'package:lottie/lottie.dart';
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});
@@ -13,11 +10,33 @@ class Login_Screen extends StatefulWidget {
   State<Login_Screen> createState() => _Login_ScreenState();
 }
 
-class _Login_ScreenState extends State<Login_Screen> {
+class _Login_ScreenState extends State<Login_Screen>
+    with SingleTickerProviderStateMixin {
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
   bool _check = false;
-  void _SignIn() {
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: Duration(seconds: 3), vsync: this);
+    controller.addStatusListener((status) async {
+      if (status == AnimationStatus.completed) {
+        Navigator.pop(context);
+        controller.reset();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _SignIn() async {
     String email = phoneController.text;
     String password = passwordController.text;
     if (email == '123' && password == 'abc') {
@@ -26,9 +45,11 @@ class _Login_ScreenState extends State<Login_Screen> {
       _check = false;
     }
     if (_check) {
-      Navigator.popUntil(context, (route) => route.isFirst);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => BottomMenu()));
+      await showDoneDialog();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => BottomMenu()),
+      );
     }
   }
 
@@ -198,7 +219,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                       style: TextStyle(color: Colors.grey),
                     ),
                   )),
-              SizedBox(height: 35.0),
+              SizedBox(height: 20.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
                 child: Center(
@@ -224,54 +245,6 @@ class _Login_ScreenState extends State<Login_Screen> {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Hoặc đăng nhập với',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      final provider = Provider.of<GoogleSignInProvider>(
-                          context,
-                          listen: false);
-                      provider.signInWithGoogle();
-                    },
-                    borderRadius: BorderRadius.circular(50),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                      ),
-                      child: Container(
-                          width: double.infinity,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/logo/google.png",
-                                height: 40,
-                              ),
-                              const Text('Google',
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal))
-                            ],
-                          )),
                     ),
                   ),
                 ),
@@ -304,6 +277,34 @@ class _Login_ScreenState extends State<Login_Screen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> showDoneDialog() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/animations/login_successly.json',
+              repeat: false,
+              controller: controller,
+              onLoaded: (composition) {
+                controller.duration = composition.duration;
+                controller.forward();
+              },
+            ),
+            Text(
+              "Đăng nhập thành công",
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+            ),
+            SizedBox(height: 16.0),
+          ],
         ),
       ),
     );

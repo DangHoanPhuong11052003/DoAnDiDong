@@ -1,8 +1,7 @@
 import 'package:app_adidark_store/Screens/HoaDon/HoaDon_Screen.dart';
+import 'package:app_adidark_store/Screens/SignUp_In/SignInScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../Items/profile_item.dart';
-import '../../Provider/google_sign_in.dart';
 import 'setting_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -112,25 +111,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 listen: false);
                             provider.Logout();
                           },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(203, 233, 255, 0.7),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.logout_rounded,
-                                    size: MediaQuery.of(context).size.width / 9,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 1.0),
+                            child: Center(
+                              child: InkWell(
+                                onTap: null,
+                                borderRadius: BorderRadius.circular(50),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFADDDFF),
+                                    borderRadius: BorderRadius.circular(50),
+                                    border: Border.all(
+                                        color: Colors.white, width: 2.0),
                                   ),
-                                  Text(
-                                    "Đăng xuất",
-                                    style: TextStyle(fontSize: 20),
-                                  )
-                                ],
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 50,
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      'Đăng xuất',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),

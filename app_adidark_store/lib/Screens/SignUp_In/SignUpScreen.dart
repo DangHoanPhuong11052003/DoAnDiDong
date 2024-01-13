@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'SignInScreen.dart';
 
@@ -9,12 +10,40 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   final nameController = TextEditingController();
-  final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool _obscureText = true;
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: Duration(seconds: 3), vsync: this);
+    controller.addStatusListener((status) async {
+      if (status == AnimationStatus.completed) {
+        Navigator.pop(context);
+        controller.reset();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _SignUp() async {
+    if (validateFields()) {
+      await showDoneDialog();
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const Login_Screen()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,36 +139,6 @@ class _SignUpState extends State<SignUp> {
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Họ và Tên',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: TextField(
-                      style: const TextStyle(
-                        color: Color(0xFF0597F2),
-                        fontSize: 18,
-                      ),
-                      controller: phoneController,
-                      keyboardType: TextInputType.phone,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Số điện thoại',
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 18,
@@ -277,7 +276,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(color: Colors.black),
                   ),
                   Text(
-                    'Chính sách và dịch vụ ',
+                    'Chính sách dịch vụ & Quyền riêng tư',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -287,7 +286,7 @@ class _SignUpState extends State<SignUp> {
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
                 child: Center(
                   child: InkWell(
-                    onTap: null,
+                    onTap: _SignUp,
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
                       decoration: BoxDecoration(
@@ -313,49 +312,6 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               SizedBox(height: 30.0),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  'Hoặc tiếp tục với',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: Center(
-                  child: InkWell(
-                    onTap: null,
-                    borderRadius: BorderRadius.circular(50),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                      ),
-                      child: Container(
-                          width: double.infinity,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/logo/google.png",
-                                height: 40,
-                              ),
-                              const Text('Google',
-                                  style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal))
-                            ],
-                          )),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -366,7 +322,7 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
-                  SizedBox(width: 10.0), // Khoảng cách giữa hai dòng văn bản
+                  SizedBox(width: 10.0),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacement(
@@ -383,6 +339,87 @@ class _SignUpState extends State<SignUp> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  bool validateFields() {
+    if (nameController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Please enter your name.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+
+    if (emailController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Please enter your email.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+    if (passwordController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Please enter your password.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> showDoneDialog() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/animations/login_successly.json',
+              repeat: false,
+              controller: controller,
+              onLoaded: (composition) {
+                controller.duration = composition.duration;
+                controller.forward();
+              },
+            ),
+            Text(
+              "Đăng ký thành công",
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+            ),
+            SizedBox(height: 16.0),
+          ],
         ),
       ),
     );
