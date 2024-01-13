@@ -42,13 +42,14 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
                 ),
               ),
               const SizedBox(width: 10,),
-              Column( 
+              const Column( 
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children:  [
                   //Tông tin sản phẩm
                   //Tên sản phẩm
-                  Text("Super OG",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                  Text("Super OG",style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w800, fontSize: 16)),
                   //Hãng, loại
                   Text("Nike | Giày nam"),
                   //Màu
@@ -73,11 +74,13 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
                   primary:Color(0xFFCBE9FF),  // Thay đổi màu nền tại đây
                 ),
                 onPressed: (){},
-                child: Text("Mua lại",style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),)
+                child: Text("Mua lại",style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w600))
                 ),
                ElevatedButton(
                   onPressed: (){},
-                  child: Text("Đánh giá",style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),)
+                  child: Text("Đánh giá",style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w600))
                 )
                     
             ],

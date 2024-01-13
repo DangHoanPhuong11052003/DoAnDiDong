@@ -1,4 +1,5 @@
 //import 'package:flutter/foundation.dart';
+import 'package:app_adidark_store/views/ChiTietHoaDon/ChiTietHoaDon_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -77,7 +78,13 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFFCBE9FF), // Thay đổi màu nền tại đây
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const ChiTietHoaDon_Screen()));
+                  },
                   child: Text(
                     "Xem chi tiết",
                     style: TextStyle(
