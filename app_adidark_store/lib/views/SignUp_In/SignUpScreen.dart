@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/state_manager.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../models/ClassUser.dart';
 import 'SignInScreen.dart';
+import 'SignUp_Controller.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -11,9 +15,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _frmkey = GlobalKey<FormState>();
+  final _user = Get.put(UserController());
   bool _obscureText = true;
   late AnimationController controller;
 
@@ -37,10 +40,16 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _SignUp() async {
-    if (validateFields()) {
-      await showDoneDialog();
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const Login_Screen()));
+    if (_frmkey.currentState!.validate()) {
+      showDoneDialog();
+      // UserController.instance
+      //     .registerUser(_user.email.text.trim(), _user.password.text.trim());
+      final user = User(
+        fullName: _user.fullname.text.trim(),
+        email: _user.email.text.trim(),
+        password: _user.password.text.trim(),
+      );
+      UserController.instance.createUser(user);
     }
   }
 
@@ -120,80 +129,90 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                 ),
               ),
               SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: TextField(
+              Form(
+                key: _frmkey,
+                child: Column(
+                  children: [
+                    TextFormField(
                       style: const TextStyle(
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: nameController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Họ và Tên',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 18,
+                      controller: _user.fullname,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: "Họ và Tên",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Color(0xFFADDDFF),
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 16),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
                         ),
                       ),
+                      validator: (email) {
+                        if (email!.isEmpty) {
+                          return 'Vui lòng nhập Họ Tên';
+                        }
+
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: TextField(
+                    SizedBox(height: 20.0),
+                    TextFormField(
                       style: const TextStyle(
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Email',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 18,
+                      controller: _user.email,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Color(0xFFADDDFF),
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 16),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
                         ),
                       ),
+                      validator: (email) {
+                        if (email!.isEmpty) {
+                          return 'Vui lòng nhập email';
+                        }
+                        // if (!isValidEmail(email)) {
+                        //   return 'Vui lòng nhập đúng định dang !';
+                        // }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: TextFormField(
+                    SizedBox(height: 20.0),
+                    TextFormField(
                       style: TextStyle(
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: passwordController,
+                      controller: _user.password,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -208,59 +227,34 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                             });
                           },
                         ),
-                        border: InputBorder.none,
-                        hintText: 'Mật khẩu',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 18,
-                        ),
-                      ),
-                      obscureText: _obscureText,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: TextFormField(
-                      style: TextStyle(
-                        color: Color(0xFF0597F2),
-                        fontSize: 18,
-                      ),
-                      controller: passwordController,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Color.fromARGB(255, 42, 43, 44),
+                        labelText: "Password",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Color(0xFFADDDFF),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureText = !_obscureText;
-                            });
-                          },
                         ),
-                        border: InputBorder.none,
-                        hintText: 'Nhập lại mật khẩu',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 18,
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 16),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
                         ),
                       ),
                       obscureText: _obscureText,
+                      validator: (pass) {
+                        if (pass!.isEmpty) {
+                          return 'Vui lòng nhập mật khẩu';
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
-                  ),
+                  ],
                 ),
               ),
               SizedBox(height: 5.0),
@@ -342,59 +336,6 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
         ),
       ),
     );
-  }
-
-  bool validateFields() {
-    if (nameController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Please enter your name.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-      return false;
-    }
-
-    if (emailController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Please enter your email.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-      return false;
-    }
-    if (passwordController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Please enter your password.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-      return false;
-    }
-    return true;
   }
 
   Future<void> showDoneDialog() async {
