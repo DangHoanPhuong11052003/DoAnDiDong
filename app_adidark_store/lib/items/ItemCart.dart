@@ -1,20 +1,24 @@
+import 'package:app_adidark_store/models/ClassCartUser.dart';
+import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:flutter/material.dart';
 
 class ItemCart extends StatefulWidget {
   ItemCart(
       {super.key,
       required this.sumPrice,
-      required this.price,
       required this.minusPrice,
-      required this.isPressedAll,
       required this.lst_vtSelected,
-      required this.idCart});
+      required this.cart,
+      required this.acc,
+      required this.updatePrice,
+      required this.setupData});
   Function() sumPrice;
   Function() minusPrice;
+  Function() updatePrice;
+  Function() setupData;
   List lst_vtSelected;
-  int price;
-  int idCart;
-  bool isPressedAll;
+  CartUser cart;
+  String acc;
 
   @override
   State<ItemCart> createState() => _ItemCartState();
@@ -23,9 +27,10 @@ class ItemCart extends StatefulWidget {
 class _ItemCartState extends State<ItemCart> {
   bool isPressed = false;
   int slsp = 1;
+
   @override
   Widget build(BuildContext context) {
-    if (widget.lst_vtSelected.contains(widget.idCart)) {
+    if (widget.lst_vtSelected.contains(widget.cart.id)) {
       isPressed = true;
     } else {
       isPressed = false;
@@ -48,8 +53,9 @@ class _ItemCartState extends State<ItemCart> {
         height: 200,
         decoration: BoxDecoration(
             border: Border.all(
-                width: 2, color: isPressed ? Colors.red : Colors.black),
-            borderRadius: BorderRadius.circular(15)),
+                width: 1, color: isPressed ? Colors.red : Colors.grey),
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -60,9 +66,9 @@ class _ItemCartState extends State<ItemCart> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 //Ảnh sản phẩm
-                image: const DecorationImage(
+                image:  DecorationImage(
                     image: NetworkImage(
-                        "https://drake.vn/image/catalog/H%C3%ACnh%20content/gia%CC%80y%20Converse%20da%20bo%CC%81ng/giay-converse-da-bong-5.jpg"),
+                        widget.cart.img),
                     fit: BoxFit.cover),
               ),
             ),
@@ -73,23 +79,46 @@ class _ItemCartState extends State<ItemCart> {
                 //Tông tin sản phẩm
                 //Tên sản phẩm
                 Text(
-                  "Super OG",
+                  widget.cart.namePro,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 //Hãng, loại
-                Text("Nike | Giày nam"),
+                Text("${widget.cart.manufucturer} | Giày ${widget.cart.cate}"),
                 //Màu
-                Text("Màu: Đỏ"),
+                Text(widget.cart.color == 0
+                      ? "Đen"
+                      : widget.cart.color == 1
+                          ? "Trắng"
+                          : widget.cart.color == 2
+                              ? "Vàng"
+                              : widget.cart.color == 3
+                                  ? "Xanh dương"
+                                  :widget.cart.color == 4
+                                      ? "Xám"
+                                      : widget.cart.color == 5
+                                          ? "Nâu"
+                                          : widget.cart.color == 6
+                                              ? "Cam"
+                                              : widget.cart.color == 7
+                                                  ? "Tím"
+                                                  : widget.cart.color == 8
+                                                      ? "Xanh lá"
+                                                      : "Hồng",),
                 //Kích Cỡ
-                Text("Cỡ: 38"),
+                Text(widget.cart.size.toString()),
                 //Tăng giảm số lượng
                 Row(
                   children: [
                     GestureDetector(
                       onTap: () {
-                        if (slsp > 1) {
+                        if (widget.cart.quantity > 1) {
                           setState(() {
-                            slsp--;
+                            widget.cart.quantity--;
+                            //Cập nhật lại số luong sản phẩm
+                            setState(() {
+                              DataCartUser.updateData(widget.cart, widget.acc);
+                            });
+                            widget.updatePrice();
                           });
                         }
                       },
@@ -107,13 +136,18 @@ class _ItemCartState extends State<ItemCart> {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(right: 5)),
-                    Text(slsp < 10 ? "0$slsp" : "$slsp",
-                        style: TextStyle(fontSize: 15)),
+                    Text(widget.cart.quantity < 10 ? "0${widget.cart.quantity}" : "${widget.cart.quantity}",
+                        style:const TextStyle(fontSize: 15)),
                     const Padding(padding: EdgeInsets.only(left: 5)),
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          slsp++;
+                          //cập nhật lại số lượng sản phẩm
+                          widget.cart.quantity++;
+                          setState(() {
+                            DataCartUser.updateData(widget.cart, widget.acc);
+                          });
+                          widget.updatePrice();
                         });
                       },
                       child: Container(
@@ -132,9 +166,9 @@ class _ItemCartState extends State<ItemCart> {
                   ],
                 ),
                 //Giá
-                Text("${widget.price * slsp} VND",
+                Text("${widget.cart.price * widget.cart.quantity} VND",
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ],
             ),
             Container(
@@ -142,7 +176,6 @@ class _ItemCartState extends State<ItemCart> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  //Giá
                   Align(
                     alignment: Alignment.topRight,
                     child: Column(
@@ -158,14 +191,91 @@ class _ItemCartState extends State<ItemCart> {
                       ],
                     ),
                   ),
-                  IconButton(
-                      //Xóa sản phẩm
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.delete_outlined,
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                  'Bạn có chắc chắn muốn xóa sản phẩm này?'),
+              content: Text(
+                  'Điều này sẽ loại bỏ sản phẩm ra khỏi giỏ hàng của bạn!'),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      child: Text('Yes',
+                          style: TextStyle(color: Colors.blue, fontSize: 18)),
+                      onPressed: () {
+                        setState(() {
+                          widget.cart.status=0;
+                          DataCartUser.updateData(widget.cart, widget.acc);
+                          widget.setupData();
+                        });
+                        Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Row(
+                                children: [
+                                  Text('Xóa thành công!',
+                                      style: TextStyle(
+                                          color: const Color.fromARGB(
+                                              255, 140, 238, 143))),
+                                  Icon(
+                                    Icons.check_circle_outlined,
+                                    color: const Color.fromARGB(
+                                        255, 140, 238, 143),
+                                  )
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: Text('Ok',
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 18)),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    TextButton(
+                      child: Text(
+                        'No',
+                        style: TextStyle(color: Colors.blue, fontSize: 18),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                )
+              ],
+            );
+          },
+        );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        Icons.delete,
                         color: Colors.red,
-                        size: 35,
-                      ))
+                        size: 20,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -175,3 +285,5 @@ class _ItemCartState extends State<ItemCart> {
     );
   }
 }
+
+
