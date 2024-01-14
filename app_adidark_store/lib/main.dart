@@ -1,5 +1,6 @@
 import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/views/ChiTietHoaDon/ChiTietHoaDon_Screen.dart';
+import 'package:app_adidark_store/views/ChiTiet_SanPham/ProDetailScreen.dart';
 import 'package:app_adidark_store/views/Gio_Hang/CartScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-      home: const CartScreen(),
+      home: const ProDetailScreen(),
       // email: abc@gmail.com
       // pass: 123
       debugShowCheckedModeBanner: false,
