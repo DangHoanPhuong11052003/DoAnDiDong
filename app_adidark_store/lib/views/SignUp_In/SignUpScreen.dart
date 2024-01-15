@@ -42,14 +42,6 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   Future<void> _SignUp() async {
     if (_frmkey.currentState!.validate()) {
       showDoneDialog();
-      // UserController.instance
-      //     .registerUser(_user.email.text.trim(), _user.password.text.trim());
-      final user = User(
-        fullName: _user.fullname.text.trim(),
-        email: _user.email.text.trim(),
-        password: _user.password.text.trim(),
-      );
-      UserController.instance.createUser(user);
     }
   }
 
