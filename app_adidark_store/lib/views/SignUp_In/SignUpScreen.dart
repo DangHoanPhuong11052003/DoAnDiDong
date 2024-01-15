@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
@@ -17,7 +19,12 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   final _frmkey = GlobalKey<FormState>();
   final _user = Get.put(UserController());
+  final _auth = FirebaseAuth.instance;
+  bool showProgress = false;
   bool _obscureText = true;
+  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController name = new TextEditingController();
+  final TextEditingController emailController = new TextEditingController();
   late AnimationController controller;
 
   @override
@@ -39,11 +46,62 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  Future<void> _SignUp() async {
-    if (_frmkey.currentState!.validate()) {
-      showDoneDialog();
-    }
+  void signUp(String fullname, String email, String password) async {
+  if (_frmkey.currentState!.validate()) {
+    await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((value) => postDetailsToFirestore(fullname, email, password))
+        .catchError((e) {
+          // Xử lý lỗi ở đây
+          print('Error: $e');
+          return null; // hoặc có thể trả về một giá trị khác có kiểu dữ liệu là void
+        });
+    showDoneDialog();
   }
+}
+
+  postDetailsToFirestore(
+    String fullname,
+    String email,
+    String passwword,
+  ) async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    var user = _auth.currentUser;
+    CollectionReference ref = firebaseFirestore.collection('Users');
+    ref.doc(user!.uid).set({
+      'fullName': name.text.trim(),
+      'email': emailController.text.trim(),
+      'password': passwordController.text.trim(),
+    });
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const Login_Screen()));
+  }
+  // Future<void> _SignUp() async {
+  //   if (_frmkey.currentState!.validate()) {
+  //     showDoneDialog();
+
+  //     final email = _user.email.text.trim();
+  //     final password = _user.password.text.trim();
+  //     final fullName = _user.fullname.text.trim();
+
+  //     try {
+  //       await UserController.instance.createAccount(email, password);
+  //     } catch (e) {
+  //       // Xử lý lỗi nếu có
+  //       print('Auth_User Error: $e');
+  //       // Hiển thị thông báo lỗi cho người dùng
+  //       return;
+  //     }
+
+  //     // Tạo người dùng trong Firestore
+  //     final user = User(
+  //       fullName: fullName,
+  //       email: email,
+  //       password: password,
+  //     );
+  //     UserController.instance.createUser(user);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +188,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: _user.fullname,
+                      controller: name,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: "Họ và Tên",
@@ -166,7 +224,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: _user.email,
+                      controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: "Email",
@@ -204,7 +262,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: _user.password,
+                      controller: passwordController,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -271,29 +329,25 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
                 child: Center(
-                  child: InkWell(
-                    onTap: _SignUp,
-                    borderRadius: BorderRadius.circular(50),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: Color(0xFFADDDFF),
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(color: Colors.white, width: 2.0),
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Đăng ký',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 18,
-                          ),
-                        ),
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                    elevation: 5.0,
+                    height: 40,
+                    onPressed: () {
+                      setState(() {
+                        showProgress = true;
+                      });
+                      signUp(name.text, emailController.text,
+                          passwordController.text);
+                    },
+                    child: Text(
+                      "Register",
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
                     ),
+                    color: Colors.white,
                   ),
                 ),
               ),
