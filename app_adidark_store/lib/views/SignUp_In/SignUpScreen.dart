@@ -111,6 +111,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20),
@@ -118,6 +119,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 20,),
               const Row(
                 children: [
                   Image(
@@ -176,7 +178,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                 ],
               ),
               const Text(
-                "Chào bạn, ký để tiếp tục",
+                "Chào bạn, đăng ký để tiếp tục",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 22.0,
