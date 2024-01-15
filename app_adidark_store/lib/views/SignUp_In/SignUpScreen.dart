@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../models/ClassUser.dart';
 import 'SignInScreen.dart';
 import 'SignUp_Controller.dart';
@@ -18,7 +18,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   final _frmkey = GlobalKey<FormState>();
-  final _user = Get.put(UserController());
+  // final _user = Get.put(UserController());
   final _auth = FirebaseAuth.instance;
   bool showProgress = false;
   bool _obscureText = true;
@@ -47,18 +47,24 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   }
 
   void signUp(String fullname, String email, String password) async {
-  if (_frmkey.currentState!.validate()) {
-    await _auth
-        .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) => postDetailsToFirestore(fullname, email, password))
-        .catchError((e) {
-          // Xử lý lỗi ở đây
-          print('Error: $e');
-          return null; // hoặc có thể trả về một giá trị khác có kiểu dữ liệu là void
-        });
-    showDoneDialog();
+    if (_frmkey.currentState!.validate()) {
+      await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) => postDetailsToFirestore(fullname, email, password))
+          .catchError((e) {
+       
+        print('Error: $e');
+        return null; 
+      });
+    }
+    await showDoneDialog();
+    Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>  Login_Screen(),
+          ),
+        );
   }
-}
 
   postDetailsToFirestore(
     String fullname,
@@ -73,8 +79,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       'email': emailController.text.trim(),
       'password': passwordController.text.trim(),
     });
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const Login_Screen()));
+      
   }
   // Future<void> _SignUp() async {
   //   if (_frmkey.currentState!.validate()) {
@@ -329,27 +334,25 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
                 child: Center(
-                  child: MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                    elevation: 5.0,
-                    height: 40,
-                    onPressed: () {
-                      setState(() {
-                        showProgress = true;
-                      });
-                      signUp(name.text, emailController.text,
-                          passwordController.text);
-                    },
-                    child: Text(
-                      "Register",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    color: Colors.white,
+                    child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  elevation: 5.0,
+                  height: 45,
+                  minWidth: double.infinity,
+                  onPressed: () {
+                    setState(() {
+                      showProgress = true;
+                    });
+                    signUp(name.text, emailController.text,
+                        passwordController.text);
+                  },
+                  child: Text(
+                    "Đăng ký",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                   ),
-                ),
+                  color: Color(0xFFADDDFF),
+                )),
               ),
               SizedBox(height: 30.0),
               Row(

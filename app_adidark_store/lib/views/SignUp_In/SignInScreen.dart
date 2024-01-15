@@ -74,8 +74,9 @@ class _Login_ScreenState extends State<Login_Screen>
         email: email,
         password: password,
       );
+      route();
       await showDoneDialog();
-      route(); 
+       
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -267,7 +268,8 @@ class _Login_ScreenState extends State<Login_Screen>
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
                           elevation: 5.0,
-                          height: 40,
+                          height: 45,
+                          minWidth: double.infinity,
                           onPressed: () {
                             setState(() {
                               visible = true;
@@ -276,12 +278,13 @@ class _Login_ScreenState extends State<Login_Screen>
                                 emailController.text, passwordController.text);
                           },
                           child: Text(
-                            "Login",
+                            "Đăng nhập",
                             style: TextStyle(
                               fontSize: 20,
+                              fontWeight: FontWeight.w700
                             ),
                           ),
-                          color: Colors.white,
+                          color:  Color(0xFFADDDFF),
                         )
                     ),
                   ),

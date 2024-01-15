@@ -13,14 +13,15 @@ import 'firebase_options.dart';
 import 'views/HoaDon/HoaDon_Screen.dart';
 
 Future<void> main() async {
-  final WidgetsBinding widgetsBinding =
-      WidgetsFlutterBinding.ensureInitialized();
+  // final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  await GetStorage.init();
+  // await GetStorage.init();
 
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((FirebaseApp value) => Get.put(Auth_Resposity()));
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // .then((FirebaseApp value) => Get.put(Auth_Resposity()));
 
   runApp(const MyApp());
 }
