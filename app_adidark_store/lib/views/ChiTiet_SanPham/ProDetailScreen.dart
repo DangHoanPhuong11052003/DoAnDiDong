@@ -1,12 +1,17 @@
 import 'package:app_adidark_store/items/ItemImgPro.dart';
+import 'package:app_adidark_store/models/ClassCategories.dart';
+import 'package:app_adidark_store/models/ClassManufacturer.dart';
+import 'package:app_adidark_store/models/ClassProduct.dart';
+import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../../Items/ItemSelectedColor.dart';
-import '../../Items/ItemSelectedSize.dart';
-import '../../Items/TextWrapper.dart';
+import '../../items/ItemSelectedColor.dart';
+import '../../items/ItemSelectedSize.dart';
+import '../../items/TextWrapper.dart';
 
 class ProDetailScreen extends StatefulWidget {
-  const ProDetailScreen({super.key});
+  const ProDetailScreen({super.key, this.idPro=0});
+  final int idPro;
 
   @override
   State<ProDetailScreen> createState() => _ProDetailScreenState();
@@ -21,15 +26,34 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
     content: Text('Vui lòng chọn số lượng, màu và size giày!'),
   );
   int sttbuy = 0;
-  int slColor = 10;
   int slSize = 13;
   String s =
       "dadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadada";
   bool isReadMore = false;
   int seledtedColorId = -1;
   int seledtedSizeId = -1;
+
+  Product pro=Product(cate: Categories(id: -1, name: "", status: false), detail: Map(), id: -1, img: List.empty(), manu: Manufacturer(id: -1, name: "", status: false), name: "", price: 0, quantity: 0, status: 0, infor: "");
+  List<Product> pros=[];
+
+  _getData() async{
+    Product product=await DataProduct.getDataById(widget.idPro);
+    List<Product> pros2=await DataProduct.getAllData();
+    setState(() {
+      pro=product;
+      pros=pros2;
+    });
+  }
+
+  @override
+  void initState() {
+    _getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -51,10 +75,11 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                     scrollDirection: Axis.horizontal,
                   ),
                   items: [
-                    for (var i = 0; i < 5; i++)
+                    for (var i = 0; i < pro.img.length; i++)
                       ItemImgPro(
-                          linkImg:
-                              "https://drake.vn/image/catalog/H%C3%ACnh%20content/gia%CC%80y%20Converse%20da%20bo%CC%81ng/giay-converse-da-bong-5.jpg")
+                        linkImg:
+                          pro.img[i].link
+                      )
                   ]),
               Padding(
                 padding: const EdgeInsets.all(8),
@@ -63,12 +88,12 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                     children: [
                       //Tên
                       Text(
-                        "Super OG",
+                         pro.name,
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w800),
                       ),
                       //Hãng, loại
-                      Text("Nike | Giày nam",
+                      Text("${pro.manu.name} | Giày ${pro.cate.name}",
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.w500)),
                       Row(
@@ -93,7 +118,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                         children: [
                           //Số tiền sản phẩm
                           Text(
-                            "12.000.000 VND",
+                            pro.price.toString(),
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),
@@ -156,7 +181,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                       //Thông tin sản phẩm
                       TextWrapper(
                           text:
-                              "asdadasdadadadasdsadadadasdasdadadadad adasdadasdadadadadasdada asdadadadadadadada adadadadadadadas dadadadadadad adadadadadadas asdsadasdadad"),
+                              pro.infor),
 
                       const Padding(padding: EdgeInsets.only(bottom: 10)),
                       const Divider(
@@ -172,20 +197,22 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                       Column(
                         children: [
                           //Số lượng màu
-                          if (slColor < 6)
+                          if (pro.detail.length < 6)
                             Row(
                               children: [
-                                for (int i = 0; i < slColor; i++)
+                                for (int i = 0; i < pro.detail.length; i++)
                                   ItemSelectedColor(
-                                    idColor: i,
+                                    idColor: pro.detail.keys.elementAt(i),
                                     idList: i,
                                     idSelected: seledtedColorId,
                                     selected: () {
                                       setState(() {
                                         if (seledtedColorId == i) {
                                           seledtedColorId = -1;
+                                          seledtedSizeId=-1;
                                         } else {
                                           seledtedColorId = i;
+                                          seledtedSizeId=-1;
                                         }
                                       });
                                     },
@@ -197,17 +224,19 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                               children: [
                                 for (int i = 0; i < 6; i++)
                                   ItemSelectedColor(
-                                    idColor: i,
+                                    idColor: pro.detail.keys.elementAt(1),
                                     idList: i,
                                     idSelected: seledtedColorId,
                                     selected: () {
                                       if (seledtedColorId == i) {
                                         setState(() {
                                           seledtedColorId = -1;
+                                          seledtedSizeId=-1;
                                         });
                                       } else {
                                         setState(() {
                                           seledtedColorId = i;
+                                          seledtedSizeId=-1;
                                         });
                                       }
                                     },
@@ -216,19 +245,21 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                             ),
                           Row(
                             children: [
-                              for (int i = 6; i < slColor; i++)
+                              for (int i = 6; i < pro.detail.length; i++)
                                 ItemSelectedColor(
-                                  idColor: i,
+                                  idColor: pro.detail.keys.elementAt(1),
                                   idList: i,
                                   idSelected: seledtedColorId,
                                   selected: () {
                                     if (seledtedColorId == i) {
                                       setState(() {
                                         seledtedColorId = -1;
+                                        seledtedSizeId=-1;
                                       });
                                     } else {
                                       setState(() {
                                         seledtedColorId = i;
+                                        seledtedSizeId=-1;
                                       });
                                     }
                                   },
@@ -245,14 +276,14 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                       Column(
                         children: [
                           //Số lượng Size
-                          for (var i = 0; i < slSize / 6.ceil(); i++)
+                          for (var i = 0; i < (seledtedColorId!=-1?pro.detail.values.elementAt(seledtedColorId).length:slSize) / 6.ceil(); i++)
                             Row(
                               children: [
                                 for (var j = i * 6;
-                                    j < i * 6 + 6 && j < slSize;
+                                    j < i * 6 + 6 && j < (seledtedColorId!=-1?pro.detail.values.elementAt(seledtedColorId).length:slSize);
                                     j++)
                                   ItemSelectedSize(
-                                    idSize: j + 30,
+                                    idSize: (seledtedColorId!=-1?pro.detail.values.elementAt(seledtedColorId)[j].size:j+30),
                                     idSelected: seledtedSizeId,
                                     idList: j,
                                     selected: () {

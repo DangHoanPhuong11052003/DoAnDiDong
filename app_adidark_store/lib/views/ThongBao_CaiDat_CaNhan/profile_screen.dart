@@ -1,7 +1,7 @@
-
 import 'package:app_adidark_store/items/profile_item.dart';
 import 'package:app_adidark_store/views/HoaDon/HoaDon_Screen.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'setting_screen.dart';
 
@@ -12,6 +12,16 @@ class ProfileScreen extends StatefulWidget {
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+Future<void> logout(BuildContext context) async {
+  await FirebaseAuth.instance.signOut();
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => Login_Screen(),
+    ),
+  );
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -104,48 +114,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Login_Screen()),
-                            );
+                    padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                    child: Center(
+                      child:MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
+                          elevation: 5.0,
+                          height: 45,
+                          minWidth: double.infinity,
+                          onPressed: () {
+                           
+                            logout(
+                                context);
                           },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 1.0),
-                            child: Center(
-                              child: InkWell(
-                                onTap: null,
-                                borderRadius: BorderRadius.circular(50),
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFADDDFF),
-                                    borderRadius: BorderRadius.circular(50),
-                                    border: Border.all(
-                                        color: Colors.white, width: 2.0),
-                                  ),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 50,
-                                    alignment: Alignment.center,
-                                    child: const Text(
-                                      'Đăng xuất',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                          child: Text(
+                            "Đăng xuất",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700
                             ),
                           ),
-                        ),
-                      )
+                          color:  Color(0xFFADDDFF),
+                        )
+                    ),
+                  ),
                     ],
                   ),
                 ),

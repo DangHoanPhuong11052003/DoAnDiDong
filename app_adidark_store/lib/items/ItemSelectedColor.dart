@@ -7,7 +7,7 @@ class ItemSelectedColor extends StatefulWidget {
       required this.idSelected,
       required this.selected,
       required this.idList});
-  final int idColor;
+  final String idColor;
   Function() selected;
   int idSelected;
   final int idList;
@@ -36,28 +36,28 @@ class _ItemSelectedColorState extends State<ItemSelectedColor> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: widget.idColor == 0
+                  color: widget.idColor == 'a'
                       ? Colors.black
-                      : widget.idColor == 1
+                      : widget.idColor == "b"
                           ? Colors.white
-                          : widget.idColor == 2
+                          : widget.idColor == 'c'
                               ? Colors.amber
-                              : widget.idColor == 3
+                              : widget.idColor == 'd'
                                   ? Colors.blue
-                                  : widget.idColor == 4
+                                  : widget.idColor == 'e'
                                       ? Colors.grey
-                                      : widget.idColor == 5
+                                      : widget.idColor == 'f'
                                           ? Colors.brown
-                                          : widget.idColor == 6
+                                          : widget.idColor == 'g'
                                               ? Colors.orange
-                                              : widget.idColor == 7
+                                              : widget.idColor == 'h'
                                                   ? Colors.purple
-                                                  : widget.idColor == 8
+                                                  : widget.idColor == 'j'
                                                       ? Colors.green
                                                       : Colors.pink,
                 ),
-                height: MediaQuery.of(context).size.width / 8 - 10,
-                width: MediaQuery.of(context).size.width / 8 - 20,
+                height: MediaQuery.of(context).size.width / 8 - 20,
+                width: MediaQuery.of(context).size.width / 8 - 30,
               )),
         ));
   }

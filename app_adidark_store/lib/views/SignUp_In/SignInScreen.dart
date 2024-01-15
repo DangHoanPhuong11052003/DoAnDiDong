@@ -1,4 +1,7 @@
+import 'package:app_adidark_store/views/SignUp_In/SignIn_Controller.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignUpScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -14,9 +17,10 @@ class Login_Screen extends StatefulWidget {
 class _Login_ScreenState extends State<Login_Screen>
     with SingleTickerProviderStateMixin {
   final _frmkey = GlobalKey<FormState>();
-  final phoneController = TextEditingController();
-  final passwordController = TextEditingController();
-  bool _check = false;
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
+  
+  bool visible = false;
   late AnimationController controller;
 
   @override
@@ -42,25 +46,46 @@ class _Login_ScreenState extends State<Login_Screen>
     final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
     return emailRegex.hasMatch(email);
   }
-
-  Future<void> _SignIn() async {
-    if (_frmkey.currentState!.validate()) {
-      String email = phoneController.text;
-      String password = passwordController.text;
-      if (email == 'abc@gmail.com' && password == '123') {
-        _check = true;
-      } else {
-        _check = false;
-      }
-      if (_check) {
-        await showDoneDialog();
-        Navigator.pushReplacement(
+  void route() {
+    User? user = FirebaseAuth.instance.currentUser;
+    var getUser = FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user!.uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+           Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => BottomMenu()),
+          MaterialPageRoute(
+            builder: (context) =>  BottomMenu(),
+          ),
         );
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+  }
+
+  void _SignIn(String email, String password) async {
+  if (_frmkey.currentState!.validate()) {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      route();
+      await showDoneDialog();
+       
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
       }
     }
   }
+}
 
   bool _obscureText = true;
   @override
@@ -150,7 +175,7 @@ class _Login_ScreenState extends State<Login_Screen>
                             color: Color(0xFF0597F2),
                             fontSize: 18,
                           ),
-                          controller: phoneController,
+                          controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             labelText: "Email",
@@ -238,30 +263,29 @@ class _Login_ScreenState extends State<Login_Screen>
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1.0),
                     child: Center(
-                      child: InkWell(
-                        onTap: _SignIn,
-                        borderRadius: BorderRadius.circular(50),
-                        child: Ink(
-                          decoration: BoxDecoration(
-                            color: Color(0xFFADDDFF),
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border.all(color: Colors.white, width: 2.0),
-                          ),
-                          child: Container(
-                            width: double.infinity,
-                            height: 50,
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Đăng nhập',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 18,
-                              ),
+                      child:MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
+                          elevation: 5.0,
+                          height: 45,
+                          minWidth: double.infinity,
+                          onPressed: () {
+                            setState(() {
+                              visible = true;
+                            });
+                            _SignIn(
+                                emailController.text, passwordController.text);
+                          },
+                          child: Text(
+                            "Đăng nhập",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700
                             ),
                           ),
-                        ),
-                      ),
+                          color:  Color(0xFFADDDFF),
+                        )
                     ),
                   ),
                   SizedBox(height: 20.0),
