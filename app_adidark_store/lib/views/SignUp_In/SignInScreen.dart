@@ -1,11 +1,12 @@
-import 'package:app_adidark_store/views/SignUp_In/SignIn_Controller.dart';
+import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignUpScreen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-
-import '../../items/BottomMenu.dart';
+import '../../models/ClassUser.dart';
+import 'controller/SignIn_Controller.dart';
+import 'controller/SignUp_Failure.dart';
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});
@@ -17,9 +18,11 @@ class Login_Screen extends StatefulWidget {
 class _Login_ScreenState extends State<Login_Screen>
     with SingleTickerProviderStateMixin {
   final _frmkey = GlobalKey<FormState>();
+  final _auth = Get.put(LoginController());
+  final TextEditingController nameController = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
-  
+  bool? isChecked = false;
   bool visible = false;
   late AnimationController controller;
 
@@ -46,46 +49,25 @@ class _Login_ScreenState extends State<Login_Screen>
     final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
     return emailRegex.hasMatch(email);
   }
-  void route() {
-    User? user = FirebaseAuth.instance.currentUser;
-    var getUser = FirebaseFirestore.instance
-            .collection('Users')
-            .doc(user!.uid)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-           Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>  BottomMenu(),
-          ),
-        );
-      } else {
-        print('Document does not exist on the database');
-      }
-    });
-  }
 
-  void _SignIn(String email, String password) async {
-  if (_frmkey.currentState!.validate()) {
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+  void _SignIn() async {
+    if (_frmkey.currentState!.validate()) {
+      final user = Users(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
-      route();
-      await showDoneDialog();
-       
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+      try {
+        await _auth.loginAccount(user);
+        await showDoneDialog();
+        _auth.route(context, const BottomMenu());
+        print('Success');
+      } on SignUp_AccountFailure catch (e) {
+        await showFailureDialog(message: e.message);
+      } catch (_) {
+        await showFailureDialog();
       }
     }
   }
-}
 
   bool _obscureText = true;
   @override
@@ -215,7 +197,6 @@ class _Login_ScreenState extends State<Login_Screen>
                           ),
                           controller: passwordController,
                           decoration: InputDecoration(
-
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscureText
@@ -263,30 +244,26 @@ class _Login_ScreenState extends State<Login_Screen>
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1.0),
                     child: Center(
-                      child:MaterialButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          elevation: 5.0,
-                          height: 45,
-                          minWidth: double.infinity,
-                          onPressed: () {
-                            setState(() {
-                              visible = true;
-                            });
-                            _SignIn(
-                                emailController.text, passwordController.text);
-                          },
-                          child: Text(
-                            "Đăng nhập",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700
-                            ),
-                          ),
-                          color:  Color(0xFFADDDFF),
-                        )
-                    ),
+                        child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      elevation: 5.0,
+                      height: 45,
+                      minWidth: double.infinity,
+                      onPressed: () {
+                        setState(() {
+                          visible = true;
+                        });
+                        _SignIn();
+                      },
+                      child: Text(
+                        "Đăng nhập",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700),
+                      ),
+                      color: Color(0xFFADDDFF),
+                    )),
                   ),
                   SizedBox(height: 20.0),
                   Row(
@@ -343,6 +320,35 @@ class _Login_ScreenState extends State<Login_Screen>
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
             ),
             SizedBox(height: 16.0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> showFailureDialog({String? message}) async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/animations/login_failure.json',
+              repeat: false,
+              controller: controller,
+              onLoaded: (composition) {
+                controller.duration = composition.duration;
+                controller.forward();
+              },
+            ),
+            Text(
+              message ?? "Đăng nhập thất bại",
+              style:
+                  const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 16.0),
           ],
         ),
       ),

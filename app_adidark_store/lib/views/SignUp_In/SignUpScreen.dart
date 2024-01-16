@@ -1,13 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/state_manager.dart';
 import 'package:lottie/lottie.dart';
 import '../../models/ClassUser.dart';
 import 'SignInScreen.dart';
-import 'SignUp_Controller.dart';
+import 'controller/SignUp_Controller.dart';
+import 'controller/SignUp_Failure.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -18,20 +15,22 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   final _frmkey = GlobalKey<FormState>();
-  // final _user = Get.put(UserController());
-  final _auth = FirebaseAuth.instance;
+  final _user = Get.put(UserController());
+  final TextEditingController nameController = new TextEditingController();
+  final TextEditingController addressController = new TextEditingController();
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
+
   bool showProgress = false;
   bool _obscureText = true;
-  final TextEditingController passwordController = new TextEditingController();
-  final TextEditingController name = new TextEditingController();
-  final TextEditingController emailController = new TextEditingController();
+  bool? isChecked = false;
   late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
     controller =
-        AnimationController(duration: Duration(seconds: 3), vsync: this);
+        AnimationController(duration: const Duration(seconds: 3), vsync: this);
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
         Navigator.pop(context);
@@ -46,67 +45,36 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  void signUp(String fullname, String email, String password) async {
-    if (_frmkey.currentState!.validate()) {
-      await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => postDetailsToFirestore(fullname, email, password))
-          .catchError((e) {
-       
-        print('Error: $e');
-        return null; 
-      });
-    }
-    await showDoneDialog();
-    Navigator.pushReplacement(
+  void signUp() async {
+  final user = Users(
+    fullName: nameController.text.trim(),
+    address: addressController.text.trim(),
+    email: emailController.text.trim(),
+    password: passwordController.text.trim(),
+  );
+  if (!_frmkey.currentState!.validate()) {
+    showFailureDialog();
+  } else {
+    if (isChecked == true) {
+      try {
+        await _user.createUser(user);
+        await showDoneDialog();
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>  Login_Screen(),
+            builder: (context) => const Login_Screen(),
           ),
         );
+      } on SignUp_AccountFailure catch (e) {
+        showFailureDialog(message: e.message);
+      } catch (_) {
+        showFailureDialog();
+      }
+    } else {
+      showCheckBoxDialog();
+    }
   }
-
-  postDetailsToFirestore(
-    String fullname,
-    String email,
-    String passwword,
-  ) async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    var user = _auth.currentUser;
-    CollectionReference ref = firebaseFirestore.collection('Users');
-    ref.doc(user!.uid).set({
-      'fullName': name.text.trim(),
-      'email': emailController.text.trim(),
-      'password': passwordController.text.trim(),
-    });
-      
-  }
-  // Future<void> _SignUp() async {
-  //   if (_frmkey.currentState!.validate()) {
-  //     showDoneDialog();
-
-  //     final email = _user.email.text.trim();
-  //     final password = _user.password.text.trim();
-  //     final fullName = _user.fullname.text.trim();
-
-  //     try {
-  //       await UserController.instance.createAccount(email, password);
-  //     } catch (e) {
-  //       // Xử lý lỗi nếu có
-  //       print('Auth_User Error: $e');
-  //       // Hiển thị thông báo lỗi cho người dùng
-  //       return;
-  //     }
-
-  //     // Tạo người dùng trong Firestore
-  //     final user = User(
-  //       fullName: fullName,
-  //       email: email,
-  //       password: password,
-  //     );
-  //     UserController.instance.createUser(user);
-  //   }
-  // }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +82,14 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               const Row(
                 children: [
                   Image(
@@ -139,7 +109,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Column(
@@ -185,7 +155,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
               Form(
                 key: _frmkey,
                 child: Column(
@@ -195,14 +165,14 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
-                      controller: name,
+                      controller: nameController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: "Họ và Tên",
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Color(0xFFADDDFF),
                           ),
                         ),
@@ -210,22 +180,56 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                             vertical: 12, horizontal: 16),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.grey,
                             width: 1.0,
                           ),
                         ),
                       ),
-                      validator: (email) {
-                        if (email!.isEmpty) {
+                      validator: (nameController) {
+                        if (nameController!.isEmpty) {
                           return 'Vui lòng nhập Họ Tên';
                         }
-
                         return null;
                       },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
+                    TextFormField(
+                      style: const TextStyle(
+                        color: Color(0xFF0597F2),
+                        fontSize: 18,
+                      ),
+                      controller: addressController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: "Địa chỉ",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(
+                            color: Color(0xFFADDDFF),
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 16),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      validator: (address) {
+                        if (address!.isEmpty) {
+                          return 'Vui lòng nhập địa chỉ';
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    ),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                       style: const TextStyle(
                         color: Color(0xFF0597F2),
@@ -238,7 +242,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Color(0xFFADDDFF),
                           ),
                         ),
@@ -246,7 +250,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                             vertical: 12, horizontal: 16),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.grey,
                             width: 1.0,
                           ),
@@ -263,9 +267,9 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                       },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFF0597F2),
                         fontSize: 18,
                       ),
@@ -276,7 +280,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                             _obscureText
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: Color.fromARGB(255, 42, 43, 44),
+                            color: const Color.fromARGB(255, 42, 43, 44),
                           ),
                           onPressed: () {
                             setState(() {
@@ -288,7 +292,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Color(0xFFADDDFF),
                           ),
                         ),
@@ -296,7 +300,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                             vertical: 12, horizontal: 16),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.grey,
                             width: 1.0,
                           ),
@@ -314,30 +318,34 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                   ],
                 ),
               ),
-              SizedBox(height: 5.0),
+              const SizedBox(height: 5.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Checkbox(
-                    value: true,
-                    onChanged: (newValue) {},
+                    value: isChecked,
+                    onChanged: (bool? newValue) {
+                      setState(() {
+                        isChecked = newValue!;
+                      });
+                    },
                   ),
-                  Text(
+                  const Text(
                     'Đồng ý với ',
                     style: TextStyle(color: Colors.black),
                   ),
-                  Text(
+                  const Text(
                     'Chính sách dịch vụ & Quyền riêng tư',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
                 child: Center(
                     child: MaterialButton(
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
                   elevation: 5.0,
                   height: 45,
@@ -346,28 +354,27 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                     setState(() {
                       showProgress = true;
                     });
-                    signUp(name.text, emailController.text,
-                        passwordController.text);
+                    signUp();
                   },
-                  child: Text(
+                  child: const Text(
                     "Đăng ký",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                   ),
-                  color: Color(0xFFADDDFF),
+                  color: const Color(0xFFADDDFF),
                 )),
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       'Bạn đã có tài khoản ?',
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacement(
@@ -375,7 +382,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                           MaterialPageRoute(
                               builder: (context) => const Login_Screen()));
                     },
-                    child: Text(
+                    child: const Text(
                       'Đăng nhập',
                       style: TextStyle(color: Color(0xFFADDDFF)),
                     ),
@@ -406,11 +413,94 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                 controller.forward();
               },
             ),
-            Text(
+            const Text(
               "Đăng ký thành công",
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> showFailureDialog({String? message}) async {
+  await showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (context) => Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Lottie.asset(
+            'assets/animations/login_failure.json',
+            repeat: false,
+            controller: controller,
+            onLoaded: (composition) {
+              controller.duration = composition.duration;
+              controller.forward();
+            },
+          ),
+          Text(
+            message ?? "Đăng ký thất bại",
+            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+          ),
+          const SizedBox(height: 16.0),
+        ],
+      ),
+    ),
+  );
+}
+  Future<void> showCheckBoxDialog() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/animations/checkbox.json',
+              repeat: false,
+              controller: controller,
+              onLoaded: (composition) {
+                controller.duration = composition.duration;
+                controller.forward();
+              },
+            ),
+            const Text(
+              "Vui lòng chọn Đồng ý",
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 16.0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> showCheckExistDialog() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/animations/failure.json',
+              repeat: false,
+              controller: controller,
+              onLoaded: (composition) {
+                controller.duration = composition.duration;
+                controller.forward();
+              },
+            ),
+            const Text(
+              "Tài khoản đã tồn tại",
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 16.0),
           ],
         ),
       ),
