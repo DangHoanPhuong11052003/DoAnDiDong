@@ -1,12 +1,10 @@
 class UserDetailInfo {
-  final int id;
-  final String fullName;
-  final String email;
-  final String password;
-  final String address;
+  String fullName;
+  String email;
+  String password;
+  String address;
 
   UserDetailInfo({
-    required this.id,
     required this.fullName,
     required this.email,
     required this.password,
@@ -15,11 +13,10 @@ class UserDetailInfo {
 
   toJson() {
     return {
-      "Id": id,
-      "FullName": fullName,
-      "Email": email,
-      "Password": password,
-      "Address": address,
+      "fullName": fullName,
+      "email": email,
+      "password": password,
+      "address": address,
     };
   }
 }

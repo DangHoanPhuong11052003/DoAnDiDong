@@ -21,14 +21,13 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  late int id;
   late String email;
   late String fullName;
   late String password;
   late String address;
 
   UserDetailInfo user =
-      UserDetailInfo(id: 0, fullName: "", email: "", password: "", address: "");
+      UserDetailInfo(fullName: "", email: "", password: "", address: "");
 
   final _user = FirebaseAuth.instance.currentUser;
 
@@ -57,14 +56,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print('Error getting document fields: $e');
     }
 
-    id = int.parse(prefs.getString("id") ?? "0");
     email = prefs.getString("email") ?? "";
     fullName = prefs.getString("fullName") ?? "";
     password = prefs.getString("password") ?? "";
     address = prefs.getString("address") ?? "";
 
     user = UserDetailInfo(
-      id: id,
       fullName: fullName,
       email: email,
       password: password,
@@ -74,7 +71,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> logout(BuildContext context) async {
     final SharedPreferences prefs = await _prefs;
-    await prefs.remove("id");
     await prefs.remove("fullName");
     await prefs.remove("email");
     await prefs.remove("password");
@@ -180,10 +176,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     sub: "Tài khoản & Bảo mật",
                                     onTap: () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const AccountSetting()));
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const AccountSetting()))
+                                          .then((value) => setState(() => {}));
                                     },
                                   ),
                                   ProfileItem(
