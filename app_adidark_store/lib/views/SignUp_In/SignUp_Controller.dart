@@ -21,11 +21,11 @@ class UserController extends GetxController {
   //   Auth_Resposity.instance.createAccount(email, password);
   // }
 
-  Future<void> createUser(User user) async {
+  Future<void> createUser(UserDetailInfo user) async {
     await userRepo.createUser(user);
   }
 
   Future<void> createAccount(String emai, String password) async {
-  await authRepo.createAccount(emai, password);
-}
+    await authRepo.createAccount(emai, password);
+  }
 }

@@ -10,7 +10,7 @@ class UserResposity extends GetxController {
 
   final _db = FirebaseFirestore.instance;
 
-  createUser(User user) async {
+  createUser(UserDetailInfo user) async {
     await _db
         .collection("Users")
         .add(user.toJson())
@@ -44,25 +44,24 @@ class UserResposity extends GetxController {
     }
   }
 
- Future<bool> checkUserData() async {
-  try {
-    // Gọi hàm getUser() để lấy dữ liệu người dùng
-    final documentSnapshot = await getUser();
+  Future<bool> checkUserData() async {
+    try {
+      // Gọi hàm getUser() để lấy dữ liệu người dùng
+      final documentSnapshot = await getUser();
 
-    // Kiểm tra dữ liệu
-    if (documentSnapshot.exists) {
-      return true; // Có dữ liệu người dùng
-    } else {
-      return false; // Không có dữ liệu người dùng
+      // Kiểm tra dữ liệu
+      if (documentSnapshot.exists) {
+        return true; // Có dữ liệu người dùng
+      } else {
+        return false; // Không có dữ liệu người dùng
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu cần thiết
+      print('Error occurred: $error');
+      throw Exception('Error occurred while checking user data');
     }
-  } catch (error) {
-    // Xử lý lỗi nếu cần thiết
-    print('Error occurred: $error');
-    throw Exception('Error occurred while checking user data');
+
+    // Thêm câu lệnh return hoặc throw ở cuối hàm
+    throw Exception('Unexpected error occurred while checking user data');
   }
-
-  // Thêm câu lệnh return hoặc throw ở cuối hàm
-  throw Exception('Unexpected error occurred while checking user data');
-}
-
 }

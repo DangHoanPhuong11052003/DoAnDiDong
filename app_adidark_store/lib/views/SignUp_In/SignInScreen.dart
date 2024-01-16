@@ -19,7 +19,7 @@ class _Login_ScreenState extends State<Login_Screen>
   final _frmkey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
-  
+
   bool visible = false;
   late AnimationController controller;
 
@@ -46,18 +46,19 @@ class _Login_ScreenState extends State<Login_Screen>
     final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
     return emailRegex.hasMatch(email);
   }
+
   void route() {
     User? user = FirebaseAuth.instance.currentUser;
     var getUser = FirebaseFirestore.instance
-            .collection('Users')
-            .doc(user!.uid)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
+        .collection('Users')
+        .doc(user!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-           Navigator.pushReplacement(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>  BottomMenu(),
+            builder: (context) => BottomMenu(),
           ),
         );
       } else {
@@ -67,25 +68,24 @@ class _Login_ScreenState extends State<Login_Screen>
   }
 
   void _SignIn(String email, String password) async {
-  if (_frmkey.currentState!.validate()) {
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      route();
-      await showDoneDialog();
-       
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+    if (_frmkey.currentState!.validate()) {
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        route();
+        await showDoneDialog();
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
+        }
       }
     }
   }
-}
 
   bool _obscureText = true;
   @override
@@ -215,7 +215,6 @@ class _Login_ScreenState extends State<Login_Screen>
                           ),
                           controller: passwordController,
                           decoration: InputDecoration(
-
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscureText
@@ -263,30 +262,26 @@ class _Login_ScreenState extends State<Login_Screen>
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1.0),
                     child: Center(
-                      child:MaterialButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          elevation: 5.0,
-                          height: 45,
-                          minWidth: double.infinity,
-                          onPressed: () {
-                            setState(() {
-                              visible = true;
-                            });
-                            _SignIn(
-                                emailController.text, passwordController.text);
-                          },
-                          child: Text(
-                            "Đăng nhập",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700
-                            ),
-                          ),
-                          color:  Color(0xFFADDDFF),
-                        )
-                    ),
+                        child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      elevation: 5.0,
+                      height: 45,
+                      minWidth: double.infinity,
+                      onPressed: () {
+                        setState(() {
+                          visible = true;
+                        });
+                        _SignIn(emailController.text, passwordController.text);
+                      },
+                      child: Text(
+                        "Đăng nhập",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700),
+                      ),
+                      color: Color(0xFFADDDFF),
+                    )),
                   ),
                   SizedBox(height: 20.0),
                   Row(

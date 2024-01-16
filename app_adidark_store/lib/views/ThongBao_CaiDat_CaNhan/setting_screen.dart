@@ -112,8 +112,7 @@ class _AccountSettingState extends State<AccountSetting> {
                 ),
             ],
           );
-        }
-        );
+        });
   }
 
   @override
@@ -199,6 +198,34 @@ class _AccountSettingState extends State<AccountSetting> {
                               ),
                             )
                           ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: const Divider(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Đổi mật khẩu",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              _modelBottomSheetMenu(3);
+                            },
+                            child: Icon(Icons.edit_outlined),
+                          ),
                         )
                       ],
                     ),
