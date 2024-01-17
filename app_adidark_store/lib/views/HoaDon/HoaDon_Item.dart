@@ -2,22 +2,21 @@
 import 'package:app_adidark_store/views/ChiTietHoaDon/ChiTietHoaDon_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:app_adidark_store/models/Invoice.dart';
 
 class HoaDon_Item extends StatefulWidget {
   HoaDon_Item(
       {super.key,
-      required this.MaHoaDon,
-      required this.NgayDatHang,
-      required this.TrangThai,
-      required this.TongHoaDon});
-  var MaHoaDon;
-  var NgayDatHang;
-  var TrangThai;
-  var TongHoaDon;
+      required this.invoice});
+
+  final Invoice invoice;
+  
 
   @override
   State<HoaDon_Item> createState() => _HoaDon_ItemState();
 }
+
+
 
 class _HoaDon_ItemState extends State<HoaDon_Item> {
   @override
@@ -39,7 +38,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
           Row(
             children: [
               Expanded(
-                child: Text("Mã hóa đơn: ${widget.MaHoaDon}",
+                child: Text("Mã hóa đơn: ${widget.invoice.id}",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
               ),
@@ -54,7 +53,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  widget.TrangThai,
+                  widget.invoice.status,
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w600),
                 ),
@@ -62,12 +61,12 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
             ],
           ),
           Text(
-            "Ngày đặt hàng: ${widget.NgayDatHang}",
+            "Ngày đặt hàng: ${widget.invoice.date}",
             style: TextStyle(
                 color: Colors.black, fontSize: 15, fontWeight: FontWeight.w600),
           ),
           Text(
-            "Tổng tiền: ${widget.TongHoaDon}",
+            "Tổng tiền: ${widget.invoice.totalPrice}",
             style: TextStyle(
                 color: Colors.black, fontSize: 15, fontWeight: FontWeight.w600),
           ),
@@ -83,7 +82,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const ChiTietHoaDon_Screen()));
+                               ChiTietHoaDon_Screen(invoice: widget.invoice)));
                   },
                   child: Text(
                     "Xem chi tiết",

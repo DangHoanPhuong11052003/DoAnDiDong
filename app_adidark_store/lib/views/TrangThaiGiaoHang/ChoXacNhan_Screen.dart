@@ -14,13 +14,12 @@ class ChoXacNhan_Screen extends StatefulWidget {
 class _ChoXacNhan_ScreenState extends State<ChoXacNhan_Screen> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+    return 
+      Column(
         children: [
-          HoaDon_List(),
-          
+          Expanded(child: HoaDon_List(trangthai: "Đang xác nhận",),
+          )         
         ],
-      ),
-    );
+      ); 
   }
 }

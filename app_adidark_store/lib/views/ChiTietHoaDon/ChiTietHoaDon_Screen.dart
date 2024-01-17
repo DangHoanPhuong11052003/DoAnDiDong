@@ -1,10 +1,11 @@
 //import 'ChiTietHoaDon_Item.dart';
 import 'package:flutter/material.dart';
 import 'ChiTietHoaDon_List.dart';
+import 'package:app_adidark_store/models/Invoice.dart';
 
 class ChiTietHoaDon_Screen extends StatefulWidget {
-  const ChiTietHoaDon_Screen({super.key});
-
+  ChiTietHoaDon_Screen({super.key , required this.invoice,});
+  final Invoice invoice;
   @override
   State<ChiTietHoaDon_Screen> createState() => _ChiTietHoaDon_ScreenState();
 }
@@ -27,31 +28,26 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: 
+      //SingleChildScrollView(
+        //child: 
+        Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Mã hóa đơn: 1345",
+              Text(
+                "Mã hóa đơn: ${widget.invoice.id}",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              const Text(
-                "Ngày đặt hàng: 30/7/2023",
+              Text(
+                "Ngày đặt hàng: ${widget.invoice.date}",
                 style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
               ),
               SizedBox(
                 height: 10,
               ),
-              Container(
-                height: MediaQuery.of(context).size.height / 3,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [ChiTietHoaDon_List()],
-                  ),
-                ),
-              ),
+              Expanded(child: ChiTietHoaDon_List(id: widget.invoice.id)),
               const SizedBox(
                 height: 15,
               ),
@@ -59,8 +55,8 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
                 "Địa chỉ giao hàng",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              const Text(
-                "Huỳnh Thúc Kháng, Quận 1, TP Hồ Chí Minh",
+              Text(
+                widget.invoice.address,
                 style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
               ),
               SizedBox(
@@ -75,11 +71,11 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               Text(
-                "Tổng tiền: 24.000.000",
+                "Tổng tiền: ${widget.invoice.totalPrice}",
                 style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
               ),
               Text(
-                "Chiết khấu: 100.00 VND",
+                "Chiết khấu: 0 VND",
                 style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
               ),
               Text(
@@ -94,13 +90,13 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
                 height: 15,
               ),
               Text(
-                "Tổng hóa đơn: 23.900.000 VND ",
+                "Tổng hóa đơn: ${widget.invoice.totalPrice} ",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ],
           ),
         ),
-      ),
+      //),
     );
   }
 }
