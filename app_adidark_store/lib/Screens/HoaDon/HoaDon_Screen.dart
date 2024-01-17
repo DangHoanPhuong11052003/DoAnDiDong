@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../TrangThaiGiaoHang/ChoXacNhan_Screen.dart';
+import '../TrangThaiGiaoHang/DaGiao_Screen.dart';
+import '../TrangThaiGiaoHang/DaHuy_Screen.dart';
+import '../TrangThaiGiaoHang/DangGiao_Screen.dart';
+import '../TrangThaiGiaoHang/TatCa_Screen.dart';
 
 class HoaDon_Screen extends StatefulWidget {
   const HoaDon_Screen({super.key});
@@ -52,18 +56,22 @@ class _HoaDon_ScreenState extends State<HoaDon_Screen> {
               Expanded(
                 child: TabBarView(
                   children: [
-                    Container(child: ChoXacNhan_Screen()),
+                    Container(child: TatCa_Screen(),),
                     Container(
+<<<<<<< Updated upstream:app_adidark_store/lib/Screens/HoaDon/HoaDon_Screen.dart
                       child: Text("Chờ xác nhận"),
+=======
+                      child: ChoXacNhan_Screen(),
+>>>>>>> Stashed changes:app_adidark_store/lib/views/HoaDon/HoaDon_Screen.dart
                     ),
                     Container(
-                      child: Text("Đang giao"),
+                      child: DangGiao_Screen(),
                     ),
                     Container(
-                      child: Text("Đã Hủy"),
+                      child: DaGiaO_Screen(),
                     ),
                     Container(
-                      child: Text("Hello"),
+                      child: DaHuy_Screen(),
                     ),
                   ],
                 ),

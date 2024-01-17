@@ -1,28 +1,28 @@
-//import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'HoaDon_Item.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
 import 'package:app_adidark_store/models/DataInvoice.dart';
 import 'HoaDon_Item.dart';
-class HoaDon_List extends StatefulWidget {
-  HoaDon_List({super.key, required this.trangthai});
-  String trangthai;
+
+class HoaDon_List_All extends StatefulWidget {
+  const HoaDon_List_All({super.key});
 
   @override
-  State<HoaDon_List> createState() => _HoaDon_ListState();
+  State<HoaDon_List_All> createState() => _HoaDon_List_AllState();
 }
 
-class _HoaDon_ListState extends State<HoaDon_List> {
+class _HoaDon_List_AllState extends State<HoaDon_List_All> {
   List<Invoice> invoices = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchInvoices("123", widget.trangthai);
+    _fetchInvoices("123");
   }
 
-  Future<void> _fetchInvoices(String acc, String stt) async {
-    invoices = await DataInvoice().loadInvoicesSTT(acc, stt);
+  Future<void> _fetchInvoices(String acc) async {
+    invoices = await DataInvoice().loadInvoices(acc);
     setState(() {});
   }
 

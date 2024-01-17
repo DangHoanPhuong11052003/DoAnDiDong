@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
-
+import 'package:app_adidark_store/models/ClassInvoiceDetail.dart';
+import 'package:app_adidark_store/models/Invoice.dart';
 class ChiTietHoaDon_Item extends StatefulWidget {
-  const ChiTietHoaDon_Item({super.key});
+  const ChiTietHoaDon_Item({super.key , required this.invoicedetail});
+  final InvoiceDetail invoicedetail;
 
 
   @override
@@ -36,7 +38,7 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
                   borderRadius: BorderRadius.circular(10),
                  
                   //Ảnh sản phẩm
-                  image:const  DecorationImage(image: NetworkImage("https://drake.vn/image/catalog/H%C3%ACnh%20content/gia%CC%80y%20Converse%20da%20bo%CC%81ng/giay-converse-da-bong-5.jpg"),
+                  image: DecorationImage(image: NetworkImage("${widget.invoicedetail.img}"),
                   fit: BoxFit.cover),
                   
                 ),
@@ -48,16 +50,21 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
                 children:  [
                   //Tông tin sản phẩm
                   //Tên sản phẩm
+<<<<<<< Updated upstream:app_adidark_store/lib/Screens/ChiTietHoaDon/ChiTietHoaDon_Item.dart
                   Text("Super OG",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+=======
+                  Text(widget.invoicedetail.namePro,style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w800, fontSize: 16)),
+>>>>>>> Stashed changes:app_adidark_store/lib/views/ChiTietHoaDon/ChiTietHoaDon_Item.dart
                   //Hãng, loại
-                  Text("Nike | Giày nam"),
+                  Text("${widget.invoicedetail.manufucturer} |${widget.invoicedetail.cate} "),
                   //Màu
                   Text("Màu: Đỏ"),
                   //Kích Cỡ
-                  Text("Cỡ: 38"),
+                  Text("${widget.invoicedetail.size}"),
                   //Tăng giảm số lượng
-                  Text("Số lượng: 1"),
-                  Text("12.000.000 VND",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                  Text("${widget.invoicedetail.quantity}"),
+                  Text("${widget.invoicedetail.price}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                   
                 ],
               ),             
