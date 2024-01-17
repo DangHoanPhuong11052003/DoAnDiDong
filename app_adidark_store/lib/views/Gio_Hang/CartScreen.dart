@@ -7,7 +7,7 @@ import '../../items/ItemCart.dart';
 import '../Thanh_Toan/OrderAddressScreen.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key,this.acc="123"});
+  const CartScreen({super.key,this.acc="234"});
   final String acc;
 
   @override
