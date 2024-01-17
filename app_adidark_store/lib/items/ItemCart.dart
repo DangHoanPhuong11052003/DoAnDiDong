@@ -79,29 +79,29 @@ class _ItemCartState extends State<ItemCart> {
                 //Tông tin sản phẩm
                 //Tên sản phẩm
                 Text(
-                  widget.cart.namePro,
+                  widget.cart.namePro.length>=15?widget.cart.namePro.substring(0,15)+"...":widget.cart.namePro,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 //Hãng, loại
                 Text("${widget.cart.manufucturer} | Giày ${widget.cart.cate}"),
                 //Màu
-                Text(widget.cart.color == 0
+                Text(widget.cart.color == "a"
                       ? "Đen"
-                      : widget.cart.color == 1
+                      : widget.cart.color == "b"
                           ? "Trắng"
-                          : widget.cart.color == 2
+                          : widget.cart.color == "c"
                               ? "Vàng"
-                              : widget.cart.color == 3
+                              : widget.cart.color == "d"
                                   ? "Xanh dương"
-                                  :widget.cart.color == 4
+                                  :widget.cart.color == "e"
                                       ? "Xám"
-                                      : widget.cart.color == 5
+                                      : widget.cart.color == "f"
                                           ? "Nâu"
-                                          : widget.cart.color == 6
+                                          : widget.cart.color == "g"
                                               ? "Cam"
-                                              : widget.cart.color == 7
+                                              : widget.cart.color == "h"
                                                   ? "Tím"
-                                                  : widget.cart.color == 8
+                                                  : widget.cart.color == "j"
                                                       ? "Xanh lá"
                                                       : "Hồng",),
                 //Kích Cỡ
