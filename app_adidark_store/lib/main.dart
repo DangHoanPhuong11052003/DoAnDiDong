@@ -1,4 +1,6 @@
 import 'package:app_adidark_store/items/auth_page.dart';
+import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
+import 'package:app_adidark_store/views/SignUp_In/VerifiedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -10,7 +12,7 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget  {
   const MyApp({super.key});
 
   @override
@@ -19,8 +21,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
       home: const AuthPage(),
-      // email: abc@gmail.com
-      // pass: 123
+      // email: tự đăng ký
+      // pass: tự đăng -up
       debugShowCheckedModeBanner: false,
     );
   }

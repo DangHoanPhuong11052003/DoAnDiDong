@@ -10,21 +10,20 @@ class UserResposity extends GetxController {
 
   // Tạo user
   createUser(Users user) async {
-    try{
-         await _auth
-          .createUserWithEmailAndPassword(email: user.email, password: user.password)
+    try {
+      await _auth
+          .createUserWithEmailAndPassword(
+              email: user.email, password: user.password.toString())
           .then((value) => postDetailsToFirestore(user));
-    }on FirebaseAuthException catch (e) {
-    final ex = SignUp_AccountFailure.code(e.code);
-    print('FIREBASE AUTH EXCEPTION - ${ex.message}');
-    throw ex;
-  } catch (_) {}
+    } on FirebaseAuthException catch (e) {
+      final ex = SignUp_AccountFailure.code(e.code);
+      print('FIREBASE AUTH EXCEPTION - ${ex.message}');
+      throw ex;
+    } catch (_) {}
   }
 
   // Lưu trữ vào firestore
-  postDetailsToFirestore(
-    Users user
-  ) async {
+  postDetailsToFirestore(Users user) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var _user = _auth.currentUser;
     CollectionReference ref = firebaseFirestore.collection('Users');
@@ -33,9 +32,9 @@ class UserResposity extends GetxController {
       fullName: user.fullName,
       address: user.address,
       email: user.email,
-      password: user.password,
+      // password: user.password,
+      agree: user.agree
     );
     ref.doc(_user!.uid).set(newUser.toJson());
-}
-
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignUpScreen.dart';
-import 'package:app_adidark_store/views/SignUp_In/controller/Remember_Controller.dart';
+import 'package:app_adidark_store/views/SignUp_In/VerifiedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -244,6 +244,22 @@ class _Login_ScreenState extends State<Login_Screen>
                     ),
                   ),
                   const SizedBox(height: 5.0),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPassword()),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Quên mật khẩu?',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20.0),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1.0),

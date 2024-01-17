@@ -51,6 +51,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
     address: addressController.text.trim(),
     email: emailController.text.trim(),
     password: passwordController.text.trim(),
+    agree: isChecked
   );
   if (!_frmkey.currentState!.validate()) {
     showFailureDialog();

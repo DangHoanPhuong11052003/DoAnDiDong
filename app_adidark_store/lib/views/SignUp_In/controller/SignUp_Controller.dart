@@ -12,4 +12,6 @@ class UserController extends GetxController {
     await userRepo.createUser(user);
   }
 
+
+
 }

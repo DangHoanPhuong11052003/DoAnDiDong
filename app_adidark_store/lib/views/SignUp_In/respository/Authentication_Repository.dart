@@ -19,7 +19,7 @@ class Auth_Resposity extends GetxController {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
         email: user.email,
-        password: user.password,
+        password: user.password.toString(),
       );
     } on FirebaseAuthException catch (e) {
       final ex = SignUp_AccountFailure.code(e.code);
