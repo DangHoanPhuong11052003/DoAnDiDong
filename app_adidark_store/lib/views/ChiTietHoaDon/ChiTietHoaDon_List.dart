@@ -29,26 +29,11 @@ class _ChiTietHoaDon_ListState extends State<ChiTietHoaDon_List> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< Updated upstream:app_adidark_store/lib/Screens/ChiTietHoaDon/ChiTietHoaDon_List.dart
-     return GridView.count(
-      childAspectRatio: 1.47,
-      crossAxisCount: 1,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      children: [
-        ChiTietHoaDon_Item(),
-        ChiTietHoaDon_Item(),
-        ChiTietHoaDon_Item(),
-       
-      ],
-
-=======
     return ListView.builder(
       itemCount: listcthhd.length,
       itemBuilder: (context, index) {
         return ChiTietHoaDon_Item(invoicedetail: listcthhd[index]);
       },
->>>>>>> Stashed changes:app_adidark_store/lib/views/ChiTietHoaDon/ChiTietHoaDon_List.dart
     );
   }
 }

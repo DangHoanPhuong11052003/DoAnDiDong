@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:app_adidark_store/models/ClassInvoiceDetail.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
@@ -50,12 +49,8 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
                 children:  [
                   //Tông tin sản phẩm
                   //Tên sản phẩm
-<<<<<<< Updated upstream:app_adidark_store/lib/Screens/ChiTietHoaDon/ChiTietHoaDon_Item.dart
-                  Text("Super OG",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-=======
                   Text(widget.invoicedetail.namePro,style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w800, fontSize: 16)),
->>>>>>> Stashed changes:app_adidark_store/lib/views/ChiTietHoaDon/ChiTietHoaDon_Item.dart
                   //Hãng, loại
                   Text("${widget.invoicedetail.manufucturer} |${widget.invoicedetail.cate} "),
                   //Màu

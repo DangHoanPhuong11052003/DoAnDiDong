@@ -58,11 +58,7 @@ class _HoaDon_ScreenState extends State<HoaDon_Screen> {
                   children: [
                     Container(child: TatCa_Screen(),),
                     Container(
-<<<<<<< Updated upstream:app_adidark_store/lib/Screens/HoaDon/HoaDon_Screen.dart
-                      child: Text("Chờ xác nhận"),
-=======
                       child: ChoXacNhan_Screen(),
->>>>>>> Stashed changes:app_adidark_store/lib/views/HoaDon/HoaDon_Screen.dart
                     ),
                     Container(
                       child: DangGiao_Screen(),
