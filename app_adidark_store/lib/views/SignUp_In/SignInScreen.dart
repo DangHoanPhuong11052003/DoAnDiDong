@@ -1,9 +1,11 @@
 import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignUpScreen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app_adidark_store/views/SignUp_In/controller/Remember_Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/ClassUser.dart';
 import 'controller/SignIn_Controller.dart';
 import 'controller/SignUp_Failure.dart';
@@ -22,15 +24,16 @@ class _Login_ScreenState extends State<Login_Screen>
   final TextEditingController nameController = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
-  bool? isChecked = false;
   bool visible = false;
   late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(duration: Duration(seconds: 3), vsync: this);
+    controller = AnimationController(
+      duration: Duration(seconds: 3),
+      vsync: this,
+    );
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
         Navigator.pop(context);
@@ -50,7 +53,7 @@ class _Login_ScreenState extends State<Login_Screen>
     return emailRegex.hasMatch(email);
   }
 
-  void _SignIn() async {
+  void _signIn() async {
     if (_frmkey.currentState!.validate()) {
       final user = Users(
         email: emailController.text.trim(),
@@ -240,7 +243,8 @@ class _Login_ScreenState extends State<Login_Screen>
                       ],
                     ),
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 5.0),
+                  const SizedBox(height: 20.0),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1.0),
                     child: Center(
@@ -255,7 +259,7 @@ class _Login_ScreenState extends State<Login_Screen>
                         setState(() {
                           visible = true;
                         });
-                        _SignIn();
+                        _signIn();
                       },
                       child: Text(
                         "Đăng nhập",
