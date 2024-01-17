@@ -54,7 +54,7 @@ class _AccountSettingState extends State<AccountSetting> {
       // Thay đổi email của người dùng
       await _user!.updatePassword(newPass);
 
-      print('Email changed successfully to: ${user?.password}');
+      print('Password changed successfully to: ${user.password}');
     } catch (error) {
       print('Failed to change email: $error');
     }
@@ -103,6 +103,7 @@ class _AccountSettingState extends State<AccountSetting> {
     TextEditingController txtEmail = TextEditingController(text: "");
     TextEditingController txtCurPass = TextEditingController(text: "");
     TextEditingController txtNewPass = TextEditingController(text: "");
+    TextEditingController txtAddress = TextEditingController(text: "");
 
     showModalBottomSheet(
         context: context,
@@ -162,7 +163,7 @@ class _AccountSettingState extends State<AccountSetting> {
                           onPressed: () {
                             setState(() {
                               changeEmail(txtEmail.text);
-                              updateUser("email", txtEmail.text);
+                              updateUser("email", _user?.email);
                               user.email = email;
                               Navigator.pop(context);
                             });
@@ -189,6 +190,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
+                        obscureText: true,
                       ),
                       Padding(padding: const EdgeInsets.all(5)),
                       TextField(
@@ -199,6 +201,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
+                        obscureText: true,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -207,7 +210,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             if (txtCurPass.text == user.password)
                               setState(() {
                                 changePassword(txtNewPass.text);
-                                updateUser("email", txtNewPass.text);
+                                updateUser("password", txtNewPass.text);
                                 user.password = password;
                                 Navigator.pop(context);
                               });
@@ -227,7 +230,7 @@ class _AccountSettingState extends State<AccountSetting> {
                   child: Column(
                     children: [
                       TextField(
-                        controller: txtEmail,
+                        controller: txtAddress,
                         decoration: InputDecoration(
                           hintText: user.address,
                           border: OutlineInputBorder(
@@ -240,8 +243,8 @@ class _AccountSettingState extends State<AccountSetting> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              updateUser("fullName", txtName.text);
-                              user.fullName = fullName;
+                              updateUser("address", txtAddress.text);
+                              user.address = address;
                               Navigator.pop(context);
                             });
                           },
