@@ -1,10 +1,9 @@
+import 'package:app_adidark_store/items/notice_item.dart';
 import 'package:app_adidark_store/models/ClassMainNotice.dart';
 import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
 import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../../items/notice_item.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -20,8 +19,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
   List<MainNotice> lstMain = [];
 
   Future<void> getData() async {
-    lstPrivate = await DataNotification.getPrivateData(_user!.uid);
-    lstMain = await DataNotification.getMainData();
+    // List<PrivateNotice> lstP =
+    //     await DataNotification.getPrivateData(_user!.uid);
+    List<MainNotice> lstM = await DataNotification.getMainData();
+
+    setState(() {
+      // lstPrivate.addAll(lstP);
+      lstMain = lstM;
+    });
+
+    // print("lstPrivate length: ${lstP.length}");
+    print("lstMain length: ${lstM.length}");
   }
 
   @override
@@ -33,7 +41,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Center(
@@ -46,16 +56,78 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
           automaticallyImplyLeading: false,
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                children: [],
+          bottom: TabBar(
+            labelColor: Color(0xFF9CBFD9), // Màu chữ của tab đang được chọn
+            indicatorColor: Color(0xFF9CBFD9),
+            tabs: [
+              Tab(
+                text: "Thông báo sản phẩm",
               ),
-            ),
+              Tab(
+                text: "Thông báo hóa đơn",
+              ),
+            ],
           ),
-        ));
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: TabBarView(
+                children: [
+                  Container(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: ListView.separated(
+                        padding: EdgeInsets.all(8.0),
+                        itemCount: lstMain.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return FutureBuilder(
+                            future: getData(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<void> snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                  return const CircularProgressIndicator();
+                                case ConnectionState.active:
+                                case ConnectionState.done:
+                                  if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    return NoticeItem(
+                                      idProduct: lstMain[index].idProduct,
+                                      status: true,
+                                      time: lstMain[index].date,
+                                      title: lstMain[index].title,
+                                    );
+                                  }
+                              }
+                            },
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: ListView.separated(
+                        padding: EdgeInsets.all(8.0),
+                        itemCount: lstMain.length,
+                        itemBuilder: (BuildContext context, int index) {},
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -15,7 +15,7 @@ class PrivateNotice {
     required this.title,
   });
 
-  PrivateNotice.fromJson(Map<String, dynamic> json)
+  PrivateNotice.fromJson(Map<dynamic, dynamic> json)
       : content = json['content'],
         date = json['date'],
         id = json['id'],

@@ -15,7 +15,7 @@ class MainNotice {
     required this.title,
   });
 
-  MainNotice.fromJson(Map<String, dynamic> json)
+  MainNotice.fromJson(Map<dynamic, dynamic> json)
       : id = json['id'],
         idProduct = json['idProduct'],
         content = json['content'],

@@ -10,9 +10,9 @@ class DataNotification {
     List<MainNotice> allNotice = [];
     List<MainNotice> notices = [];
     List<dynamic> values = snapshot.value as List<dynamic>;
-    values.forEach((element) {
-      allNotice.add(MainNotice.fromJson(element as Map<String, dynamic>));
-    });
+    for (var element in values) {
+      allNotice.add(MainNotice.fromJson(element as Map<dynamic, dynamic>));
+    }
 
     allNotice.forEach((element) {
       if (element.status == true) {
@@ -32,9 +32,9 @@ class DataNotification {
     List<PrivateNotice> allNotice = [];
     List<PrivateNotice> notices = [];
     List<dynamic> values = snapshot.value as List<dynamic>;
-    values.forEach((element) {
-      allNotice.add(PrivateNotice.fromJson(element as Map<String, dynamic>));
-    });
+    for (var element in values) {
+      allNotice.add(PrivateNotice.fromJson(element as Map<dynamic, dynamic>));
+    }
 
     allNotice.forEach((element) {
       if (element.status == true) {
