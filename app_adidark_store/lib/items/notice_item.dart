@@ -6,16 +6,16 @@ class NoticeItem extends StatelessWidget {
     required this.img,
     required this.title,
     required this.time,
-    // required this.onTap,
+    required this.type,
   });
 
   final String title, time, img;
-  // final Function() onTap;
+  final bool type; // true: MainNotice, false: PrivateNotice
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: onTap,
+      onTap: () {},
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
         child: Container(

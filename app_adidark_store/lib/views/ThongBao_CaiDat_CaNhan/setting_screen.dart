@@ -134,7 +134,10 @@ class _AccountSettingState extends State<AccountSetting> {
                               Navigator.pop(context);
                             });
                           },
-                          child: Text("Xác nhận"),
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: Colors.black),
+                          ),
                           style: ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
                                   Color.fromRGBO(203, 233, 255, 1))),
@@ -151,7 +154,7 @@ class _AccountSettingState extends State<AccountSetting> {
                       TextField(
                         controller: txtEmail,
                         decoration: InputDecoration(
-                          hintText: user.email,
+                          hintText: "Nhập email",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -168,7 +171,10 @@ class _AccountSettingState extends State<AccountSetting> {
                               Navigator.pop(context);
                             });
                           },
-                          child: Text("Xác nhận"),
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: Colors.black),
+                          ),
                           style: ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
                                   Color.fromRGBO(203, 233, 255, 1))),
@@ -215,7 +221,10 @@ class _AccountSettingState extends State<AccountSetting> {
                                 Navigator.pop(context);
                               });
                           },
-                          child: Text("Xác nhận"),
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: Colors.black),
+                          ),
                           style: ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
                                   Color.fromRGBO(203, 233, 255, 1))),
@@ -248,7 +257,10 @@ class _AccountSettingState extends State<AccountSetting> {
                               Navigator.pop(context);
                             });
                           },
-                          child: Text("Xác nhận"),
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: Colors.black),
+                          ),
                           style: ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
                                   Color.fromRGBO(203, 233, 255, 1))),
