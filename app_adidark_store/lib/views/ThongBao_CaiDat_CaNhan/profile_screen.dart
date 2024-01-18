@@ -5,7 +5,6 @@ import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'setting_screen.dart';
 
@@ -56,10 +55,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print('Error getting document fields: $e');
     }
 
-    email = prefs.getString("email") ?? "";
-    fullName = prefs.getString("fullName") ?? "";
-    password = prefs.getString("password") ?? "";
-    address = prefs.getString("address") ?? "";
+    email = prefs.getString("Email") ?? "";
+    fullName = prefs.getString("FullName") ?? "";
+    password = prefs.getString("Password") ?? "";
+    address = prefs.getString("Address") ?? "";
 
     user = UserDetailInfo(
       fullName: fullName,
@@ -71,10 +70,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> logout(BuildContext context) async {
     final SharedPreferences prefs = await _prefs;
-    await prefs.remove("fullName");
-    await prefs.remove("email");
-    await prefs.remove("password");
-    await prefs.remove("address");
+    await prefs.remove("FullName");
+    await prefs.remove("Email");
+    await prefs.remove("Password");
+    await prefs.remove("Address");
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
       context,

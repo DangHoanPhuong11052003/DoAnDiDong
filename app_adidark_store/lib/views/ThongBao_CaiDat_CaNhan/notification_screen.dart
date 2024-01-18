@@ -23,21 +23,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
     //     await DataNotification.getPrivateData(_user!.uid);
     List<MainNotice> lstM = await DataNotification.getMainData();
 
-    setState(() {
-      // lstPrivate.addAll(lstP);
-      lstMain = lstM;
-    });
+    // setState(() {
+    // lstPrivate = lstP;
+    lstMain = lstM;
+    // });
 
-    // print("lstPrivate length: ${lstP.length}");
-    print("lstMain length: ${lstM.length}");
+    // print("lstPrivate length: ${lstPrivate.length}");
+    print("lstMain length: ${lstMain.length}");
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    getData();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getData();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -76,39 +76,46 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 children: [
                   Container(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: ListView.separated(
                         padding: EdgeInsets.all(8.0),
-                        itemCount: lstMain.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return FutureBuilder(
-                            future: getData(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<void> snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                case ConnectionState.waiting:
-                                  return const CircularProgressIndicator();
-                                case ConnectionState.active:
-                                case ConnectionState.done:
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    return NoticeItem(
-                                      idProduct: lstMain[index].idProduct,
-                                      status: true,
-                                      time: lstMain[index].date,
-                                      title: lstMain[index].title,
-                                    );
-                                  }
-                              }
-                            },
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                      ),
-                    ),
+                        child: FutureBuilder(
+                          future: getData(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<void> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                              case ConnectionState.waiting:
+                                return Center(
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 10,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              case ConnectionState.active:
+                              case ConnectionState.done:
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return ListView.separated(
+                                    padding: EdgeInsets.all(8.0),
+                                    itemCount: lstMain.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return NoticeItem(
+                                        idProduct: lstMain[index].idProduct,
+                                        status: true,
+                                        time: lstMain[index].date,
+                                        title: lstMain[index].title,
+                                      );
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            const Divider(),
+                                  );
+                                }
+                            }
+                          },
+                        )),
                   ),
                   Container(
                     child: Padding(

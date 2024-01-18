@@ -85,10 +85,10 @@ class _AccountSettingState extends State<AccountSetting> {
       print('Error getting document fields: $e');
     }
 
-    email = prefs.getString("email") ?? "";
-    fullName = prefs.getString("fullName") ?? "";
-    password = prefs.getString("password") ?? "";
-    address = prefs.getString("address") ?? "";
+    email = prefs.getString("Email") ?? "";
+    fullName = prefs.getString("FullName") ?? "";
+    password = prefs.getString("Password") ?? "";
+    address = prefs.getString("Address") ?? "";
 
     user = UserDetailInfo(
       fullName: fullName,
@@ -129,7 +129,7 @@ class _AccountSettingState extends State<AccountSetting> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              updateUser("fullName", txtName.text);
+                              updateUser("FullName", txtName.text.trim());
                               user.fullName = fullName;
                               Navigator.pop(context);
                             });
@@ -165,8 +165,8 @@ class _AccountSettingState extends State<AccountSetting> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              changeEmail(txtEmail.text);
-                              updateUser("email", _user?.email);
+                              changeEmail(txtEmail.text.trim());
+                              updateUser("Email", _user?.email);
                               user.email = email;
                               Navigator.pop(context);
                             });
@@ -213,10 +213,10 @@ class _AccountSettingState extends State<AccountSetting> {
                         padding: const EdgeInsets.all(10.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            if (txtCurPass.text == user.password)
+                            if (txtCurPass.text.trim() == password)
                               setState(() {
-                                changePassword(txtNewPass.text);
-                                updateUser("password", txtNewPass.text);
+                                changePassword(txtNewPass.text.trim());
+                                updateUser("Password", txtNewPass.text.trim());
                                 user.password = password;
                                 Navigator.pop(context);
                               });
@@ -252,7 +252,7 @@ class _AccountSettingState extends State<AccountSetting> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              updateUser("address", txtAddress.text);
+                              updateUser("Address", txtAddress.text.trim());
                               user.address = address;
                               Navigator.pop(context);
                             });
