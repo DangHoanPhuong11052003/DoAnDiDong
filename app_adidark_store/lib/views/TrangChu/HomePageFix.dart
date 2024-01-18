@@ -1,3 +1,5 @@
+import 'package:app_adidark_store/models/DataCartUser.dart';
+import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:app_adidark_store/views/TimKiem/TimKiemScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +18,32 @@ class HomePageFix extends StatefulWidget {
   State<HomePageFix> createState() => _HomePageFixState();
 }
 
+
+
+
 List<Product> products = [];
 List<Product> preoduc2 = [];
 
 class _HomePageFixState extends State<HomePageFix> {
   @override
+
+  _getNewid() async{
+    DataCartUser.createNewCartUS("234");
+  }
+
+  // void initState() {
+  //   // bool flag=await DataCartUser.checkUs("123");
+
+  //   ListData.loadData().then((value) {
+  //     setState(() {
+  //       products = ListData.products;
+  //     });
+  //   });
+  //   super.initState();
+  // }
+  @override
   void initState() {
-    ListData.loadData().then((value) {
-      setState(() {
-        products = ListData.products;
-      });
-    });
+    _getNewid();
     super.initState();
   }
 
@@ -162,7 +179,7 @@ class _HomePageFixState extends State<HomePageFix> {
                   ),
                 ],
               ),
-              ListProduct(products: products),
+              // ListProduct(products: products),
               const SizedBox(
                 height: 30,
               ),
@@ -182,7 +199,7 @@ class _HomePageFixState extends State<HomePageFix> {
                   ),
                 ],
               ),
-              ListProduct(products: products),
+              // ListProduct(products: products),
             ],
           ),
         ),

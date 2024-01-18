@@ -1,7 +1,9 @@
 import 'package:app_adidark_store/items/ItemImgPro.dart';
+import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/ClassCategories.dart';
 import 'package:app_adidark_store/models/ClassManufacturer.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
+import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -30,18 +32,41 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
   String s =
       "dadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadada";
   bool isReadMore = false;
-  int seledtedColorId = -1;
+  String seledtedColorId = "";
   int seledtedSizeId = -1;
+
+  List<CartUser> allCart=[];
 
   Product pro=Product(cate: Categories(id: -1, name: "", status: false), detail: Map(), id: -1, img: List.empty(), manu: Manufacturer(id: -1, name: "", status: false), name: "", price: 0, quantity: 0, status: 0, infor: "");
   List<Product> pros=[];
 
   _getData() async{
     Product product=await DataProduct.getDataById(widget.idPro);
-    List<Product> pros2=await DataProduct.getAllData();
     setState(() {
       pro=product;
-      pros=pros2;
+    });
+  }
+
+  _updateOrCreateCart() async{
+    ///--Cần thay đổi bằng tên tài khoản người dùng-----------------
+    List<CartUser> allCart=await DataCartUser.getData("234");
+    int newIdCart= await DataCartUser.getNewId("234");
+    setState(() {
+      bool flag=true;
+                        for (var element in allCart) {
+                          if(element.idPro==pro.id&&element.size==seledtedSizeId&&element.color==seledtedColorId){
+                            element.quantity+=sttbuy;
+                            //-------Cần thay đổi bằng tên người dùng------------------------------------
+                            DataCartUser.updateData(element, "234");
+                            flag=false;
+                            break;
+                          }
+                        }
+                        if(flag){
+                          //-------Cần thay đổi bằng tên người dùng------------------------------------
+                            CartUser newCart= CartUser(color: seledtedColorId, id: newIdCart, img: pro.img[0].link, manufucturer: pro.manu.name, quantity: sttbuy, size: seledtedSizeId, namePro: pro.name, idPro: pro.id, price: pro.price, cate: pro.cate.name, status: 1);
+                            DataCartUser.CreateData(newCart, "234");
+                        }
     });
   }
 
@@ -203,15 +228,14 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                 for (int i = 0; i < pro.detail.length; i++)
                                   ItemSelectedColor(
                                     idColor: pro.detail.keys.elementAt(i),
-                                    idList: i,
                                     idSelected: seledtedColorId,
                                     selected: () {
                                       setState(() {
-                                        if (seledtedColorId == i) {
-                                          seledtedColorId = -1;
+                                        if (seledtedColorId == pro.detail.keys.elementAt(i)) {
+                                          seledtedColorId = "";
                                           seledtedSizeId=-1;
                                         } else {
-                                          seledtedColorId = i;
+                                          seledtedColorId = pro.detail.keys.elementAt(i);
                                           seledtedSizeId=-1;
                                         }
                                       });
@@ -224,18 +248,17 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                               children: [
                                 for (int i = 0; i < 6; i++)
                                   ItemSelectedColor(
-                                    idColor: pro.detail.keys.elementAt(1),
-                                    idList: i,
+                                    idColor: pro.detail.keys.elementAt(i),
                                     idSelected: seledtedColorId,
                                     selected: () {
-                                      if (seledtedColorId == i) {
+                                      if (seledtedColorId == pro.detail.keys.elementAt(i)) {
                                         setState(() {
-                                          seledtedColorId = -1;
+                                          seledtedColorId = "";
                                           seledtedSizeId=-1;
                                         });
                                       } else {
                                         setState(() {
-                                          seledtedColorId = i;
+                                          seledtedColorId = pro.detail.keys.elementAt(i);
                                           seledtedSizeId=-1;
                                         });
                                       }
@@ -247,18 +270,17 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                             children: [
                               for (int i = 6; i < pro.detail.length; i++)
                                 ItemSelectedColor(
-                                  idColor: pro.detail.keys.elementAt(1),
-                                  idList: i,
+                                  idColor: pro.detail.keys.elementAt(i),
                                   idSelected: seledtedColorId,
                                   selected: () {
-                                    if (seledtedColorId == i) {
+                                    if (seledtedColorId == pro.detail.keys.elementAt(i)) {
                                       setState(() {
-                                        seledtedColorId = -1;
+                                        seledtedColorId = "";
                                         seledtedSizeId=-1;
                                       });
                                     } else {
                                       setState(() {
-                                        seledtedColorId = i;
+                                        seledtedColorId = pro.detail.keys.elementAt(i);
                                         seledtedSizeId=-1;
                                       });
                                     }
@@ -276,24 +298,23 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                       Column(
                         children: [
                           //Số lượng Size
-                          for (var i = 0; i < (seledtedColorId!=-1?pro.detail.values.elementAt(seledtedColorId).length:slSize) / 6.ceil(); i++)
+                          for (var i = 0; i < (seledtedColorId!=""?pro.detail[seledtedColorId]!.length:slSize) / 6.ceil(); i++)
                             Row(
                               children: [
                                 for (var j = i * 6;
-                                    j < i * 6 + 6 && j < (seledtedColorId!=-1?pro.detail.values.elementAt(seledtedColorId).length:slSize);
+                                    j < i * 6 + 6 && j < (seledtedColorId!=""?pro.detail[seledtedColorId]!.length:slSize);
                                     j++)
                                   ItemSelectedSize(
-                                    idSize: (seledtedColorId!=-1?pro.detail.values.elementAt(seledtedColorId)[j].size:j+30),
+                                    idSize: (seledtedColorId!=""?pro.detail[seledtedColorId]![j].size:j+30),
                                     idSelected: seledtedSizeId,
-                                    idList: j,
                                     selected: () {
-                                      if (seledtedSizeId == j) {
+                                      if (seledtedSizeId == pro.detail[seledtedColorId]![j].size) {
                                         setState(() {
                                           seledtedSizeId = -1;
                                         });
                                       } else {
                                         setState(() {
-                                          seledtedSizeId = j;
+                                          seledtedSizeId = pro.detail[seledtedColorId]![j].size;
                                         });
                                       }
                                     },
@@ -318,7 +339,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (seledtedColorId == -1 ||
+                      if (seledtedColorId == "" ||
                           seledtedSizeId == -1 ||
                           sttbuy <= 0) {
                         ScaffoldMessenger.of(context)
@@ -329,7 +350,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: seledtedColorId == -1 ||
+                          color: seledtedColorId == "" ||
                                   seledtedSizeId == -1 ||
                                   sttbuy <= 0
                               ? Colors.grey
@@ -348,12 +369,13 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      if (seledtedColorId == -1 ||
+                      if (seledtedColorId == "" ||
                           seledtedSizeId == -1 ||
                           sttbuy <= 0) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(snackBarFail);
                       } else {
+                        _updateOrCreateCart();
                         ScaffoldMessenger.of(context)
                             .showSnackBar(snackBarSucc);
                       }
@@ -361,7 +383,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: seledtedColorId == -1 ||
+                          color: seledtedColorId == "" ||
                                   seledtedSizeId == -1 ||
                                   sttbuy <= 0
                               ? Colors.grey

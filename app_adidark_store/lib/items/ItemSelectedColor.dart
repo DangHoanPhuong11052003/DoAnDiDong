@@ -5,12 +5,10 @@ class ItemSelectedColor extends StatefulWidget {
       {super.key,
       required this.idColor,
       required this.idSelected,
-      required this.selected,
-      required this.idList});
+      required this.selected,});
   final String idColor;
   Function() selected;
-  int idSelected;
-  final int idList;
+  String idSelected;
   @override
   State<ItemSelectedColor> createState() => _ItemSelectedColorState();
 }
@@ -29,7 +27,7 @@ class _ItemSelectedColorState extends State<ItemSelectedColor> {
               width: MediaQuery.of(context).size.width / 8,
               height: MediaQuery.of(context).size.width / 8 - 10,
               decoration: BoxDecoration(
-                  color: widget.idList == widget.idSelected
+                  color: widget.idColor == widget.idSelected
                       ? Colors.blue.withOpacity(0.5)
                       : const Color.fromARGB(255, 239, 238, 238),
                   borderRadius: BorderRadius.circular(8)),

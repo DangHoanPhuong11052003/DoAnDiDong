@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../TrangThaiGiaoHang/ChoXacNhan_Screen.dart';
+import '../TrangThaiGiaoHang/DaGiao_Screen.dart';
+import '../TrangThaiGiaoHang/DaHuy_Screen.dart';
+import '../TrangThaiGiaoHang/DangGiao_Screen.dart';
+import '../TrangThaiGiaoHang/TatCa_Screen.dart';
 
 class HoaDon_Screen extends StatefulWidget {
   const HoaDon_Screen({super.key});
@@ -17,11 +21,7 @@ class _HoaDon_ScreenState extends State<HoaDon_Screen> {
         length: 5,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "Hóa đơn",
-              style: TextStyle(fontWeight: FontWeight.w800),
-            ),
-            centerTitle: true,
+            title: Text("Hóa đơn"),
             actions: [
               IconButton(onPressed: () {}, icon: const Icon(Icons.search))
             ],
@@ -56,20 +56,18 @@ class _HoaDon_ScreenState extends State<HoaDon_Screen> {
               Expanded(
                 child: TabBarView(
                   children: [
-                    Container(child: ChoXacNhan_Screen()),
+                    Container(child: TatCa_Screen(),),
                     Container(
-                      child: Text(
-                        "Chờ xác nhận",
-                      ),
+                      child: ChoXacNhan_Screen(),
                     ),
                     Container(
-                      child: Text("Đang giao"),
+                      child: DangGiao_Screen(),
                     ),
                     Container(
-                      child: Text("Đã Hủy"),
+                      child: DaGiaO_Screen(),
                     ),
                     Container(
-                      child: Text("Hello"),
+                      child: DaHuy_Screen(),
                     ),
                   ],
                 ),

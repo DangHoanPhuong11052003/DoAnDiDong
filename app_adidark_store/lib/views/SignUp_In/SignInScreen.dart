@@ -1,11 +1,14 @@
-import 'package:app_adidark_store/views/SignUp_In/SignIn_Controller.dart';
+import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignUpScreen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app_adidark_store/views/SignUp_In/VerifiedScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
-
-import '../../items/BottomMenu.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/ClassUser.dart';
+import 'controller/SignIn_Controller.dart';
+import 'controller/SignUp_Failure.dart';
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});
@@ -17,17 +20,20 @@ class Login_Screen extends StatefulWidget {
 class _Login_ScreenState extends State<Login_Screen>
     with SingleTickerProviderStateMixin {
   final _frmkey = GlobalKey<FormState>();
+  final _auth = Get.put(LoginController());
+  final TextEditingController nameController = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
-
   bool visible = false;
   late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(duration: Duration(seconds: 3), vsync: this);
+    controller = AnimationController(
+      duration: Duration(seconds: 3),
+      vsync: this,
+    );
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
         Navigator.pop(context);
@@ -47,42 +53,21 @@ class _Login_ScreenState extends State<Login_Screen>
     return emailRegex.hasMatch(email);
   }
 
-  void route() {
-    User? user = FirebaseAuth.instance.currentUser;
-    var getUser = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(user!.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BottomMenu(),
-          ),
-        );
-      } else {
-        print('Document does not exist on the database');
-      }
-    });
-  }
-
-  void _SignIn(String email, String password) async {
+  void _signIn() async {
     if (_frmkey.currentState!.validate()) {
+      final user = Users(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
       try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        route();
+        await _auth.loginAccount(user);
         await showDoneDialog();
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
-        }
+        _auth.route(context, const BottomMenu());
+        print('Success');
+      } on SignUp_AccountFailure catch (e) {
+        await showFailureDialog(message: e.message);
+      } catch (_) {
+        await showFailureDialog();
       }
     }
   }
@@ -258,7 +243,24 @@ class _Login_ScreenState extends State<Login_Screen>
                       ],
                     ),
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 5.0),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPassword()),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Quên mật khẩu?',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1.0),
                     child: Center(
@@ -273,7 +275,7 @@ class _Login_ScreenState extends State<Login_Screen>
                         setState(() {
                           visible = true;
                         });
-                        _SignIn(emailController.text, passwordController.text);
+                        _signIn();
                       },
                       child: Text(
                         "Đăng nhập",
@@ -338,6 +340,35 @@ class _Login_ScreenState extends State<Login_Screen>
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
             ),
             SizedBox(height: 16.0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> showFailureDialog({String? message}) async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/animations/login_failure.json',
+              repeat: false,
+              controller: controller,
+              onLoaded: (composition) {
+                controller.duration = composition.duration;
+                controller.forward();
+              },
+            ),
+            Text(
+              message ?? "Đăng nhập thất bại",
+              style:
+                  const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 16.0),
           ],
         ),
       ),

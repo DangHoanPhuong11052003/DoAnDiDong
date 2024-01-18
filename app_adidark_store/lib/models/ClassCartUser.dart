@@ -1,6 +1,6 @@
 class CartUser{
   int id;
-  int color;
+  String color;
   String img;
   String manufucturer;
   String namePro;
@@ -16,7 +16,7 @@ class CartUser{
   CartUser.fromJson(Map<Object?,Object?> js)
     :id=int.parse(js['id'].toString()),
     img=js["img"].toString(),
-    color=int.parse(js['color'].toString()),
+    color=js['color'].toString(),
     manufucturer=js['manufacturer'].toString(),
     namePro=js['namePro'].toString(),
     quantity=int.parse(js['quantity'].toString()),

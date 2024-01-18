@@ -1,22 +1,26 @@
-class UserDetailInfo {
-  String fullName;
-  String email;
-  String password;
-  String address;
+class Users {
+  final String? id;
+  final String? fullName;
+  final String? address;
+  final String email;
+  final String? password;
+  final bool? agree;
 
-  UserDetailInfo({
-    required this.fullName,
-    required this.email,
-    required this.password,
-    required this.address,
-  });
+  const Users(
+      {this.id,
+      this.fullName,
+      this.address,
+      required this.email,
+      this.password,
+      this.agree});
 
   toJson() {
     return {
-      "fullName": fullName,
-      "email": email,
-      "password": password,
-      "address": address,
+      "FullName": fullName,
+      'Address': address,
+      "Email": email,
+      "Password": password,
+      'Agree': agree
     };
   }
 }
