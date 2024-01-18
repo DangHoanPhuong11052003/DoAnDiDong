@@ -29,12 +29,11 @@ class UserResposity extends GetxController {
     CollectionReference ref = firebaseFirestore.collection('Users');
 
     Users newUser = Users(
-      fullName: user.fullName,
-      address: user.address,
-      email: user.email,
-      // password: user.password,
-      agree: user.agree
-    );
+        fullName: user.fullName,
+        address: user.address,
+        email: user.email,
+        // password: user.password,
+        agree: user.agree);
     ref.doc(_user!.uid).set(newUser.toJson());
   }
 }

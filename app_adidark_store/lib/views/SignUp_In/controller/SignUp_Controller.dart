@@ -11,7 +11,4 @@ class UserController extends GetxController {
   Future<void> createUser(Users user) async {
     await userRepo.createUser(user);
   }
-
-
-
 }

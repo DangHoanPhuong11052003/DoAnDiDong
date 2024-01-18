@@ -46,36 +46,35 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   }
 
   void signUp() async {
-  final user = Users(
-    fullName: nameController.text.trim(),
-    address: addressController.text.trim(),
-    email: emailController.text.trim(),
-    password: passwordController.text.trim(),
-    agree: isChecked
-  );
-  if (!_frmkey.currentState!.validate()) {
-    showFailureDialog();
-  } else {
-    if (isChecked == true) {
-      try {
-        await _user.createUser(user);
-        await showDoneDialog();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Login_Screen(),
-          ),
-        );
-      } on SignUp_AccountFailure catch (e) {
-        showFailureDialog(message: e.message);
-      } catch (_) {
-        showFailureDialog();
-      }
+    final user = Users(
+        fullName: nameController.text.trim(),
+        address: addressController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+        agree: isChecked);
+    if (!_frmkey.currentState!.validate()) {
+      showFailureDialog();
     } else {
-      showCheckBoxDialog();
+      if (isChecked == true) {
+        try {
+          await _user.createUser(user);
+          await showDoneDialog();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Login_Screen(),
+            ),
+          );
+        } on SignUp_AccountFailure catch (e) {
+          showFailureDialog(message: e.message);
+        } catch (_) {
+          showFailureDialog();
+        }
+      } else {
+        showCheckBoxDialog();
+      }
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -426,32 +425,34 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   }
 
   Future<void> showFailureDialog({String? message}) async {
-  await showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (context) => Dialog(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Lottie.asset(
-            'assets/animations/login_failure.json',
-            repeat: false,
-            controller: controller,
-            onLoaded: (composition) {
-              controller.duration = composition.duration;
-              controller.forward();
-            },
-          ),
-          Text(
-            message ?? "Đăng ký thất bại",
-            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: 16.0),
-        ],
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/animations/login_failure.json',
+              repeat: false,
+              controller: controller,
+              onLoaded: (composition) {
+                controller.duration = composition.duration;
+                controller.forward();
+              },
+            ),
+            Text(
+              message ?? "Đăng ký thất bại",
+              style:
+                  const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 16.0),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
+
   Future<void> showCheckBoxDialog() async {
     await showDialog(
       barrierDismissible: false,

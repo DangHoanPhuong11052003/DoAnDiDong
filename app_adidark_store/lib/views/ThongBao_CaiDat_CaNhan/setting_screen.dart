@@ -19,8 +19,7 @@ class _AccountSettingState extends State<AccountSetting> {
   late String password;
   late String address;
 
-  UserDetailInfo user =
-      UserDetailInfo(fullName: "", email: "", password: "", address: "");
+  Users user = Users(fullName: "", email: "", password: "", address: "");
 
   final _user = FirebaseAuth.instance.currentUser;
 
@@ -50,8 +49,6 @@ class _AccountSettingState extends State<AccountSetting> {
   }
 
   Future<void> changePassword(String newPass) async {
-    final SharedPreferences prefs = await _prefs;
-
     try {
       // Thay đổi email của người dùng
       await _user!.updatePassword(newPass);
@@ -92,7 +89,7 @@ class _AccountSettingState extends State<AccountSetting> {
     password = prefs.getString("Password") ?? "";
     address = prefs.getString("Address") ?? "";
 
-    user = UserDetailInfo(
+    user = Users(
       fullName: fullName,
       email: email,
       password: password,
@@ -323,7 +320,7 @@ class _AccountSettingState extends State<AccountSetting> {
                                   return Row(
                                     children: [
                                       Text(
-                                        user.fullName,
+                                        user.fullName ?? "",
                                         style: TextStyle(fontSize: 20),
                                       ),
                                       Padding(
