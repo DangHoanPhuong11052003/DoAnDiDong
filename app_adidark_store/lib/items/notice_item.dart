@@ -11,10 +11,11 @@ class NoticeItem extends StatefulWidget {
     required this.status,
     required this.time,
     required this.title,
+    required this.content,
   });
 
   final int idProduct;
-  final String title, time;
+  final String title, time, content;
   final bool status; //true: PrivateNotice, false: MainNotice
 
   @override
@@ -63,60 +64,50 @@ class _NoticeItemState extends State<NoticeItem> {
               return GestureDetector(
                 onTap: () {},
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
+                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                   child: Container(
                     child: Column(
                       children: [
                         Row(
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10, 10, 18, 10),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        child: Image.network(
-                                          pro.img[0].link,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              6,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 2, 18, 2),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.network(
+                                      pro.img[0].link,
+                                      width:
+                                          MediaQuery.of(context).size.width / 6,
+                                      fit: BoxFit.cover,
                                     ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.4,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            widget.title,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: Text(
-                                              widget.time,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.grey),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.5,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        widget.title,
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Text(
+                                          widget.time,
+                                          style: TextStyle(
+                                              fontSize: 13, color: Colors.grey),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ],
