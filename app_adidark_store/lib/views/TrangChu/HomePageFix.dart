@@ -10,6 +10,7 @@ import 'package:app_adidark_store/Testdata/model/product.dart';
 import 'package:app_adidark_store/Testdata/model/category.dart';
 import 'package:app_adidark_store/Testdata/model/list_data.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePageFix extends StatefulWidget {
   const HomePageFix({super.key});
@@ -20,27 +21,15 @@ class HomePageFix extends StatefulWidget {
 
 
 
-
-List<Product> products = [];
-List<Product> preoduc2 = [];
-
 class _HomePageFixState extends State<HomePageFix> {
-  @override
-
   _getNewid() async{
-    DataCartUser.createNewCartUS("234");
+    User? user=FirebaseAuth.instance.currentUser;
+    bool flag=await DataCartUser.checkUs(user!.uid);
+    if(!flag){
+      DataCartUser.createNewCartUS(user.uid);
+    }
   }
 
-  // void initState() {
-  //   // bool flag=await DataCartUser.checkUs("123");
-
-  //   ListData.loadData().then((value) {
-  //     setState(() {
-  //       products = ListData.products;
-  //     });
-  //   });
-  //   super.initState();
-  // }
   @override
   void initState() {
     _getNewid();
