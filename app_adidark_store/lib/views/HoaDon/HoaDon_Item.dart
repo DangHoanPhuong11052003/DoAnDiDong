@@ -3,6 +3,8 @@ import 'package:app_adidark_store/views/ChiTietHoaDon/ChiTietHoaDon_Screen.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
+import 'package:app_adidark_store/models/DataInvoice.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class HoaDon_Item extends StatefulWidget {
   HoaDon_Item(
@@ -19,6 +21,7 @@ class HoaDon_Item extends StatefulWidget {
 
 
 class _HoaDon_ItemState extends State<HoaDon_Item> {
+  DataInvoice datainvoice = new DataInvoice();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,9 +73,11 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
             style: TextStyle(
                 color: Colors.black, fontSize: 15, fontWeight: FontWeight.w600),
           ),
+           widget.invoice.status == "Chờ xác nhận" ?
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+             
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFFCBE9FF), // Thay đổi màu nền tại đây
@@ -84,7 +89,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                             builder: (context) =>
                                ChiTietHoaDon_Screen(invoice: widget.invoice)));
                   },
-                  child: Text(
+                  child: const Text(
                     "Xem chi tiết",
                     style: TextStyle(
                         color: Colors.black,
@@ -92,14 +97,68 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                         fontWeight: FontWeight.w600),
                   )),
               ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Hủy đơn",
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Xác nhận"),
+                        content: Text("Bạn có chắc chắn muốn hủy đơn?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); 
+                            },
+                            child: Text("Không"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                widget.invoice.status = "Đã hủy";
+                              });
+                              datainvoice.updateInvoiceStatus('123',widget.invoice.id,'Đã hủy');                              
+                              Navigator.of(context).pop(); 
+                            },
+                            child: Text("Có"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: const Text(
+                  "Hủy đơn",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              )
+            ],
+          ):Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+             
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFCBE9FF), // Thay đổi màu nền tại đây
+                  ),
+                  onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                               ChiTietHoaDon_Screen(invoice: widget.invoice)));
+                  },
+                  child: const Text(
+                    "Xem chi tiết",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 15,
                         fontWeight: FontWeight.w600),
-                  ))
+                  )),
+
             ],
           )
         ],

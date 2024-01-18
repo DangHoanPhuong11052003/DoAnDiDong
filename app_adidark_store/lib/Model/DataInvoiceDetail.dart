@@ -1,6 +1,8 @@
 import 'package:app_adidark_store/models/Invoice.dart';
 import 'package:app_adidark_store/models/ClassInvoiceDetail.dart';
+import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:app_adidark_store/models/ClassCartUser.dart';
 
 class DataInvoiceDetail {
   Future<List<InvoiceDetail>> loadInvoiceDetails(String acc, int id) async {
@@ -26,6 +28,25 @@ class DataInvoiceDetail {
     return [];
   }
 }
+
+  //tạo mới sản phẩm vào giỏ hàng
+  static Future<void> CreateData(int id, int idpro,String color, String img, String manu, String cate, String namepro, int quantity,int size, double price, String acc) async {
+    final databaseReference = FirebaseDatabase.instance.ref();
+    databaseReference.child('Cart/$acc/product/${id}').set({
+       "id": id,
+       "color": color,
+       "img": img,
+       "manufacturer": manu,
+       "namePro": namepro,
+       "quantity": quantity,
+       "size": size,
+       "idPro": idpro,
+       "price": price,
+      "cate":cate,
+      "status":1
+    });
+  }
+
 
 
 }
