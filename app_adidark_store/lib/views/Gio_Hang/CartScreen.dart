@@ -23,9 +23,11 @@ class _CartScreenState extends State<CartScreen> {
 
   _setupData() async{
     List<CartUser> lstCartsData=await DataCartUser.getData(widget.acc);
-    setState(() {
+    if(mounted){
+       setState(() {
       lstCarts=lstCartsData;
     });
+    }
   }
 
   _updatePrice(){
