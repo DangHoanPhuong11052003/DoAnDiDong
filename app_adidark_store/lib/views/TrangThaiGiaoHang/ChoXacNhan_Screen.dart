@@ -17,7 +17,7 @@ class _ChoXacNhan_ScreenState extends State<ChoXacNhan_Screen> {
     return 
       Column(
         children: [
-          Expanded(child: HoaDon_List(trangthai: "Đang xác nhận",),
+          Expanded(child: HoaDon_List(trangthai: "Chờ xác nhận",),
           )         
         ],
       ); 

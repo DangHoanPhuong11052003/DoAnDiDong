@@ -43,4 +43,14 @@ class DataInvoice {
       return [];
     }
   }
+   void updateInvoiceStatus(String acc , int idInvoice,String status) {
+   DatabaseReference invoiceRef = FirebaseDatabase.instance.ref().child('Invoice').child(acc);
+    invoiceRef.child(idInvoice.toString()).update({
+      'status': status,
+    }).then((value) {
+      print('Cập nhật trạng thái thành công');
+    }).catchError((error) {
+      print('Lỗi khi cập nhật trạng thái: $error');
+    });
+  }
 }

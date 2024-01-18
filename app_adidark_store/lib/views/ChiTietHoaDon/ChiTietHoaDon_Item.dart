@@ -54,11 +54,11 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
                   //Hãng, loại
                   Text("${widget.invoicedetail.manufucturer} |${widget.invoicedetail.cate} "),
                   //Màu
-                  Text("Màu: Đỏ"),
+                  Text("Màu: ${widget.invoicedetail.color}"),
                   //Kích Cỡ
-                  Text("${widget.invoicedetail.size}"),
+                  Text("Size: ${widget.invoicedetail.size}"),
                   //Tăng giảm số lượng
-                  Text("${widget.invoicedetail.quantity}"),
+                  Text("Số lượng: ${widget.invoicedetail.quantity}"),
                   Text("${widget.invoicedetail.price}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                   
                 ],
