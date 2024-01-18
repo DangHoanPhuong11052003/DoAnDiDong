@@ -2,7 +2,6 @@ import 'package:app_adidark_store/models/ClassUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSetting extends StatefulWidget {
@@ -31,11 +30,12 @@ class _AccountSettingState extends State<AccountSetting> {
   Future<void> updateUser(var key, var value) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setString(key, value);
-    var update = users
-        .doc(_user?.uid)
-        .update({key: value})
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
+    if (key != "Password")
+      var update = users
+          .doc(_user?.uid)
+          .update({key: value})
+          .then((value) => print("User Updated"))
+          .catchError((error) => print("Failed to update user: $error"));
   }
 
   Future<void> changeEmail(String newEmail) async {
@@ -50,6 +50,8 @@ class _AccountSettingState extends State<AccountSetting> {
   }
 
   Future<void> changePassword(String newPass) async {
+    final SharedPreferences prefs = await _prefs;
+
     try {
       // Thay đổi email của người dùng
       await _user!.updatePassword(newPass);
