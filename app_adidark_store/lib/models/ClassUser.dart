@@ -19,7 +19,6 @@ class Users {
       "FullName": fullName,
       'Address': address,
       "Email": email,
-      "Password": password,
       'Agree': agree
     };
   }
