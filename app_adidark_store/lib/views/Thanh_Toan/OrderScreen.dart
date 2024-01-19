@@ -1,13 +1,17 @@
+import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../items/ItemProOrder.dart';
 import '../../models/ClassAddress.dart';
 import 'OrderAddressScreen.dart';
 import 'PaymentMethodsScreen.dart';
 
 class OrderScreen extends StatefulWidget {
-  OrderScreen({super.key, required this.address, required this.payMethod});
+  OrderScreen({super.key, required this.address, required this.payMethod, this.carts});
   Address address;
   bool payMethod;
+  List<CartUser>? carts;
+  
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();
@@ -15,8 +19,13 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   var result;
+  double total=0;
   @override
   Widget build(BuildContext context) {
+    total=0;
+    for (var element in widget.carts!) {
+      total+=element.quantity*element.price;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Thanh toán"),
@@ -34,8 +43,8 @@ class _OrderScreenState extends State<OrderScreen> {
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 10)),
                     //Danh sách đơn hàng
-                    for (var i = 0; i < 3; i++)
-                      ItemProOrder(price: i * 100000000),
+                    for (var i = 0; i < widget.carts!.length; i++)
+                      ItemProOrder(cart: widget.carts![i]),
                     const Padding(padding: EdgeInsets.only(bottom: 10)),
                     const Text(
                       "Địa chỉ nhận hàng",
@@ -81,7 +90,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                               )));
                                   // ignore: avoid_print
                                   setState(() {
-                                    widget.address = result;
+                                    if(result!=null){
+                                      widget.address = result;
+                                    }
                                   });
                                   // print(result);
                                 },
@@ -145,8 +156,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                             )));
                                 // ignore: avoid_print
                                 setState(() {
-                                  widget.payMethod =
+                                  if(result!=null){
+                                    widget.payMethod =
                                       bool.parse(result.toString());
+                                  }
                                 });
                               },
                               icon: const Icon(
@@ -169,7 +182,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             style: TextStyle(
                               fontSize: 16,
                             )),
-                        Text("${1000000 * 3} VND",
+                        Text("$total VND",
                             style: TextStyle(
                               fontSize: 16,
                             ))
@@ -197,7 +210,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        Text("${1000000 * 3 + 25000} VND",
+                        Text("${total + 25000} VND",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold))
                       ],

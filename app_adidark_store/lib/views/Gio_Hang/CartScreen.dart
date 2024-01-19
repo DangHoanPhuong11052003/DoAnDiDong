@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../items/ItemCart.dart';
 import '../Thanh_Toan/OrderAddressScreen.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key,this.acc="234"});
-  final String acc;
+  const CartScreen({super.key,});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -20,12 +20,16 @@ class _CartScreenState extends State<CartScreen> {
   double totalPrice = 0;
   int slspchon = 0;
   bool isSelectedAll = false;
+  User? user=FirebaseAuth.instance.currentUser;
+  String acc="";
 
   _setupData() async{
-    List<CartUser> lstCartsData=await DataCartUser.getData(widget.acc);
-    setState(() {
+    List<CartUser> lstCartsData=await DataCartUser.getData(acc);
+    if(mounted){
+       setState(() {
       lstCarts=lstCartsData;
     });
+    }
   }
 
   _updatePrice(){
@@ -39,12 +43,14 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   void initState() {
+    acc= user!.uid;
     super.initState();
      _setupData();
   }
 
   @override
   Widget build(BuildContext context) {
+    
     _updatePrice();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -70,7 +76,7 @@ class _CartScreenState extends State<CartScreen> {
                 _updatePrice();
               });
             },
-            acc: widget.acc,
+            acc: acc,
             cart: lstCarts[index],
             lst_vtSelected: lst_vtSum,
             sumPrice: () {
@@ -164,10 +170,16 @@ class _CartScreenState extends State<CartScreen> {
             GestureDetector(
               onTap: () {
                 if (slspchon > 0) {
+                  List<CartUser> lstSelectedCart=[];
+                  setState(() {
+                    for (int element in lst_vtSum) {
+                      lstSelectedCart.add(lstCarts[element]);
+                    }
+                  });
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OrderAddressScreen()));
+                          builder: (context) => OrderAddressScreen(carts: lstSelectedCart,)));
                 }
               },
               child: Container(

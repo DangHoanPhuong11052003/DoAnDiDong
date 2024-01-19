@@ -335,7 +335,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                     style: TextStyle(color: Colors.black),
                   ),
                   const Text(
-                    'Chính sách dịch vụ & Quyền riêng tư',
+                    'Chính sách & Quyền riêng tư',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],

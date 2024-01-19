@@ -1,6 +1,8 @@
+import 'package:app_adidark_store/models/ClassCategories.dart';
+import 'package:app_adidark_store/models/category.dart';
 import 'package:flutter/material.dart';
-import 'package:app_adidark_store/Testdata/component/Menufactory_Item.dart';
-import 'package:app_adidark_store/Testdata/model/category.dart';
+import 'package:app_adidark_store/items/Menufactory_Item.dart';
+
 class ListMenufactorys extends StatelessWidget {
   const ListMenufactorys({super.key, required this.Menufactorys});
    final List<Category> Menufactorys;

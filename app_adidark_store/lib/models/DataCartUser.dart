@@ -121,7 +121,7 @@ class DataCartUser{
   static Future<void> createNewCartUS(String acc) async {
     final databaseReference = FirebaseDatabase.instance.ref();
     databaseReference.child('Cart/$acc').set({
-       "id":1,
+       "id":getNewIdCart(),
        "product":List.empty()
     });
   }

@@ -1,12 +1,14 @@
 
 import 'package:app_adidark_store/items/ItemInforAddress.dart';
+import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:flutter/material.dart';
 import '../../models/ClassAddress.dart';
 import 'PaymentMethodsScreen.dart';
 
 class OrderAddressScreen extends StatefulWidget {
-  OrderAddressScreen({super.key, this.address});
+  OrderAddressScreen({super.key, this.address, this.carts});
   Address? address;
+  List<CartUser>? carts;
 
   @override
   State<OrderAddressScreen> createState() => _OrderAddressScreenState();
@@ -89,6 +91,7 @@ class _OrderAddressScreenState extends State<OrderAddressScreen> {
                 MaterialPageRoute(
                     builder: (context) => PaymentMethodsScreen(
                           address: addressSelected,
+                          carts: widget.carts,
                         )));
           }
         },

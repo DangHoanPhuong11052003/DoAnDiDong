@@ -7,7 +7,7 @@ import '../controller/SignUp_Failure.dart';
 class UserResposity extends GetxController {
   static UserResposity get instance => Get.find();
   final _auth = FirebaseAuth.instance;
-
+  final _db = FirebaseFirestore.instance;
   // Tạo user
   createUser(Users user) async {
     try {
@@ -36,4 +36,19 @@ class UserResposity extends GetxController {
         agree: user.agree);
     ref.doc(_user!.uid).set(newUser.toJson());
   }
+
+  Future<Users> getUserDetails(String email) async {
+    final snapshot =
+        await _db.collection('Users').where('Email', isEqualTo: email).get();
+    final userData = snapshot.docs.map((e) => Users.fromSnapshot(e)).single;
+    return userData;
+  }
+
+  Future<Users> allUser() async {
+    final snapshot =
+        await _db.collection('Users').get();
+    final userData = snapshot.docs.map((e) => Users.fromSnapshot(e)).single;
+    return userData;
+  }
+
 }

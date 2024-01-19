@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../views/Gio_Hang/CartScreen.dart';
 import '../views/ThongBao_CaiDat_CaNhan/notification_screen.dart';
 import '../views/ThongBao_CaiDat_CaNhan/profile_screen.dart';
-import '../views/TrangChu/HomePageFix.dart';
+import '../views/TrangChu/HomePage.dart';
 
 
 class BottomMenu extends StatefulWidget {
@@ -18,7 +18,7 @@ class _BottomMenuState extends State<BottomMenu> {
   int current_index = 0;
 
   final pages = [
-    const HomePageFix(),
+    const HomePage(),
     const CartScreen(),
     const NotificationScreen(),
     const ProfileScreen()

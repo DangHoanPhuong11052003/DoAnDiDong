@@ -1,11 +1,13 @@
 
+import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:flutter/material.dart';
 import '../../models/ClassAddress.dart';
 import 'OrderScreen.dart';
 
 class PaymentMethodsScreen extends StatefulWidget {
-   PaymentMethodsScreen({super.key, this.address,this.payMethod});
+   PaymentMethodsScreen({super.key, this.address,this.payMethod, this.carts});
   final Address? address;
+  final List<CartUser>? carts;
   bool? payMethod;
 
   @override
@@ -189,7 +191,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
             Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OrderScreen(address: widget.address!,payMethod: isExpanded,)));
+                                builder: (context) => OrderScreen(address: widget.address!,payMethod: isExpanded,carts: widget.carts,)));
           }
         },
         child: Container(

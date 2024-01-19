@@ -5,6 +5,8 @@ import 'package:app_adidark_store/models/ClassManufacturer.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:app_adidark_store/views/Thanh_Toan/OrderAddressScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../items/ItemSelectedColor.dart';
@@ -49,15 +51,16 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
 
   _updateOrCreateCart() async{
     ///--Cần thay đổi bằng tên tài khoản người dùng-----------------
-    List<CartUser> allCart=await DataCartUser.getData("234");
-    int newIdCart= await DataCartUser.getNewId("234");
+    User? user=FirebaseAuth.instance.currentUser;
+    List<CartUser> allCart=await DataCartUser.getData(user!.uid);
+    int newIdCart= await DataCartUser.getNewId(user.uid);
     setState(() {
       bool flag=true;
                         for (var element in allCart) {
                           if(element.idPro==pro.id&&element.size==seledtedSizeId&&element.color==seledtedColorId){
                             element.quantity+=sttbuy;
                             //-------Cần thay đổi bằng tên người dùng------------------------------------
-                            DataCartUser.updateData(element, "234");
+                            DataCartUser.updateData(element, user.uid);
                             flag=false;
                             break;
                           }
@@ -65,9 +68,17 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                         if(flag){
                           //-------Cần thay đổi bằng tên người dùng------------------------------------
                             CartUser newCart= CartUser(color: seledtedColorId, id: newIdCart, img: pro.img[0].link, manufucturer: pro.manu.name, quantity: sttbuy, size: seledtedSizeId, namePro: pro.name, idPro: pro.id, price: pro.price, cate: pro.cate.name, status: 1);
-                            DataCartUser.CreateData(newCart, "234");
+                            DataCartUser.CreateData(newCart, user.uid);
                         }
     });
+  }
+
+  _buyPro() async{
+    User? user=FirebaseAuth.instance.currentUser;
+    int newIdCart= await DataCartUser.getNewId(user!.uid);
+    List<CartUser> carts=[CartUser(color: seledtedColorId, id: newIdCart, img: pro.img[0].link, manufucturer: pro.manu.name, quantity: sttbuy, size: seledtedSizeId, namePro: pro.name, idPro: pro.id, price: pro.price, cate: pro.cate.name, status: 1),];
+    // ignore: use_build_context_synchronously
+    Navigator.push(context, MaterialPageRoute(builder: (context) => OrderAddressScreen(carts: carts),));
   }
 
   @override
@@ -344,6 +355,9 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                           sttbuy <= 0) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(snackBarFail);
+                      }
+                      else{
+                       _buyPro();
                       }
                     },
                     child: Container(
