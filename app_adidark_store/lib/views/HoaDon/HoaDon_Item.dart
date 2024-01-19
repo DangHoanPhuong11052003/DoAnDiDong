@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
 import 'package:app_adidark_store/models/DataInvoice.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HoaDon_Item extends StatefulWidget {
   HoaDon_Item(
@@ -22,7 +21,6 @@ class HoaDon_Item extends StatefulWidget {
 
 
 class _HoaDon_ItemState extends State<HoaDon_Item> {
-   User? user=FirebaseAuth.instance.currentUser;
   DataInvoice datainvoice = new DataInvoice();
   @override
   Widget build(BuildContext context) {
@@ -118,7 +116,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                               setState(() {
                                 widget.invoice.status = "Đã hủy";
                               });
-                              datainvoice.updateInvoiceStatus(user!.uid,widget.invoice.id,'Đã hủy');                              
+                              datainvoice.updateInvoiceStatus('123',widget.invoice.id,'Đã hủy');                              
                               Navigator.of(context).pop(); 
                             },
                             child: Text("Có"),

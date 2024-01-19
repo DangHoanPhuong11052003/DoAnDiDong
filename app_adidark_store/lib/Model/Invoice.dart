@@ -1,11 +1,9 @@
 
-import 'package:app_adidark_store/models/ClassCartUser.dart';
-
 import 'ClassInvoiceDetail.dart';
 class Invoice {
    String date;
    int id;
-  List<CartUser> invoiceDetail;
+  List<InvoiceDetail> invoiceDetail;
   String shipdate;
   String status;
   String totalPrice;
@@ -13,7 +11,7 @@ class Invoice {
   Invoice( { required this.date, required this.id, required this.invoiceDetail, required this.shipdate, required this.status, required this.totalPrice, required this.address});
   factory Invoice.fromJson(Map<Object?, Object?> json){
     var CartUserList = json['ivoiceDetail'] as List;
-    List<CartUser> CartUserTemp = CartUserList.map((i) => CartUser.fromJson(i)).toList();
+    List<InvoiceDetail> CartUserTemp = CartUserList.map((i) => InvoiceDetail.fromJson(i)).toList();
     return Invoice(
       date: json['date'] as String,
       id: json['id'] as int,
