@@ -1,6 +1,4 @@
 import 'package:app_adidark_store/items/auth_page.dart';
-import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
-import 'package:app_adidark_store/views/SignUp_In/VerifiedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
