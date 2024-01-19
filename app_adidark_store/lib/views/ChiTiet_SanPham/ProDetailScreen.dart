@@ -5,6 +5,7 @@ import 'package:app_adidark_store/models/ClassManufacturer.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:app_adidark_store/views/Thanh_Toan/OrderAddressScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -70,6 +71,14 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                             DataCartUser.CreateData(newCart, user.uid);
                         }
     });
+  }
+
+  _buyPro() async{
+    User? user=FirebaseAuth.instance.currentUser;
+    int newIdCart= await DataCartUser.getNewId(user!.uid);
+    List<CartUser> carts=[CartUser(color: seledtedColorId, id: newIdCart, img: pro.img[0].link, manufucturer: pro.manu.name, quantity: sttbuy, size: seledtedSizeId, namePro: pro.name, idPro: pro.id, price: pro.price, cate: pro.cate.name, status: 1),];
+    // ignore: use_build_context_synchronously
+    Navigator.push(context, MaterialPageRoute(builder: (context) => OrderAddressScreen(carts: carts),));
   }
 
   @override
@@ -346,6 +355,9 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                           sttbuy <= 0) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(snackBarFail);
+                      }
+                      else{
+                       _buyPro();
                       }
                     },
                     child: Container(

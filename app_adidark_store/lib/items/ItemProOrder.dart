@@ -1,12 +1,12 @@
+import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:flutter/material.dart';
 
 class ItemProOrder extends StatelessWidget {
-  const ItemProOrder({super.key, required this.price});
-  final int price;
+  const ItemProOrder({super.key, required this.cart});
+  final CartUser cart;
 
   @override
   Widget build(BuildContext context) {
-    int slsp=1;
     return  Container(
       margin: const EdgeInsets.only(bottom: 5),
       padding:const EdgeInsets.all(2),
@@ -25,7 +25,7 @@ class ItemProOrder extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               //Ảnh sản phẩm
-              image:const  DecorationImage(image: NetworkImage("https://drake.vn/image/catalog/H%C3%ACnh%20content/gia%CC%80y%20Converse%20da%20bo%CC%81ng/giay-converse-da-bong-5.jpg"),
+              image:  DecorationImage(image: NetworkImage(cart.img),
               fit: BoxFit.cover),
               
             ),
@@ -39,11 +39,29 @@ class ItemProOrder extends StatelessWidget {
             children: [
               //Tông tin sản phẩm
               //Tên sản phẩm
-              Text("Super OG",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+              Text(cart.namePro.length>=15?cart.namePro.substring(0,15)+"...":cart.namePro,style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
               //Hãng, loại
-              Text("Nike | Giày nam"),
+              Text("${cart.manufucturer} | Giày ${cart.cate}"),
               //Màu
-              Text("Màu: Đỏ"),
+              Text("Màu: ${cart.color}" == "a"
+                      ? "Đen"
+                      : cart.color == "b"
+                          ? "Trắng"
+                          : cart.color == "c"
+                              ? "Vàng"
+                              : cart.color == "d"
+                                  ? "Xanh dương"
+                                  :cart.color == "e"
+                                      ? "Xám"
+                                      : cart.color == "f"
+                                          ? "Nâu"
+                                          : cart.color == "g"
+                                              ? "Cam"
+                                              : cart.color == "h"
+                                                  ? "Tím"
+                                                  : cart.color == "j"
+                                                      ? "Xanh lá"
+                                                      : "Hồng",),
               //Kích Cỡ
               
             ],
@@ -53,11 +71,11 @@ class ItemProOrder extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-               Text("Cỡ: 38"),
+               Text("Cỡ: ${cart.size}"),
               //số lượng sp
-              Text(slsp<10?"Số lượng: 0$slsp":"Số lượng: $slsp",style: TextStyle(fontSize: 15)),
+              Text(cart.quantity<10?"Số lượng: 0${cart.quantity}":"Số lượng: ${cart.quantity}",style: TextStyle(fontSize: 15)),
                   //Giá
-              Text("${price*slsp} VND",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold)),
+              Text((cart.price*cart.quantity).toString().length>8?(cart.price*cart.quantity).toString().substring(0,8)+"...VND":(cart.price*cart.quantity).toString()+"VND",style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold)),
             ],
           )
             ],

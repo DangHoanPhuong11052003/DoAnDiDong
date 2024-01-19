@@ -22,6 +22,7 @@ class HomePageFix extends StatefulWidget {
 
 
 class _HomePageFixState extends State<HomePageFix> {
+
   _getNewid() async{
     User? user=FirebaseAuth.instance.currentUser;
     bool flag=await DataCartUser.checkUs(user!.uid);
