@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Users {
-  final String? id;
-  final String? fullName;
-  final String? address;
-  final String email;
-  final String? password;
-  final bool? agree;
+  String? id;
+  String? fullName;
+  String? address;
+  String email;
+  String? password;
+  bool? agree;
 
-  const Users(
+  Users(
       {this.id,
       this.fullName,
       this.address,
@@ -21,7 +21,6 @@ class Users {
       "FullName": fullName,
       'Address': address,
       "Email": email,
-      "Password": password,
       'Agree': agree
     };
   }

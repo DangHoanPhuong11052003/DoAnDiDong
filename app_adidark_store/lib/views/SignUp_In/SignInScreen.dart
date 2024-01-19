@@ -17,6 +17,7 @@ class Login_Screen extends StatefulWidget {
 
 class _Login_ScreenState extends State<Login_Screen>
     with SingleTickerProviderStateMixin {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final _frmkey = GlobalKey<FormState>();
   final _auth = Get.put(LoginController());
   final TextEditingController nameController = new TextEditingController();
@@ -52,6 +53,7 @@ class _Login_ScreenState extends State<Login_Screen>
   }
 
   void _signIn() async {
+    final SharedPreferences prefs = await _prefs;
     if (_frmkey.currentState!.validate()) {
       final user = Users(
         email: emailController.text.trim(),
@@ -61,6 +63,7 @@ class _Login_ScreenState extends State<Login_Screen>
         await _auth.loginAccount(user);
         await showDoneDialog();
         _auth.route(context, const BottomMenu());
+        prefs.setString("Password", passwordController.text.trim());
         print('Success');
       } on SignUp_AccountFailure catch (e) {
         await showFailureDialog(message: e.message);

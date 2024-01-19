@@ -10,7 +10,7 @@ class LoginController extends GetxController {
   static LoginController get instance => Get.find();
 
   final authRepo = Get.put(Auth_Resposity());
-  
+
   //
   Future<void> loginAccount(Users user) async {
     await authRepo.loginAccount(user);

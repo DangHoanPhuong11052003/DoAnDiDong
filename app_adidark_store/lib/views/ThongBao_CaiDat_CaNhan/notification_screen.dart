@@ -76,7 +76,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 children: [
                   Container(
                     child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(3.0),
                         child: FutureBuilder(
                           future: getData(),
                           builder: (BuildContext context,
@@ -97,7 +97,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   return Text('Error: ${snapshot.error}');
                                 } else {
                                   return ListView.separated(
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(2.0),
                                     itemCount: lstMain.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
@@ -106,6 +106,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         status: true,
                                         time: lstMain[index].date,
                                         title: lstMain[index].title,
+                                        content: lstMain[index].content,
                                       );
                                     },
                                     separatorBuilder:
@@ -119,9 +120,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   ),
                   Container(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(3.0),
                       child: ListView.separated(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(2.0),
                         itemCount: lstMain.length,
                         itemBuilder: (BuildContext context, int index) {},
                         separatorBuilder: (BuildContext context, int index) =>
