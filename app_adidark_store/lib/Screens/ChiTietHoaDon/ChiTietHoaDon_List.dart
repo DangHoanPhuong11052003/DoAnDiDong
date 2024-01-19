@@ -1,8 +1,10 @@
 //import 'package:flutter/foundation.dart';
+import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:flutter/material.dart';
 import "ChiTietHoaDon_Item.dart";
 import 'package:app_adidark_store/models/ClassInvoiceDetail.dart';
 import 'package:app_adidark_store/models/DataInvoiceDetail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class ChiTietHoaDon_List extends StatefulWidget {
   ChiTietHoaDon_List({super.key, required this.id});
   int id;
@@ -14,12 +16,13 @@ class ChiTietHoaDon_List extends StatefulWidget {
 
 class _ChiTietHoaDon_ListState extends State<ChiTietHoaDon_List> {
   List<InvoiceDetail> IvoiceDetails = [];
-   List<InvoiceDetail> listcthhd = [];
+   List<CartUser> listcthhd = [];
+    User? user=FirebaseAuth.instance.currentUser;
    
  @override
   void initState() {
     super.initState();
-    _fetchInvoiceDetail("123", widget.id);
+    _fetchInvoiceDetail(user!.uid, widget.id);
   }
 
   Future<void> _fetchInvoiceDetail(String acc, int id) async {

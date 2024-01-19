@@ -1,6 +1,5 @@
 
 import 'package:app_adidark_store/models/ClassCartUser.dart';
-
 import 'ClassInvoiceDetail.dart';
 class Invoice {
    String date;

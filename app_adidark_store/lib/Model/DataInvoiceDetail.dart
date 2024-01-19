@@ -5,20 +5,20 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 
 class DataInvoiceDetail {
-  Future<List<InvoiceDetail>> loadInvoiceDetails(String acc, int id) async {
+  Future<List<CartUser>> loadInvoiceDetails(String acc, int id) async {
   try {
     DatabaseReference invoiceRef =
         FirebaseDatabase.instance.ref().child('Invoice').child(acc).child(id.toString());
 
     DataSnapshot snapshot = (await invoiceRef.once()).snapshot;
 
-    List<InvoiceDetail> invoiceDetails = [];
+    List<CartUser> invoiceDetails = [];
     Map<Object?, Object?> invoiceData = snapshot.value as Map<Object?, Object?>;
     
     if (invoiceData != null && invoiceData.containsKey('ivoiceDetail')) {
       List<dynamic> detailsData = invoiceData['ivoiceDetail'] as List<dynamic>;
       for (var detailData in detailsData) {
-        invoiceDetails.add(InvoiceDetail.fromJson(detailData as Map<Object?, Object?>));
+        invoiceDetails.add(CartUser.fromJson(detailData as Map<Object?, Object?>));
       }
     }
 

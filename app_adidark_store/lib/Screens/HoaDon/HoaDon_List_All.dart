@@ -4,6 +4,8 @@ import 'HoaDon_Item.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
 import 'package:app_adidark_store/models/DataInvoice.dart';
 import 'HoaDon_Item.dart';
+import '../../models/ClassUser.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HoaDon_List_All extends StatefulWidget {
   const HoaDon_List_All({super.key});
@@ -14,11 +16,12 @@ class HoaDon_List_All extends StatefulWidget {
 
 class _HoaDon_List_AllState extends State<HoaDon_List_All> {
   List<Invoice> invoices = [];
+  User? user=FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
     super.initState();
-    _fetchInvoices("123");
+    _fetchInvoices(user!.uid);
   }
 
   Future<void> _fetchInvoices(String acc) async {

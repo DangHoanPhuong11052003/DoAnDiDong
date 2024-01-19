@@ -1,10 +1,14 @@
+<<<<<<< Updated upstream:app_adidark_store/lib/Screens/ChiTietHoaDon/ChiTietHoaDon_Item.dart
 
+=======
+import 'package:app_adidark_store/models/ClassCartUser.dart';
+>>>>>>> Stashed changes:app_adidark_store/lib/views/ChiTietHoaDon/ChiTietHoaDon_Item.dart
 import 'package:flutter/material.dart';
 import 'package:app_adidark_store/models/ClassInvoiceDetail.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
 class ChiTietHoaDon_Item extends StatefulWidget {
   const ChiTietHoaDon_Item({super.key , required this.invoicedetail});
-  final InvoiceDetail invoicedetail;
+  final CartUser invoicedetail;
 
 
   @override
