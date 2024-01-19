@@ -4,9 +4,11 @@ import 'package:app_adidark_store/models/ClassCategories.dart';
 import 'package:app_adidark_store/models/ClassManufacturer.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
+import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:app_adidark_store/views/Thanh_Toan/OrderAddressScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../items/ItemSelectedColor.dart';
@@ -14,7 +16,7 @@ import '../../items/ItemSelectedSize.dart';
 import '../../items/TextWrapper.dart';
 
 class ProDetailScreen extends StatefulWidget {
-  const ProDetailScreen({super.key, this.idPro=0});
+  const ProDetailScreen({super.key, this.idPro = 0});
   final int idPro;
 
   @override
@@ -37,59 +39,116 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
   String seledtedColorId = "";
   int seledtedSizeId = -1;
 
-  List<CartUser> allCart=[];
+  List<CartUser> allCart = [];
 
-  Product pro=Product(cate: Categories(id: -1, name: "", status: false), detail: Map(), id: -1, img: List.empty(), manu: Manufacturer(id: -1, name: "", status: false), name: "", price: 0, quantity: 0, status: 0, infor: "");
-  List<Product> pros=[];
+  Product pro = Product(
+      cate: Categories(id: -1, name: "", status: false),
+      detail: Map(),
+      id: -1,
+      img: List.empty(),
+      manu: Manufacturer(id: -1, name: "", status: false),
+      name: "",
+      price: 0,
+      quantity: 0,
+      status: 0,
+      infor: "");
+  List<Product> pros = [];
 
-  _getData() async{
-    Product product=await DataProduct.getDataById(widget.idPro);
+  DatabaseReference _database = FirebaseDatabase.instance.ref();
+  List<Product> products = [];
+
+  _getProData() async {
+    List<Product> pros2 = await DataProduct.getAllData();
     setState(() {
-      pro=product;
+      pros = pros2;
     });
   }
 
-  _updateOrCreateCart() async{
+  _getData() async {
+    Product product = await DataProduct.getDataById(widget.idPro);
+    setState(() {
+      pro = product;
+    });
+  }
+
+  _updateOrCreateCart() async {
     ///--Cần thay đổi bằng tên tài khoản người dùng-----------------
-    User? user=FirebaseAuth.instance.currentUser;
-    List<CartUser> allCart=await DataCartUser.getData(user!.uid);
-    int newIdCart= await DataCartUser.getNewId(user.uid);
+    User? user = FirebaseAuth.instance.currentUser;
+    List<CartUser> allCart = await DataCartUser.getData(user!.uid);
+    int newIdCart = await DataCartUser.getNewId(user.uid);
     setState(() {
-      bool flag=true;
-                        for (var element in allCart) {
-                          if(element.idPro==pro.id&&element.size==seledtedSizeId&&element.color==seledtedColorId){
-                            element.quantity+=sttbuy;
-                            //-------Cần thay đổi bằng tên người dùng------------------------------------
-                            DataCartUser.updateData(element, user.uid);
-                            flag=false;
-                            break;
-                          }
-                        }
-                        if(flag){
-                          //-------Cần thay đổi bằng tên người dùng------------------------------------
-                            CartUser newCart= CartUser(color: seledtedColorId, id: newIdCart, img: pro.img[0].link, manufucturer: pro.manu.name, quantity: sttbuy, size: seledtedSizeId, namePro: pro.name, idPro: pro.id, price: pro.price, cate: pro.cate.name, status: 1);
-                            DataCartUser.CreateData(newCart, user.uid);
-                        }
+      bool flag = true;
+      for (var element in allCart) {
+        if (element.idPro == pro.id &&
+            element.size == seledtedSizeId &&
+            element.color == seledtedColorId) {
+          element.quantity += sttbuy;
+          //-------Cần thay đổi bằng tên người dùng------------------------------------
+          DataCartUser.updateData(element, user.uid);
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        //-------Cần thay đổi bằng tên người dùng------------------------------------
+        CartUser newCart = CartUser(
+            color: seledtedColorId,
+            id: newIdCart,
+            img: pro.img[0].link,
+            manufucturer: pro.manu.name,
+            quantity: sttbuy,
+            size: seledtedSizeId,
+            namePro: pro.name,
+            idPro: pro.id,
+            price: pro.price,
+            cate: pro.cate.name,
+            status: 1);
+        DataCartUser.CreateData(newCart, user.uid);
+      }
     });
   }
 
-  _buyPro() async{
-    User? user=FirebaseAuth.instance.currentUser;
-    int newIdCart= await DataCartUser.getNewId(user!.uid);
-    List<CartUser> carts=[CartUser(color: seledtedColorId, id: newIdCart, img: pro.img[0].link, manufucturer: pro.manu.name, quantity: sttbuy, size: seledtedSizeId, namePro: pro.name, idPro: pro.id, price: pro.price, cate: pro.cate.name, status: 1),];
+  _buyPro() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    int newIdCart = await DataCartUser.getNewId(user!.uid);
+    List<CartUser> carts = [
+      CartUser(
+          color: seledtedColorId,
+          id: newIdCart,
+          img: pro.img[0].link,
+          manufucturer: pro.manu.name,
+          quantity: sttbuy,
+          size: seledtedSizeId,
+          namePro: pro.name,
+          idPro: pro.id,
+          price: pro.price,
+          cate: pro.cate.name,
+          status: 1),
+    ];
     // ignore: use_build_context_synchronously
-    Navigator.push(context, MaterialPageRoute(builder: (context) => OrderAddressScreen(carts: carts),));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OrderAddressScreen(carts: carts),
+        ));
   }
 
   @override
   void initState() {
     _getData();
     super.initState();
+
+    _database.child('Products').onChildAdded.listen((event) {
+      setState(() {
+        _getProData();
+
+        DataNotification.createMainData(pros.last);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -112,10 +171,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                   ),
                   items: [
                     for (var i = 0; i < pro.img.length; i++)
-                      ItemImgPro(
-                        linkImg:
-                          pro.img[i].link
-                      )
+                      ItemImgPro(linkImg: pro.img[i].link)
                   ]),
               Padding(
                 padding: const EdgeInsets.all(8),
@@ -124,7 +180,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                     children: [
                       //Tên
                       Text(
-                         pro.name,
+                        pro.name,
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w800),
                       ),
@@ -215,9 +271,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                       ),
 
                       //Thông tin sản phẩm
-                      TextWrapper(
-                          text:
-                              pro.infor),
+                      TextWrapper(text: pro.infor),
 
                       const Padding(padding: EdgeInsets.only(bottom: 10)),
                       const Divider(
@@ -242,12 +296,14 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                     idSelected: seledtedColorId,
                                     selected: () {
                                       setState(() {
-                                        if (seledtedColorId == pro.detail.keys.elementAt(i)) {
+                                        if (seledtedColorId ==
+                                            pro.detail.keys.elementAt(i)) {
                                           seledtedColorId = "";
-                                          seledtedSizeId=-1;
+                                          seledtedSizeId = -1;
                                         } else {
-                                          seledtedColorId = pro.detail.keys.elementAt(i);
-                                          seledtedSizeId=-1;
+                                          seledtedColorId =
+                                              pro.detail.keys.elementAt(i);
+                                          seledtedSizeId = -1;
                                         }
                                       });
                                     },
@@ -262,15 +318,17 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                     idColor: pro.detail.keys.elementAt(i),
                                     idSelected: seledtedColorId,
                                     selected: () {
-                                      if (seledtedColorId == pro.detail.keys.elementAt(i)) {
+                                      if (seledtedColorId ==
+                                          pro.detail.keys.elementAt(i)) {
                                         setState(() {
                                           seledtedColorId = "";
-                                          seledtedSizeId=-1;
+                                          seledtedSizeId = -1;
                                         });
                                       } else {
                                         setState(() {
-                                          seledtedColorId = pro.detail.keys.elementAt(i);
-                                          seledtedSizeId=-1;
+                                          seledtedColorId =
+                                              pro.detail.keys.elementAt(i);
+                                          seledtedSizeId = -1;
                                         });
                                       }
                                     },
@@ -284,15 +342,17 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                   idColor: pro.detail.keys.elementAt(i),
                                   idSelected: seledtedColorId,
                                   selected: () {
-                                    if (seledtedColorId == pro.detail.keys.elementAt(i)) {
+                                    if (seledtedColorId ==
+                                        pro.detail.keys.elementAt(i)) {
                                       setState(() {
                                         seledtedColorId = "";
-                                        seledtedSizeId=-1;
+                                        seledtedSizeId = -1;
                                       });
                                     } else {
                                       setState(() {
-                                        seledtedColorId = pro.detail.keys.elementAt(i);
-                                        seledtedSizeId=-1;
+                                        seledtedColorId =
+                                            pro.detail.keys.elementAt(i);
+                                        seledtedSizeId = -1;
                                       });
                                     }
                                   },
@@ -309,23 +369,39 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                       Column(
                         children: [
                           //Số lượng Size
-                          for (var i = 0; i < (seledtedColorId!=""?pro.detail[seledtedColorId]!.length:slSize) / 6.ceil(); i++)
+                          for (var i = 0;
+                              i <
+                                  (seledtedColorId != ""
+                                          ? pro.detail[seledtedColorId]!.length
+                                          : slSize) /
+                                      6.ceil();
+                              i++)
                             Row(
                               children: [
                                 for (var j = i * 6;
-                                    j < i * 6 + 6 && j < (seledtedColorId!=""?pro.detail[seledtedColorId]!.length:slSize);
+                                    j < i * 6 + 6 &&
+                                        j <
+                                            (seledtedColorId != ""
+                                                ? pro.detail[seledtedColorId]!
+                                                    .length
+                                                : slSize);
                                     j++)
                                   ItemSelectedSize(
-                                    idSize: (seledtedColorId!=""?pro.detail[seledtedColorId]![j].size:j+30),
+                                    idSize: (seledtedColorId != ""
+                                        ? pro.detail[seledtedColorId]![j].size
+                                        : j + 30),
                                     idSelected: seledtedSizeId,
                                     selected: () {
-                                      if (seledtedSizeId == pro.detail[seledtedColorId]![j].size) {
+                                      if (seledtedSizeId ==
+                                          pro.detail[seledtedColorId]![j]
+                                              .size) {
                                         setState(() {
                                           seledtedSizeId = -1;
                                         });
                                       } else {
                                         setState(() {
-                                          seledtedSizeId = pro.detail[seledtedColorId]![j].size;
+                                          seledtedSizeId = pro
+                                              .detail[seledtedColorId]![j].size;
                                         });
                                       }
                                     },
@@ -355,9 +431,8 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                           sttbuy <= 0) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(snackBarFail);
-                      }
-                      else{
-                       _buyPro();
+                      } else {
+                        _buyPro();
                       }
                     },
                     child: Container(

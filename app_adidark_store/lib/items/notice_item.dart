@@ -95,17 +95,18 @@ class _NoticeItemState extends State<NoticeItem> {
                   child: Container(
                     child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 2, 18, 2),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.network(
-                              pro.img[0].link,
-                              width: MediaQuery.of(context).size.width / 6,
-                              fit: BoxFit.contain,
+                        if (!widget.status)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 2, 18, 2),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.network(
+                                pro.img[0].link,
+                                width: MediaQuery.of(context).size.width / 6,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
-                        ),
                         Container(
                           width: MediaQuery.of(context).size.width / 1.5,
                           child: Column(

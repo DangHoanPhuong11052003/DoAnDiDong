@@ -54,11 +54,11 @@ class DataNotification {
   static Future<void> createMainData(Product pro) async {
     List<MainNotice> lstM = await getMainData();
     final databaseReference = FirebaseDatabase.instance.ref();
-    databaseReference.child('Notification/main').set({
+    databaseReference.child('Notification/main/${lstM.length}').set({
       "content":
           "Sản phấm mới \"${pro.name}\" đã được ra mắt với ưu đãi vô cùng lớn!",
       "date": DateFormat('dd/MM/yyyy').format(DateTime.now()).toString(),
-      "id": lstM.length == 0 ? (lstM.length) : (lstM.length - 1),
+      "id": lstM.length,
       "idProduct": pro.id,
       "status": true,
       "title": title[1],
@@ -67,12 +67,20 @@ class DataNotification {
 
   static Future<void> createPrivateData(Invoice inv) async {
     final _user = FirebaseAuth.instance.currentUser;
+
+    String content = inv.status.substring(1, inv.status.indexOf(" ")) +
+        "được" +
+        inv.status.substring(inv.status.indexOf(" "));
+
     List<PrivateNotice> lstM = await getPrivateData(_user!.uid);
     final databaseReference = FirebaseDatabase.instance.ref();
-    databaseReference.child('Notification/private/${_user.uid}').set({
-      "content": "Đơn hàng của bạn",
+    databaseReference
+        .child(
+            'Notification/private/${_user.uid}/${lstM.length <= 1 ? lstM.length : (lstM.length - 1)}')
+        .set({
+      "content": "Đơn hàng của bạn $content",
       "date": DateFormat('dd/MM/yyyy').format(DateTime.now()).toString(),
-      "id": lstM.length == 0 ? (lstM.length) : (lstM.length - 1),
+      "id": lstM.length <= 1 ? lstM.length : (lstM.length - 1),
       "idProduct": inv.id,
       "status": true,
       "title": title[0],

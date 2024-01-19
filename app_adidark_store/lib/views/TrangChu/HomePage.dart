@@ -1,8 +1,10 @@
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
+import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:app_adidark_store/views/TimKiem/TimKiemScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/items/List_Product_Items.dart';
@@ -27,6 +29,8 @@ class _HomePageFixState extends State<HomePage> {
     }
   }
 
+  DatabaseReference _database = FirebaseDatabase.instance.ref();
+
   List<Product> pros = [];
   _getData() async {
     List<Product> pros2 = await DataProduct.getAllData();
@@ -37,9 +41,17 @@ class _HomePageFixState extends State<HomePage> {
 
   @override
   void initState() {
-    _getData();
+    // _getData();
     super.initState();
     _getNewid();
+
+    _database.child('Products').onChildAdded.listen((event) {
+      setState(() {
+        _getData();
+
+        DataNotification.createMainData(pros.last);
+      });
+    });
   }
 
   final controller = Get.put(ProfileController());

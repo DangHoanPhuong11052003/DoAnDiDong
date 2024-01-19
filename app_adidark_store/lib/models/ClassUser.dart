@@ -27,10 +27,10 @@ class Users {
 
   factory Users.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
-    return Users (
+    return Users(
       id: document.id,
       fullName: data['FullName'],
-      address:data['Address'],
+      address: data['Address'],
       email: data['Email'],
       password: data['Password'],
     );

@@ -1,8 +1,9 @@
 import 'package:app_adidark_store/items/notice_item.dart';
 import 'package:app_adidark_store/models/ClassMainNotice.dart';
 import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
+import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataNotification..dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -31,14 +32,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
     lstMain = lstM;
   }
 
+  List<Product> pros = [];
+
+  _getData() async {
+    List<Product> pros2 = await DataProduct.getAllData();
+    setState(() {
+      pros = pros2;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     _database.child('Notification').onValue.listen((event) {
       setState(() {
         getPrivateData();
+        getMainData();
+      });
+    });
+
+    _database.child('Products').onChildAdded.listen((event) {
+      setState(() {
+        _getData();
+
+        DataNotification.createMainData(pros.last);
+
         getMainData();
       });
     });

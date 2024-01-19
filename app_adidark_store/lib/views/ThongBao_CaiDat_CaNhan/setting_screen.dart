@@ -1,6 +1,10 @@
+import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/ClassUser.dart';
+import 'package:app_adidark_store/models/DataNotification..dart';
+import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -273,6 +277,16 @@ class _AccountSettingState extends State<AccountSetting> {
         });
   }
 
+  DatabaseReference _database = FirebaseDatabase.instance.ref();
+  List<Product> pros = [];
+
+  _getData() async {
+    List<Product> pros2 = await DataProduct.getAllData();
+    setState(() {
+      pros = pros2;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -284,6 +298,14 @@ class _AccountSettingState extends State<AccountSetting> {
         .listen((event) {
       setState(() {
         getUserDetailInfo();
+      });
+    });
+
+    _database.child('Products').onChildAdded.listen((event) {
+      setState(() {
+        _getData();
+
+        DataNotification.createMainData(pros.last);
       });
     });
   }
