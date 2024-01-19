@@ -274,6 +274,21 @@ class _AccountSettingState extends State<AccountSetting> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_user?.uid)
+        .snapshots()
+        .listen((event) {
+      setState(() {
+        getUserDetailInfo();
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

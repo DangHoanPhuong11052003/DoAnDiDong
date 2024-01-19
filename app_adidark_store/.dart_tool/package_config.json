@@ -338,6 +338,12 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///C:/Users/Hao/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "js",
       "rootUri": "file:///C:/Users/Hao/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.6.7",
       "packageUri": "lib/",
@@ -632,7 +638,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-01-18T06:54:21.053128Z",
+  "generated": "2024-01-19T13:44:41.321139Z",
   "generator": "pub",
   "generatorVersion": "3.2.1"
 }

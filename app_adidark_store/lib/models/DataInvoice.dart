@@ -13,7 +13,7 @@ class DataInvoice {
       List<Invoice> invoices = [];
       List<dynamic> values = snapshot.value as List<dynamic>;
       values.forEach((element) {
-        invoices.add(Invoice.fromJson(element as Map<Object?,Object?>));
+        invoices.add(Invoice.fromJson(element as Map<Object?, Object?>));
       });
       return invoices;
     } catch (e) {
@@ -21,6 +21,7 @@ class DataInvoice {
       return [];
     }
   }
+
   //load hoa don the trang thai
   Future<List<Invoice>> loadInvoicesSTT(String acc, String status) async {
     try {
@@ -32,8 +33,9 @@ class DataInvoice {
       List<Invoice> invoices = [];
       List<dynamic> values = snapshot.value as List<dynamic>;
       values.forEach((element) {
-        Invoice invoice = Invoice.fromJson(element as Map<Object?,Object?>);
-        if (invoice.status == status) { // Kiểm tra trạng thái của hóa đơn
+        Invoice invoice = Invoice.fromJson(element as Map<Object?, Object?>);
+        if (invoice.status == status) {
+          // Kiểm tra trạng thái của hóa đơn
           invoices.add(invoice);
         }
       });
@@ -43,8 +45,10 @@ class DataInvoice {
       return [];
     }
   }
-   void updateInvoiceStatus(String acc , int idInvoice,String status) {
-   DatabaseReference invoiceRef = FirebaseDatabase.instance.ref().child('Invoice').child(acc);
+
+  void updateInvoiceStatus(String acc, int idInvoice, String status) {
+    DatabaseReference invoiceRef =
+        FirebaseDatabase.instance.ref().child('Invoice').child(acc);
     invoiceRef.child(idInvoice.toString()).update({
       'status': status,
     }).then((value) {
@@ -52,5 +56,27 @@ class DataInvoice {
     }).catchError((error) {
       print('Lỗi khi cập nhật trạng thái: $error');
     });
+  }
+
+  static Future<List<Invoice>> getDataById(int id, String uid) async {
+    try {
+      DatabaseReference invoiceRef =
+          FirebaseDatabase.instance.ref().child('Invoice');
+
+      DataSnapshot snapshot = (await invoiceRef.child(uid).once()).snapshot;
+
+      List<Invoice> invoices = [];
+      List<dynamic> values = snapshot.value as List<dynamic>;
+      values.forEach((element) {
+        Invoice invoice = Invoice.fromJson(element as Map<Object?, Object?>);
+        if (invoice.id == id) {
+          invoices.add(Invoice.fromJson(element as Map<Object?, Object?>));
+        }
+      });
+      return invoices;
+    } catch (e) {
+      print('Error loading invoices: $e');
+      return [];
+    }
   }
 }
