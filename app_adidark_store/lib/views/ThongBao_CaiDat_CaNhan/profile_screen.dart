@@ -25,7 +25,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String password;
   late String address;
 
-  Users user = Users(fullName: "", email: "", password: "", address: "");
+  Users user =  Users(
+    fullName: "",
+    email: "",
+    password: "",
+    address: {
+      "Home": null,
+      "Company": null,
+      "Etc": null,
+    },
+  );
 
   final _user = FirebaseAuth.instance.currentUser;
 
@@ -63,7 +72,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       fullName: fullName,
       email: email,
       password: password,
-      address: address,
+      address: {
+        "home": null,
+        "company": null,
+        "etc": null,
+      },
     );
   }
 

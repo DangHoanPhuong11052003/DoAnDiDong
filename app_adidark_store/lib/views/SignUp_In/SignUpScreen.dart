@@ -48,7 +48,11 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   void signUp() async {
     final user = Users(
         fullName: nameController.text.trim(),
-        address: addressController.text.trim(),
+        address: {
+          "Home": addressController.text.trim(),
+          "Company": null,
+          "Etc": null,
+        },
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
         agree: isChecked);

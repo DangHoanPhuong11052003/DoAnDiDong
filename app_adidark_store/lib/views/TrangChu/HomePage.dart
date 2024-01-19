@@ -58,62 +58,61 @@ class _HomePageFixState extends State<HomePage> {
                       children: [
                         Expanded(
                             child: FutureBuilder(
-                                future: controller.getUserData(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<void> snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                    case ConnectionState.waiting:
-                                      return Center(
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              10,
-                                          child: null,
-                                        ),
-                                      );
-                                    case ConnectionState.active:
-                                    case ConnectionState.done:
-                                      if (snapshot.hasError) {
-                                        return Text('Error: ${snapshot.error}');
-                                      } else {
-                                        Users user = snapshot.data as Users;
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(height: 20),
-                                            Row(
+                          future: controller.getUserData(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<void> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                              case ConnectionState.waiting:
+                                return Center(
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 10,
+                                    child: null,
+                                  ),
+                                );
+                              case ConnectionState.active:
+                              case ConnectionState.done:
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  Users user = snapshot.data as Users;
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 20),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "Hey ${user.fullName}",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 20),
-                                                      ),
-                                                      Text(
-                                                        "Tìm kiếm đôi giày của bạn",
-                                                        style: TextStyle(
-                                                            fontSize: 19),
-                                                      ),
-                                                    ],
+                                                Text(
+                                                  "Hey ${user.fullName}",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Tìm kiếm đôi giày của bạn",
+                                                  style: TextStyle(
+                                                    fontSize: 19,
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        );
-                                      }
-                                  }
-                                })),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                }
+                            }
+                          },
+                        )),
 
                         ///bỏ icon user
                       ],
