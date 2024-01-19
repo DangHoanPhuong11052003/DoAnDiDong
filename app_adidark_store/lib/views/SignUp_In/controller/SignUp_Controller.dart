@@ -12,6 +12,10 @@ class UserController extends GetxController {
     await userRepo.createUser(user);
   }
 
+  // var userName = ''.obs;
 
-
+  // Future<void> getUserNameFromFirestore(Users user) async {
+  //   userName.value = await userRepo.getUserNameFromFirestore(user);
+  //   userRepo.update();
+  // }
 }

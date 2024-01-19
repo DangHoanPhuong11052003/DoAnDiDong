@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Users {
   final String? id;
   final String? fullName;
@@ -22,5 +24,16 @@ class Users {
       "Password": password,
       'Agree': agree
     };
+  }
+
+  factory Users.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
+    return Users (
+      id: document.id,
+      fullName: data['FullName'],
+      address:data['Address'],
+      email: data['Email'],
+      password: data['Password'],
+    );
   }
 }

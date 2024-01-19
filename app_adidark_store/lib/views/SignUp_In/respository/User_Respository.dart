@@ -7,7 +7,7 @@ import '../controller/SignUp_Failure.dart';
 class UserResposity extends GetxController {
   static UserResposity get instance => Get.find();
   final _auth = FirebaseAuth.instance;
-
+  final _db = FirebaseFirestore.instance;
   // Tạo user
   createUser(Users user) async {
     try {
@@ -29,12 +29,43 @@ class UserResposity extends GetxController {
     CollectionReference ref = firebaseFirestore.collection('Users');
 
     Users newUser = Users(
-      fullName: user.fullName,
-      address: user.address,
-      email: user.email,
-      // password: user.password,
-      agree: user.agree
-    );
+        fullName: user.fullName,
+        address: user.address,
+        email: user.email,
+        // password: user.password,
+        agree: user.agree);
     ref.doc(_user!.uid).set(newUser.toJson());
   }
+
+  Future<Users> getUserDetails(String email) async {
+    final snapshot =
+        await _db.collection('Users').where('Email', isEqualTo: email).get();
+    final userData = snapshot.docs.map((e) => Users.fromSnapshot(e)).single;
+    return userData;
+  }
+
+  Future<Users> allUser() async {
+    final snapshot =
+        await _db.collection('Users').get();
+    final userData = snapshot.docs.map((e) => Users.fromSnapshot(e)).single;
+    return userData;
+  }
+
+//  Future<String> getUserNameFromFirestore(Users user) async {
+//   User? currentUser = FirebaseAuth.instance.currentUser;
+
+//   DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+//       .collection('Users')
+//       .doc(currentUser!.uid)
+//       .get();
+
+//   if (documentSnapshot.exists) {
+//     Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+//     String userName = data['FullName'] as String;
+//     return userName;
+//   } else {
+//     print('Document does not exist in the database');
+//     return '';
+//   }
+// }
 }
