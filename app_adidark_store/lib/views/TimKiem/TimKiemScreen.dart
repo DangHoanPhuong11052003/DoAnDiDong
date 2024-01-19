@@ -1,10 +1,12 @@
 import 'package:app_adidark_store/views/TimKiem/ChiTietTimKiem.dart';
 import 'package:flutter/material.dart';
-import 'package:app_adidark_store/Testdata/component/List_Product_Items.dart';
-import 'package:app_adidark_store/Testdata/model/product.dart';
 
 class TimKiemScreen extends StatefulWidget {
   const TimKiemScreen({super.key});
+
+
+
+
 
   @override
   State<TimKiemScreen> createState() => _TimKiemScreenState();

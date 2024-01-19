@@ -4,7 +4,7 @@ import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import '../../../models/ClassUser.dart';
 import '../respository/Authentication_Repository.dart';
-import '../respository/User_Respository.dart';
+
 
 class LoginController extends GetxController {
   static LoginController get instance => Get.find();

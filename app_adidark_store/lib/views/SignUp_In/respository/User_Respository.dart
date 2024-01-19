@@ -51,21 +51,4 @@ class UserResposity extends GetxController {
     return userData;
   }
 
-//  Future<String> getUserNameFromFirestore(Users user) async {
-//   User? currentUser = FirebaseAuth.instance.currentUser;
-
-//   DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-//       .collection('Users')
-//       .doc(currentUser!.uid)
-//       .get();
-
-//   if (documentSnapshot.exists) {
-//     Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
-//     String userName = data['FullName'] as String;
-//     return userName;
-//   } else {
-//     print('Document does not exist in the database');
-//     return '';
-//   }
-// }
 }
