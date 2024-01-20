@@ -9,21 +9,23 @@ import '../Thanh_Toan/OrderAddressScreen.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key,});
+  const CartScreen({
+    super.key,
+  });
 
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
-  List<CartUser> lstCarts=[];
+  List<CartUser> lstCarts = [];
   List lst_vtSum = [];
   double totalPrice = 0;
   int slspchon = 0;
   bool isSelectedAll = false;
-  User? user=FirebaseAuth.instance.currentUser;
-  String acc="";
-  
+  User? user = FirebaseAuth.instance.currentUser;
+  String acc = "";
+
   Future<bool> checkInternetConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
@@ -33,67 +35,73 @@ class _CartScreenState extends State<CartScreen> {
     }
     return false;
   }
-  
 
-  _setupData() async{
-    if(await checkInternetConnection()){
-      List<CartUser> lstCartsData=await DataCartUser.getData(acc);
+  _setupData() async {
+    if (await checkInternetConnection()) {
+      List<CartUser> lstCartsData = await DataCartUser.getData(acc);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      if(lstCartsData.isNotEmpty){
+      if (lstCartsData.isNotEmpty) {
         await prefs.setInt('lstLenght', lstCartsData.length);
-        for (var i=0 ;i< lstCartsData.length;i++) {
+        for (var i = 0; i < lstCartsData.length; i++) {
           await prefs.setInt('cartId$i', lstCartsData[i].id);
           await prefs.setInt('cartIdPro$i', lstCartsData[i].idPro);
           await prefs.setString('cartCate$i', lstCartsData[i].cate);
           await prefs.setString('cartColor$i', lstCartsData[i].color);
           await prefs.setString('cartImg$i', lstCartsData[i].img);
-          await prefs.setString('cartManufucturer$i', lstCartsData[i].manufucturer);
+          await prefs.setString(
+              'cartManufucturer$i', lstCartsData[i].manufucturer);
           await prefs.setString('cartNamePro$i', lstCartsData[i].namePro);
           await prefs.setDouble('cartPrice$i', lstCartsData[i].price);
           await prefs.setInt('cartQuantity$i', lstCartsData[i].quantity);
           await prefs.setInt('cartSize$i', lstCartsData[i].size);
-        }}
-      if(mounted){
-        setState(() {
-        lstCarts=lstCartsData;
-      });
-      }
-      }
-    else{
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      int? sl=prefs.getInt('lstLenght');
-       if(mounted){
-        setState(() {
-        if(sl!>0){
-        for(int i=0;i<sl;i++){
-          CartUser cart=CartUser(color: prefs.getString('cartColor$i')??"", id: prefs.getInt('cartId$i')??-1, img: prefs.getString('cartImg$i')??"", manufucturer: prefs.getString('cartManufucturer$i')??"", quantity: prefs.getInt('cartQuantity$i')??-1, size:  prefs.getInt('cartSize$i')??-1, namePro: prefs.getString('cartNamePro$i')??"", idPro:  prefs.getInt('cartIdPro$i')??-1, price:  prefs.getDouble('cartPrice$i')??-1, cate: prefs.getString('cartCate$i')??"", status: 1);
-          lstCarts.add(cart);
         }
       }
-      });
+      if (mounted) {
+        setState(() {
+          lstCarts = lstCartsData;
+        });
       }
-      
+    } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? sl = prefs.getInt('lstLenght');
+      if (mounted) {
+        setState(() {
+          if (sl! > 0) {
+            for (int i = 0; i < sl; i++) {
+              CartUser cart = CartUser(
+                  color: prefs.getString('cartColor$i') ?? "",
+                  id: prefs.getInt('cartId$i') ?? -1,
+                  img: prefs.getString('cartImg$i') ?? "",
+                  manufucturer: prefs.getString('cartManufucturer$i') ?? "",
+                  quantity: prefs.getInt('cartQuantity$i') ?? -1,
+                  size: prefs.getInt('cartSize$i') ?? -1,
+                  namePro: prefs.getString('cartNamePro$i') ?? "",
+                  idPro: prefs.getInt('cartIdPro$i') ?? -1,
+                  price: prefs.getDouble('cartPrice$i') ?? -1,
+                  cate: prefs.getString('cartCate$i') ?? "",
+                  status: 1);
+              lstCarts.add(cart);
+            }
+          }
+        });
+      }
     }
-
-    
   }
 
-  _updatePrice(){
-    totalPrice=0;
+  _updatePrice() {
+    totalPrice = 0;
     for (var element in lstCarts) {
-      if(lst_vtSum.contains(element.id)){
-        totalPrice+=element.price*element.quantity;
+      if (lst_vtSum.contains(element.id)) {
+        totalPrice += element.price * element.quantity;
       }
     }
   }
-
- 
 
   @override
   void initState() {
-    acc= user!.uid;
+    acc = user!.uid;
     super.initState();
-     _setupData();
+    _setupData();
   }
 
   @override
@@ -102,49 +110,54 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Giỏ hàng", style: TextStyle(fontWeight: FontWeight.w800),),
+        title: Text(
+          "Giỏ hàng",
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
         centerTitle: true,
       ),
-      body: lstCarts.isEmpty?
-            Container(
+      body: lstCarts.isEmpty
+          ? Container(
               alignment: Alignment.center,
-              child: Text("Hiện chưa có sản phẩm nào!",style: TextStyle(fontSize: 25),)
-            ):
-            ListView.builder(
-        padding: EdgeInsets.all(10),
-        itemCount: lstCarts.length,
-        itemBuilder: (context, index) {
-          return ItemCart(
-            setupData: () {
-              _setupData();
-            },
-            updatePrice: () {
-              setState(() {
-                _updatePrice();
-              });
-            },
-            acc: acc,
-            cart: lstCarts[index],
-            lst_vtSelected: lst_vtSum,
-            sumPrice: () {
-              setState(() {
-                lst_vtSum.add(lstCarts[index].id);
-                slspchon++;
-                if (lst_vtSum.length == lstCarts.length) {
-                  isSelectedAll = true;
-                }
-              });
-            },
-            minusPrice: () {
-              setState(() {
-                lst_vtSum.remove(lstCarts[index].id);
-                slspchon--;
-                isSelectedAll = false;
-              });
-            },
-          );
-        },
-      ),
+              child: Text(
+                "Hiện chưa có sản phẩm nào!",
+                style: TextStyle(fontSize: 25),
+              ))
+          : ListView.builder(
+              padding: EdgeInsets.all(10),
+              itemCount: lstCarts.length,
+              itemBuilder: (context, index) {
+                return ItemCart(
+                  setupData: () {
+                    _setupData();
+                  },
+                  updatePrice: () {
+                    setState(() {
+                      _updatePrice();
+                    });
+                  },
+                  acc: acc,
+                  cart: lstCarts[index],
+                  lst_vtSelected: lst_vtSum,
+                  sumPrice: () {
+                    setState(() {
+                      lst_vtSum.add(lstCarts[index].id);
+                      slspchon++;
+                      if (lst_vtSum.length == lstCarts.length) {
+                        isSelectedAll = true;
+                      }
+                    });
+                  },
+                  minusPrice: () {
+                    setState(() {
+                      lst_vtSum.remove(lstCarts[index].id);
+                      slspchon--;
+                      isSelectedAll = false;
+                    });
+                  },
+                );
+              },
+            ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(10),
         width: 200,
@@ -156,7 +169,7 @@ class _CartScreenState extends State<CartScreen> {
                 setState(() {
                   isSelectedAll = !isSelectedAll;
                   if (isSelectedAll) {
-                     for (var element in lstCarts) {
+                    for (var element in lstCarts) {
                       lst_vtSum.add(element.id);
                     }
                     slspchon = lstCarts.length;
@@ -214,39 +227,39 @@ class _CartScreenState extends State<CartScreen> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
-            GestureDetector(
-              onTap: () {
-                if (slspchon > 0) {
-                  List<CartUser> lstSelectedCart=[];
-                  setState(() {
-                    for (int element in lst_vtSum) {
-                      lstSelectedCart.add(lstCarts[element]);
-                    }
-                  });
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OrderAddressScreen(carts: lstSelectedCart,)));
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: slspchon == 0
-                        ? Colors.grey
-                        : const  Color(0xFFADDDFF)),
-                height: 50,
-                width: 200,
-                child: const Text(
-                  "ĐẶT HÀNG",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 1.0),
+              child: Center(
+                  child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                elevation: 5.0,
+                height: 45,
+                minWidth: double.infinity,
+                onPressed: () {
+                  if (slspchon > 0) {
+                    List<CartUser> lstSelectedCart = [];
+                    setState(() {
+                      for( var value in lstCarts){
+                        if(lst_vtSum.contains(value.id)){
+                          lstSelectedCart.add(value);
+                        }
+                      }
+                    });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OrderAddressScreen(
+                                  carts: lstSelectedCart,
+                                )));
+                  }
+                },
+                child: Text(
+                  "Đăng xuất",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
-              ),
+                color: slspchon == 0 ? Colors.grey : const Color(0xFFADDDFF),
+              )),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
           ],

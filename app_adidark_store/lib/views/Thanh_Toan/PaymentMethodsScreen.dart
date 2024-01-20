@@ -20,6 +20,9 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   TextEditingController ma=TextEditingController();
   TextEditingController hoTen=TextEditingController();
   bool isExpanded=false;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +78,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               ],
             ),
             if(isExpanded)
+              
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
