@@ -23,23 +23,22 @@ class UserResposity extends GetxController {
   }
 
   // Lưu trữ vào firestore
-postDetailsToFirestore(Users user) async {
-  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  var _user = _auth.currentUser;
-  CollectionReference usersRef = firebaseFirestore.collection('Users');
+  postDetailsToFirestore(Users user) async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    var _user = _auth.currentUser;
+    CollectionReference usersRef = firebaseFirestore.collection('Users');
 
+    Map<String, dynamic> userData = {
+      "FullName": user.fullName,
+      "Address": user.address,
+      "Email": user.email,
+      "Password": user.password,
+      "Agree": user.agree,
+    };
 
+    await usersRef.doc(_user!.uid).set(userData);
+  }
 
-  Map<String, dynamic> userData = {
-    "fullName": user.fullName,
-    "address": user.address,
-    "email": user.email,
-    "password": user.password,
-    "agree": user.agree,
-  };
-
-  await usersRef.doc(_user!.uid).set(userData);
-}
   // lấy 1 user
   Future<Users> getUserDetails(String email) async {
     final snapshot =
@@ -50,10 +49,8 @@ postDetailsToFirestore(Users user) async {
 
   // lấy tất cả
   Future<Users> allUser() async {
-    final snapshot =
-        await _db.collection('Users').get();
+    final snapshot = await _db.collection('Users').get();
     final userData = snapshot.docs.map((e) => Users.fromSnapshot(e)).single;
     return userData;
   }
-
 }

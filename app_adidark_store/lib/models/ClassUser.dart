@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Users {
-   String? id;
-   String? fullName;
-   Map<String, dynamic>? address;
-   String email;
-   String? password;
-   bool? agree;
+  String? id;
+  String? fullName;
+  Map<String, dynamic>? address;
+  String email;
+  String? password;
+  bool? agree;
 
-   Users({
+  Users({
     this.id,
     this.fullName,
     this.address,

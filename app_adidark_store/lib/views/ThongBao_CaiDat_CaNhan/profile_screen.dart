@@ -27,9 +27,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String email;
   late String fullName;
   late String password;
-  late String address;
+  late Map<String, dynamic> address;
+  late String home;
+  late String company;
+  late String etc;
 
-  Users user =  Users(
+  Users user = Users(
     fullName: "",
     email: "",
     password: "",
@@ -44,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> getUserDetailInfo() async {
     final SharedPreferences prefs = await _prefs;
+
     DocumentReference<Map<String, dynamic>> documentReference =
         FirebaseFirestore.instance.collection("Users").doc(_user?.uid);
 
@@ -58,6 +62,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Map<String, dynamic> documentData = documentSnapshot.data()!;
 
         documentData.forEach((key, value) async {
+          if (key != "Address") {
+            await prefs.setString(key, value);
+          }
+        });
+
+        address.addAll(documentData["Address"]);
+
+        address.forEach((key, value) async {
           await prefs.setString(key, value);
         });
       } else {
@@ -70,16 +82,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     email = prefs.getString("Email") ?? "";
     fullName = prefs.getString("FullName") ?? "";
     password = prefs.getString("Password") ?? "";
-    address = prefs.getString("Address") ?? "";
+    home = prefs.getString("Home") ?? "";
+    company = prefs.getString("Company") ?? "";
+    etc = prefs.getString("Etc") ?? "";
 
     user = Users(
       fullName: fullName,
       email: email,
       password: password,
       address: {
-        "home": null,
-        "company": null,
-        "etc": null,
+        "Home": home,
+        "Company": company,
+        "Etc": etc,
       },
     );
   }
@@ -89,7 +103,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await prefs.remove("FullName");
     await prefs.remove("Email");
     await prefs.remove("Password");
-    await prefs.remove("Address");
+    await prefs.remove("Home");
+    await prefs.remove("Company");
+    await prefs.remove("Etc");
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
       context,
