@@ -64,10 +64,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         documentData.forEach((key, value) async {
           if (key != "Address") {
             await prefs.setString(key, value);
+          } else if (key == "Address") {
+            address = value;
           }
         });
-
-        address.addAll(documentData["Address"]);
 
         address.forEach((key, value) async {
           await prefs.setString(key, value);

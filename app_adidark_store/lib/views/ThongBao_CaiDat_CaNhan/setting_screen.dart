@@ -58,11 +58,7 @@ class _AccountSettingState extends State<AccountSetting> {
       var update = users
           .doc(_user?.uid)
           .update({
-            "Address": [
-              {key: value},
-              {"Company": company},
-              {"Etc": etc}
-            ]
+            "Address": {key: value, "Company": company, "Etc": etc}
           })
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
@@ -70,11 +66,7 @@ class _AccountSettingState extends State<AccountSetting> {
       var update = users
           .doc(_user?.uid)
           .update({
-            "Address": [
-              {"Home": home},
-              {key: value},
-              {"Etc": etc}
-            ]
+            "Address": {"Home": home, key: value, "Etc": etc}
           })
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
@@ -82,11 +74,7 @@ class _AccountSettingState extends State<AccountSetting> {
       var update = users
           .doc(_user?.uid)
           .update({
-            "Address": [
-              {"Home": home},
-              {"Company": company},
-              {key: value}
-            ]
+            "Address": {"Home": home, "Company": company, key: value}
           })
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
@@ -134,10 +122,10 @@ class _AccountSettingState extends State<AccountSetting> {
         documentData.forEach((key, value) async {
           if (key != "Address") {
             await prefs.setString(key, value);
+          } else if (key == "Address") {
+            address = value;
           }
         });
-
-        address.addAll(documentData["Address"]);
 
         address.forEach((key, value) async {
           await prefs.setString(key, value);
@@ -161,9 +149,9 @@ class _AccountSettingState extends State<AccountSetting> {
       email: email,
       password: password,
       address: {
-        "home": home,
-        "company": company,
-        "etc": etc,
+        "Home": home,
+        "Company": company,
+        "Etc": etc,
       },
     );
   }
@@ -323,7 +311,7 @@ class _AccountSettingState extends State<AccountSetting> {
                           onPressed: () {
                             setState(() {
                               updateUser("Home", txtAddress.text.trim());
-                              user.address = user.address?["Home"];
+                              user.address?["Home"] = home;
                               Navigator.pop(context);
                             });
                           },
@@ -359,7 +347,7 @@ class _AccountSettingState extends State<AccountSetting> {
                           onPressed: () {
                             setState(() {
                               updateUser("Company", txtAddress.text.trim());
-                              user.address = user.address?["Company"];
+                              user.address?["Company"] = company;
                               Navigator.pop(context);
                             });
                           },
@@ -395,7 +383,7 @@ class _AccountSettingState extends State<AccountSetting> {
                           onPressed: () {
                             setState(() {
                               updateUser("Etc", txtAddress.text.trim());
-                              user.address = user.address?["Etc"];
+                              user.address?["Etc"] = etc;
                               Navigator.pop(context);
                             });
                           },

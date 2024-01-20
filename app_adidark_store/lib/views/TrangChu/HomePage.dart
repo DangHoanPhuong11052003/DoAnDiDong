@@ -1,8 +1,10 @@
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
+import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:app_adidark_store/views/TimKiem/TimKiemScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/items/List_Product_Items.dart';
@@ -35,6 +37,7 @@ class _HomePageFixState extends State<HomePage> {
     final searchMessage = prefs.getString('searchMessage') ?? "";
   }
 
+  DatabaseReference _database = FirebaseDatabase.instance.ref();
   List<Product> pros = [];
   _getData() async {
     List<Product> pros2 = await DataProduct.getAllData();
@@ -49,6 +52,14 @@ class _HomePageFixState extends State<HomePage> {
     super.initState();
     _getNewid();
     userData = controller.getUserData();
+
+    _database.child('Products').onChildAdded.listen((event) {
+      setState(() {
+        _getData();
+
+        DataNotification.createMainData(pros.last);
+      });
+    });
   }
 
   final controller = Get.put(ProfileController());
@@ -68,8 +79,8 @@ class _HomePageFixState extends State<HomePage> {
                         Expanded(
                             child: FutureBuilder(
                           future: userData!.catchError((error) {
-    return _getUser();
-  }),
+                            return _getUser();
+                          }),
                           builder: (BuildContext context,
                               AsyncSnapshot<void> snapshot) {
                             switch (snapshot.connectionState) {
