@@ -48,7 +48,6 @@ class _HomePageFixState extends State<HomePage> {
 
   @override
   void initState() {
-    _getData();
     super.initState();
     _getNewid();
     userData = controller.getUserData();
