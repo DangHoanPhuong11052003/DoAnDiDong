@@ -22,6 +22,7 @@ class _CartScreenState extends State<CartScreen> {
   bool isSelectedAll = false;
   User? user=FirebaseAuth.instance.currentUser;
   String acc="";
+  
   Future<bool> checkInternetConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
