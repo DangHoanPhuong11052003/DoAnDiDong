@@ -1,4 +1,5 @@
 import 'package:app_adidark_store/items/auth_page.dart';
+import 'package:app_adidark_store/views/Gio_Hang/CartScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/respository/Authentication_Repository.dart';
 import 'package:app_adidark_store/views/ThongBao_CaiDat_CaNhan/profile_screen.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-      home: const ProfileScreen(),
+      home: const CartScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

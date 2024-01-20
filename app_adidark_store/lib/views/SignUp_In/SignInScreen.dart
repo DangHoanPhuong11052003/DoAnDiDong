@@ -26,7 +26,7 @@ class _Login_ScreenState extends State<Login_Screen>
   final TextEditingController passwordController = new TextEditingController();
   bool visible = false;
   late AnimationController controller;
-  bool isAnimationCompleted = false;
+  
 
   @override
   void initState() {
