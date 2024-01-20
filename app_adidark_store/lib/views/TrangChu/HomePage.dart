@@ -1,15 +1,14 @@
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
-import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:app_adidark_store/views/TimKiem/TimKiemScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/items/List_Product_Items.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/ClassUser.dart';
 import '../SignUp_In/controller/ProfileController.dart';
 
@@ -21,6 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageFixState extends State<HomePage> {
+  Future<Users>? userData;
   _getNewid() async {
     User? user = FirebaseAuth.instance.currentUser;
     bool flag = await DataCartUser.checkUs(user!.uid);
@@ -29,7 +29,11 @@ class _HomePageFixState extends State<HomePage> {
     }
   }
 
-  DatabaseReference _database = FirebaseDatabase.instance.ref();
+  _getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final greeting = prefs.getString('greeting') ?? "";
+    final searchMessage = prefs.getString('searchMessage') ?? "";
+  }
 
   List<Product> pros = [];
   _getData() async {
@@ -41,17 +45,10 @@ class _HomePageFixState extends State<HomePage> {
 
   @override
   void initState() {
-    // _getData();
+    _getData();
     super.initState();
     _getNewid();
-
-    _database.child('Products').onChildAdded.listen((event) {
-      setState(() {
-        _getData();
-
-        DataNotification.createMainData(pros.last);
-      });
-    });
+    userData = controller.getUserData();
   }
 
   final controller = Get.put(ProfileController());
@@ -65,12 +62,14 @@ class _HomePageFixState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
                             child: FutureBuilder(
-                          future: controller.getUserData(),
+                          future: userData!.catchError((error) {
+    return _getUser();
+  }),
                           builder: (BuildContext context,
                               AsyncSnapshot<void> snapshot) {
                             switch (snapshot.connectionState) {

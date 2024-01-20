@@ -1,12 +1,8 @@
 import 'dart:math';
 
 import 'package:app_adidark_store/models/ClassCartUser.dart';
-import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
-import 'package:app_adidark_store/models/DataNotification..dart';
-import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../../items/ItemCart.dart';
 import '../Thanh_Toan/OrderAddressScreen.dart';
@@ -49,29 +45,11 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  DatabaseReference _database = FirebaseDatabase.instance.ref();
-
-  List<Product> pros = [];
-  _getData() async {
-    List<Product> pros2 = await DataProduct.getAllData();
-    setState(() {
-      pros = pros2;
-    });
-  }
-
   @override
   void initState() {
     acc = user!.uid;
     super.initState();
     _setupData();
-
-    _database.child('Products').onChildAdded.listen((event) {
-      setState(() {
-        _getData();
-
-        DataNotification.createMainData(pros.last);
-      });
-    });
   }
 
   @override
@@ -197,40 +175,37 @@ class _CartScreenState extends State<CartScreen> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
-            GestureDetector(
-              onTap: () {
-                if (slspchon > 0) {
-                  List<CartUser> lstSelectedCart = [];
-                  setState(() {
-                    for (int element in lst_vtSum) {
-                      lstSelectedCart.add(lstCarts[element]);
-                    }
-                  });
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OrderAddressScreen(
-                                carts: lstSelectedCart,
-                              )));
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color:
-                        slspchon == 0 ? Colors.grey : const Color(0xFFADDDFF)),
-                height: 50,
-                width: 200,
-                child: const Text(
-                  "ĐẶT HÀNG",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Center(
+                  child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                elevation: 5.0,
+                height: 45,
+                minWidth: double.infinity,
+                onPressed: () {
+                  if (slspchon > 0) {
+                    List<CartUser> lstSelectedCart = [];
+                    setState(() {
+                      for (int element in lst_vtSum) {
+                        lstSelectedCart.add(lstCarts[element]);
+                      }
+                    });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OrderAddressScreen(
+                                  carts: lstSelectedCart,
+                                )));
+                  }
+                },
+                child: Text(
+                  "Đặt hàng",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
-              ),
+                color: slspchon == 0 ? Colors.grey : const Color(0xFFADDDFF),
+              )),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
           ],

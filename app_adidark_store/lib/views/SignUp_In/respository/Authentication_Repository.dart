@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/controller/SignUp_Failure.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,7 +28,7 @@ class Auth_Resposity extends GetxController {
   _setInitialScreen(User? user) {
     user == null
         ? Get.offAll(() => const Login_Screen())
-        : Get.offAll(() => const HomePage());
+        : Get.offAll(() => const BottomMenu());
   }
 
   loginAccount(Users user) async {
