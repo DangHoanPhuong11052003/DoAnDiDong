@@ -33,9 +33,11 @@ class _HomePageFixState extends State<HomePage> {
   List<Product> pros = [];
   _getData() async {
     List<Product> pros2 = await DataProduct.getAllData();
-    setState(() {
+    if (mounted) {
+      setState(() {
       pros = pros2;
     });
+    }
   }
 
   @override
