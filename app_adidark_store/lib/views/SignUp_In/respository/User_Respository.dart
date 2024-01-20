@@ -7,7 +7,7 @@ import '../controller/SignUp_Failure.dart';
 class UserResposity extends GetxController {
   static UserResposity get instance => Get.find();
   final _auth = FirebaseAuth.instance;
-
+  final _db = FirebaseFirestore.instance;
   // Tạo user
   createUser(Users user) async {
     try {
@@ -26,15 +26,31 @@ class UserResposity extends GetxController {
   postDetailsToFirestore(Users user) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var _user = _auth.currentUser;
-    CollectionReference ref = firebaseFirestore.collection('Users');
+    CollectionReference usersRef = firebaseFirestore.collection('Users');
 
-    Users newUser = Users(
-      fullName: user.fullName,
-      address: user.address,
-      email: user.email,
-      // password: user.password,
-      agree: user.agree
-    );
-    ref.doc(_user!.uid).set(newUser.toJson());
+    Map<String, dynamic> userData = {
+      "FullName": user.fullName,
+      "Address": user.address,
+      "Email": user.email,
+      "Password": user.password,
+      "Agree": user.agree,
+    };
+
+    await usersRef.doc(_user!.uid).set(userData);
+  }
+
+  // lấy 1 user
+  Future<Users> getUserDetails(String email) async {
+    final snapshot =
+        await _db.collection('Users').where('Email', isEqualTo: email).get();
+    final userData = snapshot.docs.map((e) => Users.fromSnapshot(e)).single;
+    return userData;
+  }
+
+  // lấy tất cả
+  Future<Users> allUser() async {
+    final snapshot = await _db.collection('Users').get();
+    final userData = snapshot.docs.map((e) => Users.fromSnapshot(e)).single;
+    return userData;
   }
 }

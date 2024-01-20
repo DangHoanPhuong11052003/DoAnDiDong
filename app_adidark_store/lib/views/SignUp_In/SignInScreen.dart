@@ -3,7 +3,6 @@ import 'package:app_adidark_store/views/SignUp_In/SignUpScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/VerifiedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/ClassUser.dart';
@@ -19,6 +18,7 @@ class Login_Screen extends StatefulWidget {
 
 class _Login_ScreenState extends State<Login_Screen>
     with SingleTickerProviderStateMixin {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final _frmkey = GlobalKey<FormState>();
   final _auth = Get.put(LoginController());
   final TextEditingController nameController = new TextEditingController();
@@ -26,14 +26,13 @@ class _Login_ScreenState extends State<Login_Screen>
   final TextEditingController passwordController = new TextEditingController();
   bool visible = false;
   late AnimationController controller;
+  bool isAnimationCompleted = false;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-      duration: Duration(seconds: 3),
-      vsync: this,
-    );
+    controller =
+        AnimationController(duration: const Duration(seconds: 3), vsync: this);
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
         Navigator.pop(context);
@@ -48,21 +47,25 @@ class _Login_ScreenState extends State<Login_Screen>
     super.dispose();
   }
 
+
   bool isValidEmail(String email) {
     final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
     return emailRegex.hasMatch(email);
   }
 
   void _signIn() async {
+    final SharedPreferences prefs = await _prefs;
     if (_frmkey.currentState!.validate()) {
       final user = Users(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
       try {
-        await _auth.loginAccount(user);
         await showDoneDialog();
-        _auth.route(context, const BottomMenu());
+        await _auth.loginAccount(user);
+        _auth.route(navigator!, const BottomMenu());
+        prefs.setString("Email", emailController.text.trim());
+        prefs.setString("Password", passwordController.text.trim());
         print('Success');
       } on SignUp_AccountFailure catch (e) {
         await showFailureDialog(message: e.message);

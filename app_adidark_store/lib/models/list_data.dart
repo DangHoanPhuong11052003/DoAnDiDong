@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:app_adidark_store/Testdata/model/category.dart';
-import 'package:app_adidark_store/Testdata/model/info_reader.dart';
-import 'package:app_adidark_store/Testdata/model/product.dart';
+import 'package:app_adidark_store/models/category.dart';
+import 'package:app_adidark_store/models/info_reader.dart';
+import 'package:app_adidark_store/models/product.dart';
+
 
 class ListData {
   static List<Category> categories = [];

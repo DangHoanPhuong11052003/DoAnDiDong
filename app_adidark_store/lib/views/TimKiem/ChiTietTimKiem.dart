@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:app_adidark_store/Testdata/component/List_Product_Items.dart';
-import 'package:app_adidark_store/Testdata/model/product.dart';
-import 'package:app_adidark_store/Testdata/model/list_data.dart';
+
+import '../../models/list_data.dart';
+import '../../models/product.dart';
 
 class ChiTietTimKiemScreen extends StatefulWidget {
   const ChiTietTimKiemScreen({super.key});
@@ -234,7 +234,8 @@ class _ChiTietTimKiemScreenState extends State<ChiTietTimKiemScreen> {
               ),
               SizedBox(height: 20,),
               Text("Kết quả tìm kiếm cho sản phẩm ABC",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
-              ListProduct(products: products),
+              ///ListProduct(products: products),
+              
               
 
             ],

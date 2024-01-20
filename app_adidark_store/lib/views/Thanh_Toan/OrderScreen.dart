@@ -5,6 +5,9 @@ import '../../items/ItemProOrder.dart';
 import '../../models/ClassAddress.dart';
 import 'OrderAddressScreen.dart';
 import 'PaymentMethodsScreen.dart';
+import '../../models/DataInvoice.dart';
+import '../../models/ClassUser.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderScreen extends StatefulWidget {
   OrderScreen({super.key, required this.address, required this.payMethod, this.carts});
@@ -18,6 +21,9 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  DateTime now = DateTime.now();
+  late String Oderday = '${now.day}/${now.month}/${now.year}';
+  User? user=FirebaseAuth.instance.currentUser;
   var result;
   double total=0;
   @override
@@ -231,7 +237,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 Text("Tổng thanh toán",
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Text("${1000000 * 3 + 25000} VND",
+                Text("${total + 25000} VND",
                     style: TextStyle(fontSize: 18, color: Colors.red))
               ],
             ),
@@ -239,7 +245,9 @@ class _OrderScreenState extends State<OrderScreen> {
               padding: EdgeInsets.only(right: 10),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () async {
+                 DataInvoice().addInvoice("Đang xác nhận", await DataInvoice().getNewId(user!.uid), user!.uid, Oderday, Oderday, total, widget.address!.detail, widget.carts??List.empty());
+              },
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(

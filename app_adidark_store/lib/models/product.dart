@@ -1,4 +1,5 @@
-import 'package:app_adidark_store/Testdata/model/category.dart';
+
+import 'package:app_adidark_store/models/category.dart';
 
 class Product {
   final int id;
