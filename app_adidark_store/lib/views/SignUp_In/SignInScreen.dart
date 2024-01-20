@@ -44,8 +44,8 @@ class _Login_ScreenState extends State<Login_Screen>
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
+    controller.dispose();
   }
 
   bool isValidEmail(String email) {

@@ -27,9 +27,7 @@ postDetailsToFirestore(Users user) async {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   var _user = _auth.currentUser;
   CollectionReference usersRef = firebaseFirestore.collection('Users');
-
-
-
+  
   Map<String, dynamic> userData = {
     "fullName": user.fullName,
     "address": user.address,

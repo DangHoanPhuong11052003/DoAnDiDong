@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/items/List_Product_Items.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/ClassUser.dart';
 import '../SignUp_In/controller/ProfileController.dart';
 
@@ -19,12 +20,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageFixState extends State<HomePage> {
+  Future<Users>? userData;
   _getNewid() async {
     User? user = FirebaseAuth.instance.currentUser;
     bool flag = await DataCartUser.checkUs(user!.uid);
     if (!flag) {
       DataCartUser.createNewCartUS(user.uid);
     }
+  }
+
+  _getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final greeting = prefs.getString('greeting') ?? "";
+    final searchMessage = prefs.getString('searchMessage') ?? "";
   }
 
   List<Product> pros = [];
@@ -40,6 +48,7 @@ class _HomePageFixState extends State<HomePage> {
     _getData();
     super.initState();
     _getNewid();
+    userData = controller.getUserData();
   }
 
   final controller = Get.put(ProfileController());
@@ -53,12 +62,14 @@ class _HomePageFixState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
                             child: FutureBuilder(
-                          future: controller.getUserData(),
+                          future: userData!.catchError((error) {
+    return _getUser();
+  }),
                           builder: (BuildContext context,
                               AsyncSnapshot<void> snapshot) {
                             switch (snapshot.connectionState) {
