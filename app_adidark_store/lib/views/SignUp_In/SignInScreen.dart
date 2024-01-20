@@ -26,14 +26,13 @@ class _Login_ScreenState extends State<Login_Screen>
   final TextEditingController passwordController = new TextEditingController();
   bool visible = false;
   late AnimationController controller;
+  bool isAnimationCompleted = false;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-      duration: Duration(seconds: 3),
-      vsync: this,
-    );
+    controller =
+        AnimationController(duration: const Duration(seconds: 3), vsync: this);
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
         Navigator.pop(context);
@@ -44,9 +43,10 @@ class _Login_ScreenState extends State<Login_Screen>
 
   @override
   void dispose() {
-    super.dispose();
     controller.dispose();
+    super.dispose();
   }
+
 
   bool isValidEmail(String email) {
     final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
@@ -61,9 +61,9 @@ class _Login_ScreenState extends State<Login_Screen>
         password: passwordController.text.trim(),
       );
       try {
-        await _auth.loginAccount(user);
         await showDoneDialog();
-        _auth.route(context, const BottomMenu());
+        await _auth.loginAccount(user);
+        _auth.route(navigator!, const BottomMenu());
         prefs.setString("Email", emailController.text.trim());
         prefs.setString("Password", passwordController.text.trim());
         print('Success');

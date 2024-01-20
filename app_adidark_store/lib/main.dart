@@ -24,8 +24,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
       home: const Login_Screen(),
-      // email: tự đăng ký
-      // pass: tự đăng -up
       debugShowCheckedModeBanner: false,
     );
   }
