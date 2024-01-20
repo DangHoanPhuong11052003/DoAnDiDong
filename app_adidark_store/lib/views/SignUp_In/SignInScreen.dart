@@ -4,6 +4,7 @@ import 'package:app_adidark_store/views/SignUp_In/VerifiedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/ClassUser.dart';
 import 'controller/SignIn_Controller.dart';
 import 'controller/SignUp_Failure.dart';
@@ -64,6 +65,7 @@ class _Login_ScreenState extends State<Login_Screen>
         await _auth.loginAccount(user);
         await showDoneDialog();
         _auth.route(context, const BottomMenu());
+        prefs.setString("Email", emailController.text.trim());
         prefs.setString("Password", passwordController.text.trim());
         print('Success');
       } on SignUp_AccountFailure catch (e) {
