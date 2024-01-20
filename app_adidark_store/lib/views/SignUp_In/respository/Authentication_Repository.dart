@@ -13,7 +13,6 @@ class Auth_Resposity extends GetxController {
   static Auth_Resposity get instance => Get.find();
 
   final _auth = FirebaseAuth.instance;
-  final deviceStorage = GetStorage();
 
   late Rx<User?> firebaseUser = Rx<User?>(null);
   var verificationId = ''.obs;
@@ -27,7 +26,7 @@ class Auth_Resposity extends GetxController {
 
   _setInitialScreen(User? user) {
     user == null
-        ? Get.offAll(() => const Login_Screen())
+        ? Get.offAll(() => const BottomMenu())
         : Get.offAll(() => const BottomMenu());
   }
 

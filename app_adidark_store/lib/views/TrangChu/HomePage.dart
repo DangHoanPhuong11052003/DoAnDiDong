@@ -1,6 +1,7 @@
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:app_adidark_store/views/TimKiem/TimKiemScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,12 +28,6 @@ class _HomePageFixState extends State<HomePage> {
     if (!flag) {
       DataCartUser.createNewCartUS(user.uid);
     }
-  }
-
-  _getUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final greeting = prefs.getString('greeting') ?? "";
-    final searchMessage = prefs.getString('searchMessage') ?? "";
   }
 
   List<Product> pros = [];
@@ -67,9 +62,7 @@ class _HomePageFixState extends State<HomePage> {
                       children: [
                         Expanded(
                             child: FutureBuilder(
-                          future: userData!.catchError((error) {
-    return _getUser();
-  }),
+                          future: userData,
                           builder: (BuildContext context,
                               AsyncSnapshot<void> snapshot) {
                             switch (snapshot.connectionState) {
@@ -85,14 +78,20 @@ class _HomePageFixState extends State<HomePage> {
                               case ConnectionState.active:
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
+                                  return Text(
+                                    'Hey Welcome !',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  );
                                 } else {
                                   Users user = snapshot.data as Users;
                                   return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 20),
+                                      SizedBox(height: 15),
                                       Row(
                                         children: [
                                           Expanded(
@@ -124,6 +123,19 @@ class _HomePageFixState extends State<HomePage> {
                             }
                           },
                         )),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login_Screen()),
+                            );
+                          },
+                          child: Icon(
+                            Icons.person,
+                            size: 30,
+                          ),
+                        ),
 
                         ///bỏ icon user
                       ],

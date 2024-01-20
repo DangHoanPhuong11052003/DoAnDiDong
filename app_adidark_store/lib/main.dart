@@ -1,4 +1,5 @@
 import 'package:app_adidark_store/items/auth_page.dart';
+import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/respository/Authentication_Repository.dart';
 import 'package:app_adidark_store/views/TrangChu/HomePage.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-      home: const AuthPage(),
+      home: const Login_Screen(),
       // email: tự đăng ký
       // pass: tự đăng -up
       debugShowCheckedModeBanner: false,

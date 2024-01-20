@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/items/profile_item.dart';
 import 'package:app_adidark_store/models/ClassUser.dart';
 import 'package:app_adidark_store/views/HoaDon/HoaDon_Screen.dart';
@@ -90,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => Login_Screen(),
+        builder: (context) => BottomMenu(),
       ),
     );
   }
