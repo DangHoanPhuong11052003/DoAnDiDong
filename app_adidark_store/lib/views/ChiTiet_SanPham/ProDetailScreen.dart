@@ -37,15 +37,17 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
   String seledtedColorId = "";
   int seledtedSizeId = -1;
 
+  int maxQuan=-1;
+
   List<CartUser> allCart=[];
 
   Product pro=Product(cate: Categories(id: -1, name: "", status: false), detail: Map(), id: -1, img: List.empty(), manu: Manufacturer(id: -1, name: "", status: false), name: "", price: 0, quantity: 0, status: 0, infor: "");
-  List<Product> pros=[];
 
   _getData() async{
     Product product=await DataProduct.getDataById(widget.idPro);
     setState(() {
       pro=product;
+      maxQuan=pro.quantity;
     });
   }
 
@@ -89,7 +91,9 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
+    Future.delayed(const Duration(seconds: 5), () {
+      _getData();
+    });
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -137,7 +141,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                           Row(
                             children: [
                               //Số sao
-                              for (var i = 0; i <= 5; i++)
+                              for (var i = 0; i <= 4; i++)
                                 Icon(
                                   Icons.star,
                                   color: Colors.yellow,
@@ -164,7 +168,9 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                 onTap: () {
                                   if (sttbuy > 0) {
                                     setState(() {
-                                      sttbuy--;
+                                      if(sttbuy>0){
+                                        sttbuy--;
+                                      }
                                     });
                                   }
                                 },
@@ -188,7 +194,10 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    sttbuy++;
+                                    if(maxQuan>sttbuy){
+                                      sttbuy++;
+                                    }
+                                    
                                   });
                                 },
                                 child: Container(
@@ -225,9 +234,15 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                         height: 2,
                       ),
 
-                      Text("Colors",
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Colors",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w800)),
+                          Text("Số lượng: $maxQuan",style:const TextStyle(fontSize: 16,),)  
+                        ],
+                      ),
                       //Chọn màu
 
                       Column(
@@ -245,9 +260,11 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                         if (seledtedColorId == pro.detail.keys.elementAt(i)) {
                                           seledtedColorId = "";
                                           seledtedSizeId=-1;
+                                          maxQuan=pro.quantity;
                                         } else {
                                           seledtedColorId = pro.detail.keys.elementAt(i);
                                           seledtedSizeId=-1;
+                                          maxQuan=pro.quantity;
                                         }
                                       });
                                     },
@@ -266,11 +283,13 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                         setState(() {
                                           seledtedColorId = "";
                                           seledtedSizeId=-1;
+                                          maxQuan=pro.quantity;
                                         });
                                       } else {
                                         setState(() {
                                           seledtedColorId = pro.detail.keys.elementAt(i);
                                           seledtedSizeId=-1;
+                                          maxQuan=pro.quantity;
                                         });
                                       }
                                     },
@@ -288,11 +307,13 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                       setState(() {
                                         seledtedColorId = "";
                                         seledtedSizeId=-1;
+                                        maxQuan=pro.quantity;
                                       });
                                     } else {
                                       setState(() {
                                         seledtedColorId = pro.detail.keys.elementAt(i);
                                         seledtedSizeId=-1;
+                                        maxQuan=pro.quantity;
                                       });
                                     }
                                   },
@@ -322,10 +343,15 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                       if (seledtedSizeId == pro.detail[seledtedColorId]![j].size) {
                                         setState(() {
                                           seledtedSizeId = -1;
+                                          maxQuan=pro.quantity;
                                         });
                                       } else {
                                         setState(() {
                                           seledtedSizeId = pro.detail[seledtedColorId]![j].size;
+                                          maxQuan=pro.detail[seledtedColorId]![j].quantity;
+                                          if(sttbuy>maxQuan){
+                                            sttbuy=maxQuan;
+                                          }
                                         });
                                       }
                                     },
@@ -346,71 +372,101 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
             child: Padding(
               padding: EdgeInsets.only(top: 10.0, bottom: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (seledtedColorId == "" ||
-                          seledtedSizeId == -1 ||
-                          sttbuy <= 0) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(snackBarFail);
-                      }
-                      else{
-                       _buyPro();
-                      }
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: seledtedColorId == "" ||
-                                  seledtedSizeId == -1 ||
-                                  sttbuy <= 0
-                              ? Colors.grey
-                              : const Color(0xFFADDDFF)),
-                      height: 50,
-                      width: 200,
-                      child: const Text(
-                        "MUA NGAY",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                        textAlign: TextAlign.center,
+                  if(pro.quantity>0)
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                      onTap: () {
+                        if (seledtedColorId == "" ||
+                            seledtedSizeId == -1 ||
+                            sttbuy <= 0) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBarFail);
+                        }
+                        else{
+                        _buyPro();
+                        }
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: seledtedColorId == "" ||
+                                    seledtedSizeId == -1 ||
+                                    sttbuy <= 0
+                                ? Colors.grey
+                                : const Color(0xFFADDDFF)),
+                        height: 50,
+                        width: 200,
+                        child: const Text(
+                          "MUA NGAY",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      if (seledtedColorId == "" ||
-                          seledtedSizeId == -1 ||
-                          sttbuy <= 0) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(snackBarFail);
-                      } else {
-                        _updateOrCreateCart();
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(snackBarSucc);
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: seledtedColorId == "" ||
-                                  seledtedSizeId == -1 ||
-                                  sttbuy <= 0
-                              ? Colors.grey
-                              : const Color(0xFFADDDFF)),
-                      height: 50,
-                      width: 120,
-                      child: const Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                        size: 40,
+                    GestureDetector(
+                      onTap: () {
+                        if (seledtedColorId == "" ||
+                            seledtedSizeId == -1 ||
+                            sttbuy <= 0) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBarFail);
+                        } else {
+                          _updateOrCreateCart();
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBarSucc);
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: seledtedColorId == "" ||
+                                    seledtedSizeId == -1 ||
+                                    sttbuy <= 0
+                                ? Colors.grey
+                                : const Color(0xFFADDDFF)),
+                        height: 50,
+                        width: 120,
+                        child: const Icon(
+                          Icons.shopping_cart,
+                          color: Colors.white,
+                          size: 40,
+                        ),
                       ),
+                    )
+                      ],
                     ),
-                  )
+                    )
+                  else
+                    Container(
+                      width:MediaQuery.of(context).size.width,
+                      height: 50,
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.red),
+                          height: 50,
+                          width: 200,
+                          child: const Text(
+                            "HẾT HÀNG",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                    )
                 ],
               ),
             )));
