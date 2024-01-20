@@ -1,6 +1,10 @@
+import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/ClassUser.dart';
+import 'package:app_adidark_store/models/DataNotification..dart';
+import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,13 +21,21 @@ class _AccountSettingState extends State<AccountSetting> {
   late String email;
   late String fullName;
   late String password;
-  late String address;
+  late Map<String, dynamic> address;
+  late String home;
+  late String company;
+  late String etc;
 
-  Users user = Users(fullName: "", email: "", password: "",  address: {
-      "home": null,
-      "company": null,
-      "etc": null,
-    },);
+  Users user = Users(
+    fullName: "",
+    email: "",
+    password: "",
+    address: {
+      "Home": null,
+      "Company": null,
+      "Etc": null,
+    },
+  );
 
   final _user = FirebaseAuth.instance.currentUser;
 
@@ -33,12 +45,40 @@ class _AccountSettingState extends State<AccountSetting> {
   Future<void> updateUser(var key, var value) async {
     final SharedPreferences prefs = await _prefs;
     await prefs.setString(key, value);
-    if (key != "Password")
+    if (key != "Password" &&
+        key != "Home" &&
+        key != "Company" &&
+        key != "Etc") {
       var update = users
           .doc(_user?.uid)
           .update({key: value})
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
+    } else if (key != "Password" && key == "Home") {
+      var update = users
+          .doc(_user?.uid)
+          .update({
+            "Address": {key: value, "Company": company, "Etc": etc}
+          })
+          .then((value) => print("User Updated"))
+          .catchError((error) => print("Failed to update user: $error"));
+    } else if (key != "Password" && key == "Company") {
+      var update = users
+          .doc(_user?.uid)
+          .update({
+            "Address": {"Home": home, key: value, "Etc": etc}
+          })
+          .then((value) => print("User Updated"))
+          .catchError((error) => print("Failed to update user: $error"));
+    } else if (key != "Password" && key == "Etc") {
+      var update = users
+          .doc(_user?.uid)
+          .update({
+            "Address": {"Home": home, "Company": company, key: value}
+          })
+          .then((value) => print("User Updated"))
+          .catchError((error) => print("Failed to update user: $error"));
+    }
   }
 
   Future<void> changeEmail(String newEmail) async {
@@ -65,6 +105,7 @@ class _AccountSettingState extends State<AccountSetting> {
 
   Future<void> getUserDetailInfo() async {
     final SharedPreferences prefs = await _prefs;
+
     DocumentReference<Map<String, dynamic>> documentReference =
         FirebaseFirestore.instance.collection("Users").doc(_user?.uid);
 
@@ -79,6 +120,14 @@ class _AccountSettingState extends State<AccountSetting> {
         Map<String, dynamic> documentData = documentSnapshot.data()!;
 
         documentData.forEach((key, value) async {
+          if (key != "Address") {
+            await prefs.setString(key, value);
+          } else if (key == "Address") {
+            address = value;
+          }
+        });
+
+        address.forEach((key, value) async {
           await prefs.setString(key, value);
         });
       } else {
@@ -91,17 +140,19 @@ class _AccountSettingState extends State<AccountSetting> {
     email = prefs.getString("Email") ?? "";
     fullName = prefs.getString("FullName") ?? "";
     password = prefs.getString("Password") ?? "";
-    address = prefs.getString("Address") ?? "";
+    home = prefs.getString("Home") ?? "";
+    company = prefs.getString("Company") ?? "";
+    etc = prefs.getString("Etc") ?? "";
 
     user = Users(
       fullName: fullName,
       email: email,
       password: password,
-       address: {
-      "home": null,
-      "company": null,
-      "etc": null,
-    },
+      address: {
+        "Home": home,
+        "Company": company,
+        "Etc": etc,
+      },
     );
   }
 
@@ -259,8 +310,80 @@ class _AccountSettingState extends State<AccountSetting> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              updateUser("Address", txtAddress.text.trim());
-                              user.address = user.address?["Home"];
+                              updateUser("Home", txtAddress.text.trim());
+                              user.address?["Home"] = home;
+                              Navigator.pop(context);
+                            });
+                          },
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                  Color.fromRGBO(203, 233, 255, 1))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (stt == 5)
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: txtAddress,
+                        decoration: InputDecoration(
+                          hintText: user.address?["Company"],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              updateUser("Company", txtAddress.text.trim());
+                              user.address?["Company"] = company;
+                              Navigator.pop(context);
+                            });
+                          },
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                  Color.fromRGBO(203, 233, 255, 1))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (stt == 6)
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: txtAddress,
+                        decoration: InputDecoration(
+                          hintText: user.address?["Etc"],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              updateUser("Etc", txtAddress.text.trim());
+                              user.address?["Etc"] = etc;
                               Navigator.pop(context);
                             });
                           },
@@ -279,6 +402,39 @@ class _AccountSettingState extends State<AccountSetting> {
             ],
           );
         });
+  }
+
+  DatabaseReference _database = FirebaseDatabase.instance.ref();
+  List<Product> pros = [];
+
+  _getData() async {
+    List<Product> pros2 = await DataProduct.getAllData();
+    setState(() {
+      pros = pros2;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_user?.uid)
+        .snapshots()
+        .listen((event) {
+      setState(() {
+        getUserDetailInfo();
+      });
+    });
+
+    _database.child('Products').onChildAdded.listen((event) {
+      setState(() {
+        _getData();
+
+        DataNotification.createMainData(pros.last);
+      });
+    });
   }
 
   @override
@@ -463,7 +619,7 @@ class _AccountSettingState extends State<AccountSetting> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Đổi địa chỉ",
+                          "Đổi địa chỉ nhà",
                           style: TextStyle(fontSize: 20),
                         ),
                         FutureBuilder(
@@ -484,6 +640,100 @@ class _AccountSettingState extends State<AccountSetting> {
                                     child: GestureDetector(
                                       onTap: () {
                                         _modelBottomSheetMenu(4);
+                                      },
+                                      child: Icon(Icons.edit_outlined),
+                                    ),
+                                  );
+                                }
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: const Divider(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          company.isEmpty
+                              ? "Thêm địa chỉ công ty"
+                              : "Đổi địa chỉ công ty",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        FutureBuilder(
+                          future: getUserDetailInfo(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<void> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                              case ConnectionState.waiting:
+                                return const CircularProgressIndicator();
+                              case ConnectionState.active:
+                              case ConnectionState.done:
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        _modelBottomSheetMenu(5);
+                                      },
+                                      child: Icon(Icons.edit_outlined),
+                                    ),
+                                  );
+                                }
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: const Divider(
+                      height: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          etc.isEmpty
+                              ? "Thêm địa chỉ \"khác\""
+                              : "Đổi địa chỉ \"khác\"",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        FutureBuilder(
+                          future: getUserDetailInfo(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<void> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                              case ConnectionState.waiting:
+                                return const CircularProgressIndicator();
+                              case ConnectionState.active:
+                              case ConnectionState.done:
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        _modelBottomSheetMenu(6);
                                       },
                                       child: Icon(Icons.edit_outlined),
                                     ),

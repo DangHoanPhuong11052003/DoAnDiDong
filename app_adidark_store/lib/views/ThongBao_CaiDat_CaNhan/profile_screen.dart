@@ -1,10 +1,14 @@
 import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/items/profile_item.dart';
+import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/ClassUser.dart';
+import 'package:app_adidark_store/models/DataNotification..dart';
+import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:app_adidark_store/views/HoaDon/HoaDon_Screen.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'setting_screen.dart';
@@ -24,9 +28,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String email;
   late String fullName;
   late String password;
-  late String address;
+  late Map<String, dynamic> address;
+  late String home;
+  late String company;
+  late String etc;
 
-  Users user =  Users(
+  Users user = Users(
     fullName: "",
     email: "",
     password: "",
@@ -41,6 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> getUserDetailInfo() async {
     final SharedPreferences prefs = await _prefs;
+
     DocumentReference<Map<String, dynamic>> documentReference =
         FirebaseFirestore.instance.collection("Users").doc(_user?.uid);
 
@@ -55,6 +63,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Map<String, dynamic> documentData = documentSnapshot.data()!;
 
         documentData.forEach((key, value) async {
+          if (key != "Address") {
+            await prefs.setString(key, value);
+          } else if (key == "Address") {
+            address = value;
+          }
+        });
+
+        address.forEach((key, value) async {
           await prefs.setString(key, value);
         });
       } else {
@@ -67,16 +83,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     email = prefs.getString("Email") ?? "";
     fullName = prefs.getString("FullName") ?? "";
     password = prefs.getString("Password") ?? "";
-    address = prefs.getString("Address") ?? "";
+    home = prefs.getString("Home") ?? "";
+    company = prefs.getString("Company") ?? "";
+    etc = prefs.getString("Etc") ?? "";
 
     user = Users(
       fullName: fullName,
       email: email,
       password: password,
       address: {
-        "home": null,
-        "company": null,
-        "etc": null,
+        "Home": home,
+        "Company": company,
+        "Etc": etc,
       },
     );
   }
@@ -86,7 +104,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await prefs.remove("FullName");
     await prefs.remove("Email");
     await prefs.remove("Password");
-    await prefs.remove("Address");
+    await prefs.remove("Home");
+    await prefs.remove("Company");
+    await prefs.remove("Etc");
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
       context,
@@ -94,6 +114,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context) => BottomMenu(),
       ),
     );
+  }
+
+  DatabaseReference _database = FirebaseDatabase.instance.ref();
+  List<Product> pros = [];
+
+  _getData() async {
+    List<Product> pros2 = await DataProduct.getAllData();
+    setState(() {
+      pros = pros2;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_user?.uid)
+        .snapshots()
+        .listen((event) {
+      setState(() {
+        getUserDetailInfo();
+      });
+    });
+
+    _database.child('Products').onChildAdded.listen((event) {
+      setState(() {
+        _getData();
+
+        DataNotification.createMainData(pros.last);
+      });
+    });
   }
 
   @override
