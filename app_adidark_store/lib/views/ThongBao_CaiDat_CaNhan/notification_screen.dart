@@ -4,6 +4,7 @@ import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -17,17 +18,24 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   DatabaseReference _database = FirebaseDatabase.instance.ref();
 
+  final _user = FirebaseAuth.instance.currentUser;
+
   List<PrivateNotice> lstPrivate = [];
   List<MainNotice> lstMain = [];
 
   Future<void> getPrivateData() async {
-    List<MainNotice> lstM = await DataNotification.getMainData();
+    List<PrivateNotice> lstP =
+        await DataNotification.getPrivateData(_user?.uid ?? "");
 
-    lstMain = lstM;
+    lstP.sort((a, b) => b.id.compareTo(a.id));
+
+    lstPrivate = lstP;
   }
 
   Future<void> getMainData() async {
     List<MainNotice> lstM = await DataNotification.getMainData();
+
+    lstM.sort((a, b) => b.id.compareTo(a.id));
 
     lstMain = lstM;
   }
@@ -160,8 +168,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               );
                             case ConnectionState.active:
                             case ConnectionState.done:
-                              if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
+                              if (!snapshot.hasError) {
+                                return Text('');
                               } else {
                                 return ListView.separated(
                                   padding: EdgeInsets.all(2.0),
