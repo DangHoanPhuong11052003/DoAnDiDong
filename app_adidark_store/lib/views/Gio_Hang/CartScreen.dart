@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
@@ -86,6 +87,8 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
+ 
+
   @override
   void initState() {
     acc= user!.uid;
@@ -95,7 +98,6 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     _updatePrice();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -154,9 +156,9 @@ class _CartScreenState extends State<CartScreen> {
                 setState(() {
                   isSelectedAll = !isSelectedAll;
                   if (isSelectedAll) {
-                     lstCarts.forEach((element) {
+                     for (var element in lstCarts) {
                       lst_vtSum.add(element.id);
-                    });
+                    }
                     slspchon = lstCarts.length;
                   } else {
                     totalPrice = 0;

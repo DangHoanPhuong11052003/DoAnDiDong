@@ -1,5 +1,6 @@
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
+import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class ItemCart extends StatefulWidget {
 
 class _ItemCartState extends State<ItemCart> {
   bool isPressed = false;
-  int slsp = 1;
+  int maxslsp=0;
   Future<bool> checkInternetConnection() async {
       var connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult == ConnectivityResult.mobile) {
@@ -37,9 +38,19 @@ class _ItemCartState extends State<ItemCart> {
       }
       return false;
     }
+   _getQuanPro()async{
+    maxslsp= await DataProduct.getQuanPro(widget.cart.idPro, widget.cart.color, widget.cart.size);
+  }
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(seconds: 5),(){
+      _getQuanPro();
+      if(widget.cart.quantity>maxslsp){
+        widget.cart.quantity=maxslsp;
+        DataCartUser.updateData(widget.cart, widget.acc);
+      }
+    });
     if (widget.lst_vtSelected.contains(widget.cart.id)) {
       isPressed = true;
     } else {
@@ -134,7 +145,7 @@ class _ItemCartState extends State<ItemCart> {
                     GestureDetector(
                       onTap: () {
                         if (widget.cart.quantity > 1) {
-                          setState(() {
+                          setState(() async{
                             widget.cart.quantity--;
                             //Cập nhật lại số luong sản phẩm
                             setState(() {
@@ -165,7 +176,9 @@ class _ItemCartState extends State<ItemCart> {
                       onTap: () {
                         setState(() {
                           //cập nhật lại số lượng sản phẩm
-                          widget.cart.quantity++;
+                          if(widget.cart.quantity<maxslsp){
+                            widget.cart.quantity++;
+                          }
                           setState(() {
                             DataCartUser.updateData(widget.cart, widget.acc);
                           });
