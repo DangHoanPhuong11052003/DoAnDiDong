@@ -1,4 +1,6 @@
 import 'package:app_adidark_store/items/auth_page.dart';
+import 'package:app_adidark_store/views/Gio_Hang/CartScreen.dart';
+import 'package:app_adidark_store/views/HoaDon/HoaDon_Screen.dart';
 import 'package:app_adidark_store/views/SignUp_In/respository/Authentication_Repository.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-      home: const AuthPage(),
+      home: const CartScreen(),
       // email: tự đăng ký
       // pass: tự đăng -up
       debugShowCheckedModeBanner: false,
