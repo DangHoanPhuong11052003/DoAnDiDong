@@ -81,7 +81,7 @@ class _HomePageFixState extends State<HomePage> {
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
                                   return Text(
-                                    'Hey Welcome !',
+                                    'Hello Welcome !',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
@@ -102,7 +102,7 @@ class _HomePageFixState extends State<HomePage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Hey ${user.fullName}",
+                                                  "Hello ${user.fullName}",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 20,
