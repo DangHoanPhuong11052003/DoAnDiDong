@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-      home: const ProfileScreen(),
+      home: const AuthPage(),
       debugShowCheckedModeBanner: false,
     );
   }
