@@ -46,6 +46,8 @@ class _HomePageFixState extends State<HomePage> {
     userData = controller.getUserData();
   }
 
+  final user = FirebaseAuth.instance.currentUser;
+
   final controller = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
@@ -131,10 +133,12 @@ class _HomePageFixState extends State<HomePage> {
                                   builder: (context) => const Login_Screen()),
                             );
                           },
-                          child: Icon(
-                            Icons.person,
-                            size: 30,
-                          ),
+                          child: user != null
+                              ? const SizedBox()
+                              : Icon(
+                                  Icons.person,
+                                  size: 30,
+                                ),
                         ),
 
                         ///bỏ icon user
