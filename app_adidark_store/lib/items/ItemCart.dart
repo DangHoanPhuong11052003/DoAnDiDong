@@ -1,5 +1,6 @@
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class ItemCart extends StatefulWidget {
@@ -27,6 +28,15 @@ class ItemCart extends StatefulWidget {
 class _ItemCartState extends State<ItemCart> {
   bool isPressed = false;
   int slsp = 1;
+  Future<bool> checkInternetConnection() async {
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.mobile) {
+        return true;
+      } else if (connectivityResult == ConnectivityResult.wifi) {
+        return true;
+      }
+      return false;
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +70,9 @@ class _ItemCartState extends State<ItemCart> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Padding(padding: EdgeInsets.only(left: 8)),
-            Container(
+            FutureBuilder(future: checkInternetConnection(), builder: (context, snapshot) {
+            if(snapshot.data??true){
+                return Container(
               width: MediaQuery.of(context).size.width / 2.5,
               height: MediaQuery.of(context).size.width / 2.5,
               decoration: BoxDecoration(
@@ -71,7 +83,17 @@ class _ItemCartState extends State<ItemCart> {
                         widget.cart.img),
                     fit: BoxFit.cover),
               ),
-            ),
+            );
+            }else{
+              return SizedBox(
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.width / 3,
+              child:const CircularProgressIndicator(),
+            );
+            }
+          },),
+
+            
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
