@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/items/profile_item.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/ClassUser.dart';
@@ -110,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => Login_Screen(),
+        builder: (context) => BottomMenu(),
       ),
     );
   }
@@ -214,11 +215,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        Text(
-                                          user.email.replaceRange(
-                                              1,
-                                              user.email.lastIndexOf("@"),
-                                              "*****"),
+                                       Text(
+                                          user.email.isNotEmpty
+                                              ? user.email.replaceRange(
+                                                  1,
+                                                  user.email.lastIndexOf("@"),
+                                                  "*****")
+                                              : "",
                                           style: const TextStyle(
                                             fontSize: 15,
                                           ),

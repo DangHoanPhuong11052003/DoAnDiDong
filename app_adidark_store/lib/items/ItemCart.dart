@@ -1,5 +1,7 @@
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
+import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class ItemCart extends StatefulWidget {
@@ -26,10 +28,29 @@ class ItemCart extends StatefulWidget {
 
 class _ItemCartState extends State<ItemCart> {
   bool isPressed = false;
-  int slsp = 1;
+  int maxslsp=0;
+  Future<bool> checkInternetConnection() async {
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.mobile) {
+        return true;
+      } else if (connectivityResult == ConnectivityResult.wifi) {
+        return true;
+      }
+      return false;
+    }
+   _getQuanPro()async{
+    maxslsp= await DataProduct.getQuanPro(widget.cart.idPro, widget.cart.color, widget.cart.size);
+  }
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(seconds: 5),(){
+      _getQuanPro();
+      if(widget.cart.quantity>maxslsp){
+        widget.cart.quantity=maxslsp;
+        DataCartUser.updateData(widget.cart, widget.acc);
+      }
+    });
     if (widget.lst_vtSelected.contains(widget.cart.id)) {
       isPressed = true;
     } else {
@@ -60,7 +81,9 @@ class _ItemCartState extends State<ItemCart> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Padding(padding: EdgeInsets.only(left: 8)),
-            Container(
+            FutureBuilder(future: checkInternetConnection(), builder: (context, snapshot) {
+            if(snapshot.data??true){
+                return Container(
               width: MediaQuery.of(context).size.width / 2.5,
               height: MediaQuery.of(context).size.width / 2.5,
               decoration: BoxDecoration(
@@ -71,7 +94,17 @@ class _ItemCartState extends State<ItemCart> {
                         widget.cart.img),
                     fit: BoxFit.cover),
               ),
-            ),
+            );
+            }else{
+              return SizedBox(
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.width / 3,
+              child:const CircularProgressIndicator(),
+            );
+            }
+          },),
+
+            
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -112,7 +145,7 @@ class _ItemCartState extends State<ItemCart> {
                     GestureDetector(
                       onTap: () {
                         if (widget.cart.quantity > 1) {
-                          setState(() {
+                          setState(() async{
                             widget.cart.quantity--;
                             //Cập nhật lại số luong sản phẩm
                             setState(() {
@@ -143,7 +176,9 @@ class _ItemCartState extends State<ItemCart> {
                       onTap: () {
                         setState(() {
                           //cập nhật lại số lượng sản phẩm
-                          widget.cart.quantity++;
+                          if(widget.cart.quantity<maxslsp){
+                            widget.cart.quantity++;
+                          }
                           setState(() {
                             DataCartUser.updateData(widget.cart, widget.acc);
                           });

@@ -1,13 +1,15 @@
 import 'package:app_adidark_store/models/ClassCartUser.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class ItemProOrder extends StatelessWidget {
-  const ItemProOrder({super.key, required this.cart});
+   ItemProOrder({super.key, required this.cart});
   final CartUser cart;
+    
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return  Container (
       margin: const EdgeInsets.only(bottom: 5),
       padding:const EdgeInsets.all(2),
       width: MediaQuery.of(context).size.width,
@@ -20,16 +22,17 @@ class ItemProOrder extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width/3,
-            height: MediaQuery.of(context).size.width/2.8,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              //Ảnh sản phẩm
-              image:  DecorationImage(image: NetworkImage(cart.img),
-              fit: BoxFit.cover),
-              
+                width: MediaQuery.of(context).size.width/3,
+                height: MediaQuery.of(context).size.width/2.8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  //Ảnh sản phẩm
+                  image:  DecorationImage(image: NetworkImage(cart.img),
+                  fit: BoxFit.cover),
+                  
+              ),
             ),
-          ),
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -84,4 +87,5 @@ class ItemProOrder extends StatelessWidget {
       ),
     );
   }
+  
 }

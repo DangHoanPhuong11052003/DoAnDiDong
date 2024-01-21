@@ -1,5 +1,8 @@
 import 'package:app_adidark_store/items/auth_page.dart';
+import 'package:app_adidark_store/views/Gio_Hang/CartScreen.dart';
+import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/respository/Authentication_Repository.dart';
+import 'package:app_adidark_store/views/ThongBao_CaiDat_CaNhan/profile_screen.dart';
 import 'package:app_adidark_store/views/TrangChu/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,9 +25,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primaryColor: Colors.blue, fontFamily: "Mulish"),
-      home: const AuthPage(),
-      // email: tự đăng ký
-      // pass: tự đăng -up
+      home: const CartScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

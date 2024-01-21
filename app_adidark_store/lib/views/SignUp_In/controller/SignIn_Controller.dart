@@ -17,7 +17,7 @@ class LoginController extends GetxController {
   }
 
   //
-  Future<void> route(BuildContext context, Widget destination) async {
-    authRepo.route(context, destination);
-  }
+  Future<void> route(NavigatorState navigator, Widget destination) async {
+  await navigator.push(MaterialPageRoute(builder: (context) => destination));
+}
 }

@@ -1,10 +1,9 @@
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
-import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:app_adidark_store/views/TimKiem/TimKiemScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/items/List_Product_Items.dart';
@@ -31,13 +30,6 @@ class _HomePageFixState extends State<HomePage> {
     }
   }
 
-  _getUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final greeting = prefs.getString('greeting') ?? "";
-    final searchMessage = prefs.getString('searchMessage') ?? "";
-  }
-
-  DatabaseReference _database = FirebaseDatabase.instance.ref();
   List<Product> pros = [];
   _getData() async {
     List<Product> pros2 = await DataProduct.getAllData();
@@ -51,15 +43,9 @@ class _HomePageFixState extends State<HomePage> {
     super.initState();
     _getNewid();
     userData = controller.getUserData();
-
-    _database.child('Products').onChildAdded.listen((event) {
-      setState(() {
-        _getData();
-
-        DataNotification.createMainData(pros.last);
-      });
-    });
   }
+
+  final user = FirebaseAuth.instance.currentUser;
 
   final controller = Get.put(ProfileController());
   @override
@@ -77,9 +63,7 @@ class _HomePageFixState extends State<HomePage> {
                       children: [
                         Expanded(
                             child: FutureBuilder(
-                          future: userData!.catchError((error) {
-                            return _getUser();
-                          }),
+                          future: userData,
                           builder: (BuildContext context,
                               AsyncSnapshot<void> snapshot) {
                             switch (snapshot.connectionState) {
@@ -95,14 +79,20 @@ class _HomePageFixState extends State<HomePage> {
                               case ConnectionState.active:
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
+                                  return Text(
+                                    'Hello Welcome !',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  );
                                 } else {
                                   Users user = snapshot.data as Users;
                                   return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 20),
+                                      SizedBox(height: 15),
                                       Row(
                                         children: [
                                           Expanded(
@@ -111,7 +101,7 @@ class _HomePageFixState extends State<HomePage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Hey ${user.fullName}",
+                                                  "Hello ${user.fullName}",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 20,
@@ -134,6 +124,21 @@ class _HomePageFixState extends State<HomePage> {
                             }
                           },
                         )),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login_Screen()),
+                            );
+                          },
+                          child: user != null
+                              ? const SizedBox()
+                              : Icon(
+                                  Icons.person,
+                                  size: 30,
+                                ),
+                        ),
 
                         ///bỏ icon user
                       ],
