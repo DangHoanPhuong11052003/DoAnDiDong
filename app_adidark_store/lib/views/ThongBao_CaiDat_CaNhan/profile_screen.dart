@@ -1,4 +1,5 @@
 import 'package:app_adidark_store/items/BottomMenu.dart';
+import 'package:app_adidark_store/items/auth_page.dart';
 import 'package:app_adidark_store/items/profile_item.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/ClassUser.dart';
@@ -14,9 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'setting_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({
-    super.key,
-  });
+  const ProfileScreen({super.key, required this.isLogin});
+
+  final bool isLogin;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -116,6 +117,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Future<void> login(BuildContext context) async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AuthPage(),
+      ),
+    );
+  }
+
   DatabaseReference _database = FirebaseDatabase.instance.ref();
   List<Product> pros = [];
 
@@ -130,23 +140,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    FirebaseFirestore.instance
-        .collection("Users")
-        .doc(_user?.uid)
-        .snapshots()
-        .listen((event) {
-      setState(() {
-        getUserDetailInfo();
+    if (widget.isLogin) {
+      FirebaseFirestore.instance
+          .collection("Users")
+          .doc(_user?.uid)
+          .snapshots()
+          .listen((event) {
+        setState(() {
+          getUserDetailInfo();
+        });
       });
-    });
 
-    _database.child('Products').onChildAdded.listen((event) {
-      setState(() {
-        _getData();
+      _database.child('Products').onChildAdded.listen((event) {
+        setState(() {
+          _getData();
 
-        DataNotification.createMainData(pros.last);
+          DataNotification.createMainData(pros.last);
+        });
       });
-    });
+    }
   }
 
   @override
@@ -186,6 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(right: 10),
@@ -199,36 +212,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.6,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          user.fullName ?? "",
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                  if (widget.isLogin)
+                                    Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.6,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            user.fullName ?? "",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                       Text(
-                                          user.email.isNotEmpty
-                                              ? user.email.replaceRange(
-                                                  1,
-                                                  user.email.lastIndexOf("@"),
-                                                  "*****")
-                                              : "",
-                                          style: const TextStyle(
-                                            fontSize: 15,
+                                          Text(
+                                            user.email.isNotEmpty
+                                                ? user.email.replaceRange(
+                                                    1,
+                                                    user.email.lastIndexOf("@"),
+                                                    "*****")
+                                                : "",
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                 ],
                               ),
                             ),
@@ -242,23 +256,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     title: "Tài khoản",
                                     sub: "Tài khoản & Bảo mật",
                                     onTap: () {
-                                      Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const AccountSetting()))
-                                          .then((value) => setState(() => {}));
+                                      if (widget.isLogin)
+                                        Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const AccountSetting()))
+                                            .then(
+                                                (value) => setState(() => {}));
                                     },
                                   ),
                                   ProfileItem(
                                     icon: Icons.access_time,
                                     title: "Lịch sử giao dịch",
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const HoaDon_Screen()));
+                                      if (widget.isLogin)
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const HoaDon_Screen()));
                                     },
                                   ),
                                   Padding(
@@ -273,10 +290,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       height: 45,
                                       minWidth: double.infinity,
                                       onPressed: () {
-                                        logout(context);
+                                        widget.isLogin
+                                            ? logout(context)
+                                            : login(context);
                                       },
                                       child: Text(
-                                        "Đăng xuất",
+                                        widget.isLogin
+                                            ? "Đăng xuất"
+                                            : "Đăng nhập",
                                         style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w700),

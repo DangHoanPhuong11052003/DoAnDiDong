@@ -18,11 +18,12 @@ class NoticeItem extends StatefulWidget {
     required this.time,
     required this.title,
     required this.content,
+    this.isLogin = true,
   });
 
   final int idProduct, idInvoice;
   final String title, time, content;
-  final bool status; //true: PrivateNotice, false: MainNotice
+  final bool status, isLogin; //true: PrivateNotice, false: MainNotice
 
   @override
   State<NoticeItem> createState() => _NoticeItemState();
@@ -47,12 +48,17 @@ class _NoticeItemState extends State<NoticeItem> {
   List<Invoice> inv = [];
 
   Future<void> getData() async {
-    Product product = await DataProduct.getDataById(widget.idProduct);
-    List<Invoice> invoice =
-        await DataInvoice.getDataById(widget.idProduct, _user!.uid);
+    if (widget.isLogin && widget.idInvoice != -1) {
+      List<Invoice> invoice =
+          await DataInvoice.getDataById(widget.idInvoice, _user!.uid);
 
-    pro = product;
-    inv = invoice;
+      inv = invoice;
+    }
+
+    if (widget.idProduct != -1) {
+      Product product = await DataProduct.getDataById(widget.idProduct);
+      pro = product;
+    }
   }
 
   @override
@@ -107,6 +113,13 @@ class _NoticeItemState extends State<NoticeItem> {
                               ),
                             ),
                           ),
+                        if (widget.status)
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 2, 18, 2),
+                              child: Icon(
+                                Icons.list_alt,
+                                size: MediaQuery.of(context).size.width / 6,
+                              )),
                         Container(
                           width: MediaQuery.of(context).size.width / 1.5,
                           child: Column(

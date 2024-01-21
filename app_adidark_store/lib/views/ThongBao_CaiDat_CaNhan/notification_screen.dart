@@ -2,14 +2,18 @@ import 'package:app_adidark_store/items/notice_item.dart';
 import 'package:app_adidark_store/models/ClassMainNotice.dart';
 import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
+import 'package:app_adidark_store/models/DataInvoice.dart';
 import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:app_adidark_store/models/Invoice.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({super.key});
+  const NotificationScreen({super.key, required this.isLogin});
+
+  final bool isLogin;
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -25,7 +29,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   Future<void> getPrivateData() async {
     List<PrivateNotice> lstP =
-        await DataNotification.getPrivateData(_user?.uid ?? "");
+        await DataNotification.getPrivateData(_user!.uid);
 
     lstP.sort((a, b) => b.id.compareTo(a.id));
 
@@ -49,6 +53,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
     });
   }
 
+  List<Invoice> invoices = [];
+
+  Future<void> _fetchInvoices(String acc) async {
+    invoices = await DataInvoice().loadInvoices(acc);
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -69,6 +80,28 @@ class _NotificationScreenState extends State<NotificationScreen> {
         getMainData();
       });
     });
+
+    // if (widget.isLogin) {
+    //   _database.child('Invoice/${_user!.uid}').onChildAdded.listen((event) {
+    //     setState(() {
+    //       _fetchInvoices(_user!.uid);
+
+    //       DataNotification.createPrivateData(invoices.last);
+
+    //       getPrivateData();
+    //     });
+    //   });
+
+    //   _database.child('Invoice/${_user!.uid}').onChildChanged.listen((event) {
+    //     setState(() {
+    //       _fetchInvoices(_user!.uid);
+
+    //       DataNotification.createPrivateData(invoices.last);
+
+    //       getPrivateData();
+    //     });
+    //   });
+    // }
   }
 
   @override
@@ -138,6 +171,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       time: lstMain[index].date,
                                       title: lstMain[index].title,
                                       content: lstMain[index].content,
+                                      isLogin: widget.isLogin,
                                     );
                                   },
                                   separatorBuilder:
@@ -168,8 +202,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               );
                             case ConnectionState.active:
                             case ConnectionState.done:
-                              if (!snapshot.hasError) {
-                                return Text('');
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
                               } else {
                                 return ListView.separated(
                                   padding: EdgeInsets.all(2.0),
@@ -179,9 +213,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     return NoticeItem(
                                       idInvoice: lstPrivate[index].idInvoice,
                                       status: true,
-                                      time: lstMain[index].date,
-                                      title: lstMain[index].title,
-                                      content: lstMain[index].content,
+                                      time: lstPrivate[index].date,
+                                      title: lstPrivate[index].title,
+                                      content: lstPrivate[index].content,
                                     );
                                   },
                                   separatorBuilder:
