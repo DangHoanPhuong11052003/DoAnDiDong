@@ -1,6 +1,7 @@
 import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignUpScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/VerifiedScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -26,8 +27,8 @@ class _Login_ScreenState extends State<Login_Screen>
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
   bool visible = false;
+  bool? isChecked = false;
   late AnimationController controller;
-  
 
   @override
   void initState() {
@@ -48,7 +49,6 @@ class _Login_ScreenState extends State<Login_Screen>
     super.dispose();
   }
 
-
   bool isValidEmail(String email) {
     final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
     return emailRegex.hasMatch(email);
@@ -56,22 +56,26 @@ class _Login_ScreenState extends State<Login_Screen>
 
   void _signIn() async {
     final SharedPreferences prefs = await _prefs;
-    if (_frmkey.currentState!.validate()) {
-      final user = Users(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+    final user = Users(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+    if (!_frmkey.currentState!.validate()) {
+      showFailureDialog();
+    } else {
       try {
-        await showDoneDialog();
         await _auth.loginAccount(user);
-        _auth.route(navigator!, const BottomMenu());
-        prefs.setString("Email", emailController.text.trim());
-        prefs.setString("Password", passwordController.text.trim());
-        print('Success');
+        // await showDoneDialog();
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const BottomMenu(),
+        //   ),
+        // );
       } on SignUp_AccountFailure catch (e) {
-        await showFailureDialog(message: e.message);
+        showFailureDialog(message: e.message);
       } catch (_) {
-        await showFailureDialog();
+        showFailureDialog();
       }
     }
   }

@@ -63,7 +63,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
         try {
           await _user.createUser(user);
           await showDoneDialog();
-          Navigator.pushReplacement(
+          await Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => const Login_Screen(),

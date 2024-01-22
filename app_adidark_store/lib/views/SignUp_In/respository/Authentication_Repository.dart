@@ -32,7 +32,7 @@ class Auth_Resposity extends GetxController {
 
   loginAccount(Users user) async {
     try {
-      final credential = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: user.email,
         password: user.password.toString(),
       );
@@ -41,26 +41,6 @@ class Auth_Resposity extends GetxController {
       print('FIREBASE AUTH EXCEPTION - ${ex.message}');
       throw SignUp_AccountFailure(ex.message);
     } catch (_) {}
-  }
-
-  void route(BuildContext context, Widget destination) {
-    User? user = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(user!.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => destination,
-          ),
-        );
-      } else {
-        print('Document does not exist on the database');
-      }
-    });
   }
 
   Future<void> logoutAccount() async => await _auth.signOut();
