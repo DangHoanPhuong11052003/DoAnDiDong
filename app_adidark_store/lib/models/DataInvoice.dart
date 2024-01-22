@@ -151,8 +151,6 @@ class DataInvoice {
       print('Lỗi khi cập nhật trạng thái: $error');
     });
   }
-
-  //local:
   Future<void> updateLocalInvoiceStatus(int IdInvoice, String status) async {
     List<Invoice> localInvoice = await loadLocalInvoices();
     for (var invoice in localInvoice) {

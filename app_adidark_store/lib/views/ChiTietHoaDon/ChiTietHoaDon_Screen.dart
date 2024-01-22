@@ -75,7 +75,7 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             Text(
-              "Tổng tiền: ${widget.invoice.totalPrice} VND",
+              "Tổng tiền: ${totalPrice} VND",
               style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
             ),
             Text(
@@ -94,7 +94,7 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
               height: 15,
             ),
             Text(
-              "Tổng hóa đơn: ${widget.invoice.totalPrice} VND",
+              "Tổng hóa đơn: ${totalPrice + 25000} VND",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ],

@@ -1,5 +1,7 @@
 
 import 'dart:async';
+import 'dart:math';
+import 'package:app_adidark_store/items/ItemLocalNotification.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/views/ChiTietHoaDon/ChiTietHoaDon_Screen.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +33,19 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
 
  
   bool autoCancel = false;
+  _request() async{
+    await NotificationAPI.requestPermissionLocalNotification();
+  }
+
+  Future<void> showNotifi(String? title,String?body) async{
+    Random random=Random();
+    int id=random.nextInt(100000);
+    NotificationAPI.showNotification(id: id,body: body,title: title);
+  }
   
   void initState() {
       super.initState();
+      _request();
       
      
     }
@@ -132,6 +144,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                         MaterialPageRoute(
                             builder: (context) =>
                                ChiTietHoaDon_Screen(invoice: widget.invoice)));
+                               print("ma hoa don: ${widget.invoice.id}");
                   },
                   child: const Text(
                     "Xem chi tiết",
@@ -159,6 +172,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                             ),
                             TextButton(
                               onPressed: () async {
+                                showNotifi("Trạng thái hóa đơn","Hóa đơn ${widget.invoice.id} đã được hủy");
                                 DataNotification().addNoiticationPrivate("Hóa đơn ${widget.invoice.id} đã được hủy",await DataNotification().getNewId(user!.uid),user!.uid,widget.invoice.date, widget.invoice.id);
                                 setState(() {
                                   widget.invoice.status = "Đã hủy";
@@ -202,6 +216,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                         MaterialPageRoute(
                             builder: (context) =>
                                ChiTietHoaDon_Screen(invoice: widget.invoice)));
+                               print(widget.invoice.id);
                   },
                   child: const Text(
                     "Xem chi tiết",
@@ -212,6 +227,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                   )),
               ElevatedButton(
                 onPressed: () async {
+                   showNotifi("Trạng thái hóa đơn","Hóa đơn ${widget.invoice.id} đã được giao");
                   DataNotification().addNoiticationPrivate("Hóa đơn ${widget.invoice.id} đã được giao",await DataNotification().getNewId(user!.uid),user!.uid,widget.invoice.date, widget.invoice.id);
                   setState(() {
                                 widget.invoice.status = "Đã giao";

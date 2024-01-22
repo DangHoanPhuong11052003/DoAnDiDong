@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:app_adidark_store/items/ItemLocalNotification.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +32,20 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
+  _request() async{
+    await NotificationAPI.requestPermissionLocalNotification();
+  }
+
+  Future<void> showNotifi(String? title,String?body) async{
+    Random random=Random();
+    int id=random.nextInt(100000);
+    NotificationAPI.showNotification(id: id,body: body,title: title);
+  }
+  
 
   @override
   void initState() {
+    _request();
     super.initState();
     controller =
         AnimationController(duration: const Duration(seconds: 3), vsync: this);
@@ -259,7 +273,7 @@ class _OrderScreenState extends State<OrderScreen>
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        Text("$total VND",
+                        Text("${total + 25000} VND",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold))
                       ],
@@ -289,6 +303,14 @@ class _OrderScreenState extends State<OrderScreen>
             ),
             GestureDetector(
               onTap: () async {
+                 await showDoneDialog();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BottomMenu(),
+                  ),
+                );
+                showNotifi("Trạng thái hóa đơn","Đơn hàng ${await DataInvoice().getMaxId(user!.uid)} đã được đặt thành công");
                 DataInvoice().addInvoice(
                     "Chờ xác nhận",
                     await DataInvoice().getNewId(user!.uid),
@@ -308,14 +330,10 @@ class _OrderScreenState extends State<OrderScreen>
                 print(user!.uid);
                 updateAllCartItemsStatus(
                     widget.carts ?? List.empty(), user!.uid);
+
                 updateProduct(widget.carts ?? List.empty());
-                 await showDoneDialog();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const BottomMenu(),
-          ),
-        );
+
+                
               },
               child: Container(
                 alignment: Alignment.center,

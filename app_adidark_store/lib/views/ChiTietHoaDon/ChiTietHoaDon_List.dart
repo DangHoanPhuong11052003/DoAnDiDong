@@ -25,16 +25,16 @@ class _ChiTietHoaDon_ListState extends State<ChiTietHoaDon_List> {
  @override
   void initState() {
     super.initState();
-    _fetchInvoiceDetail(user!.uid , widget.id);
-    _fetchLocalInvoiceDetail(user!.uid , widget.id);
-    
+   _fetchInvoiceDetail(user!.uid , widget.id).then((_) {
+    _fetchLocalInvoiceDetail();
+  });
   }
 
   Future<void> _fetchInvoiceDetail(String acc, int id) async {
     listcthhd = await DataInvoiceDetail().loadInvoiceDetails(acc, id);
     setState(() {});
   }
-  Future<void> _fetchLocalInvoiceDetail(String acc, int id) async {
+  Future<void> _fetchLocalInvoiceDetail() async {
     listcthhd1 = await DataInvoiceDetail().loadLocalInvoiceDetails();
     for(var ct in listcthhd1){
       print(ct.id);
