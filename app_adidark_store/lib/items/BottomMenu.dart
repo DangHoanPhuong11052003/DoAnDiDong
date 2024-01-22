@@ -10,7 +10,9 @@ import '../views/TrangChu/HomePage.dart';
 class BottomMenu extends StatefulWidget {
   const BottomMenu({
     super.key,
+    this.pageindex
   });
+  final int? pageindex;
 
   @override
   _BottomMenuState createState() => _BottomMenuState();
@@ -26,6 +28,7 @@ class _BottomMenuState extends State<BottomMenu>
 
   @override
   void initState() {
+    current_index=widget.pageindex??0;
     super.initState();
     checkLoginStatus();
     controller =
@@ -67,6 +70,7 @@ class _BottomMenuState extends State<BottomMenu>
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
+        index: widget.pageindex??0,
         backgroundColor: const Color(0xFFADDDFF),
         items: [
           Icon(Icons.home, size: 30),

@@ -26,9 +26,16 @@ class _HomePageFixState extends State<HomePage> {
   Future<Users>? userData;
   _getNewid() async {
     User? user = FirebaseAuth.instance.currentUser;
-    bool flag = await DataCartUser.checkUs(user!.uid);
+    late bool flag;
+    try {
+      flag= await DataCartUser.checkUs(user!.uid);
+    // ignore: empty_catches
+    } catch (e) {
+      flag= true;
+    };
+    
     if (!flag) {
-      DataCartUser.createNewCartUS(user.uid);
+      DataCartUser.createNewCartUS(user!.uid);
     }
   }
 
