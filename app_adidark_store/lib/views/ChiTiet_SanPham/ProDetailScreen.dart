@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app_adidark_store/items/ItemImgPro.dart';
 import 'package:app_adidark_store/items/ItemLocalNotification.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
@@ -95,10 +97,21 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => OrderAddressScreen(carts: carts),));
   }
 
+  _request() async{
+    await NotificationAPI.requestPermissionLocalNotification();
+  }
+
+  Future<void> showNotifi(String? title,String?body) async{
+    Random random=Random();
+    int id=random.nextInt(100000);
+    NotificationAPI.showNotification(id: id,body: body,title: title);
+  }
+
 
   @override
   void initState() {
     _getData();
+    _request();
     super.initState();
   }
 
@@ -428,7 +441,25 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                               .showSnackBar(snackBarFail);
                         } else {
                           _updateOrCreateCart();
-                          NotificationAPI.showNotifi(title: 'aaaa',body: 'aaaa',payload: 'aea');
+                          showNotifi("Bạn vừa thêm sản phẩm mới vào giỏ hàng","Tên: ${pro.name}, ${seledtedColorId== "a"
+                      ? "Màu: Đen"
+                      :seledtedColorId == "b"
+                          ? "Màu: Trắng"
+                          : seledtedColorId == "c"
+                              ? "Màu: Vàng"
+                              : seledtedColorId == "d"
+                                  ? "Màu: Xanh dương"
+                                  :seledtedColorId == "e"
+                                      ? "Màu: Xám"
+                                      : seledtedColorId == "f"
+                                          ? "Màu: Nâu"
+                                          : seledtedColorId == "g"
+                                              ? "Màu: Cam"
+                                              : seledtedColorId == "h"
+                                                  ? "Màu: Tím"
+                                                  : seledtedColorId == "j"
+                                                      ? "Màu: Xanh lá"
+                                                      : "Màu: Hồng"} ,Size: $seledtedSizeId, Số lượng: $sttbuy, Giá:${sttbuy*pro.price}");
                           ScaffoldMessenger.of(context)
                               .showSnackBar(snackBarSucc);
                         }
