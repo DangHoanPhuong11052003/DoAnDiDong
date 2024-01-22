@@ -171,7 +171,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       time: lstMain[index].date,
                                       title: lstMain[index].title,
                                       content: lstMain[index].content,
-                                      // isLogin: widget.isLogin,
+                                      isLogin: widget.isLogin,
                                     );
                                   },
                                   separatorBuilder:
