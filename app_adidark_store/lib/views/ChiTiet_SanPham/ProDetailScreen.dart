@@ -45,10 +45,12 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
 
   _getData() async{
     Product product=await DataProduct.getDataById(widget.idPro);
-    setState(() {
+    if(mounted){
+      setState(() {
       pro=product;
       maxQuan=pro.quantity;
     });
+    }
   }
 
   _updateOrCreateCart() async{
