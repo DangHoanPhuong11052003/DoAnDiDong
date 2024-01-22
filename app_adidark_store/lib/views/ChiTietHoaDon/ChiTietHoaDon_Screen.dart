@@ -4,7 +4,10 @@ import 'ChiTietHoaDon_List.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
 
 class ChiTietHoaDon_Screen extends StatefulWidget {
-  ChiTietHoaDon_Screen({super.key , required this.invoice,});
+  ChiTietHoaDon_Screen({
+    super.key,
+    required this.invoice,
+  });
   final Invoice invoice;
   @override
   State<ChiTietHoaDon_Screen> createState() => _ChiTietHoaDon_ScreenState();
@@ -29,74 +32,74 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
           },
         ),
       ),
-      body: 
-      //SingleChildScrollView(
-        //child: 
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Mã hóa đơn: ${widget.invoice.id}",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              Text(
-                "Ngày đặt hàng: ${widget.invoice.date}",
-                style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Expanded(child: ChiTietHoaDon_List(id: widget.invoice.id)),
-              const SizedBox(
-                height: 15,
-              ),
-              const Text(
-                "Địa chỉ giao hàng",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              Text(
-                widget.invoice.address,
-                style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Divider(),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                "Thanh Toán",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              Text(
-                "Tổng tiền: ${widget.invoice.totalPrice} VND",
-                style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
-              ),
-              Text(
-                "Chiết khấu: 0 VND",
-                style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
-              ),
-              Text(
-                "Phí vận chuyển: 25000 VND",
-                style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Divider(),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                "Tổng hóa đơn: ${totalPrice + 25000} VND",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            ],
-          ),
+      body:
+          //SingleChildScrollView(
+          //child:
+          Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Mã hóa đơn: ${widget.invoice.id}",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            Text(
+              "Ngày đặt hàng: ${widget.invoice.date}",
+              style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(child: ChiTietHoaDon_List(id: widget.invoice.id)),
+            const SizedBox(
+              height: 15,
+            ),
+            const Text(
+              "Địa chỉ giao hàng",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            Text(
+              widget.invoice.address,
+              style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Divider(),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              "Thanh Toán",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            Text(
+              "Tổng tiền: ${widget.invoice.totalPrice} VND",
+              style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
+            ),
+            Text(
+              "Chiết khấu: 0 VND",
+              style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
+            ),
+            Text(
+              "Phí vận chuyển: 25000 VND",
+              style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Divider(),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              "Tổng hóa đơn: ${widget.invoice.totalPrice} VND",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          ],
         ),
+      ),
       //),
     );
   }

@@ -83,11 +83,11 @@ class _NoticeItemState extends State<NoticeItem> {
               return GestureDetector(
                 onTap: () {
                   if (widget.status) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ChiTietHoaDon_Screen(invoice: inv.first)));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) =>
+                    //             ChiTietHoaDon_Screen(invoice: inv.first)));
                   } else {
                     Navigator.push(
                         context,
