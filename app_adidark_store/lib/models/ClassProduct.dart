@@ -22,11 +22,11 @@ class Product{
     Map<String, List<DetailProduct>> data={};
     Map<dynamic,dynamic> values = json['detail'] as Map<dynamic,dynamic>;
     values.forEach((key1, value1) {
-      lstDetail.clear();
+      List<DetailProduct> lstDetail=[];
       for(var vl in value1){
          lstDetail.add(DetailProduct.fromJson(vl as Map<dynamic, dynamic>));
       }
-      data.addAll({key1.toString():lstDetail});
+      data[key1.toString()]=lstDetail;
     });
     return Product(
       id: json['id'],
