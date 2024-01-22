@@ -2,13 +2,18 @@ import 'package:app_adidark_store/items/notice_item.dart';
 import 'package:app_adidark_store/models/ClassMainNotice.dart';
 import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
+import 'package:app_adidark_store/models/DataInvoice.dart';
 import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:app_adidark_store/models/Invoice.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({super.key});
+  const NotificationScreen({super.key, required this.isLogin});
+
+  final bool isLogin;
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -17,17 +22,24 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   DatabaseReference _database = FirebaseDatabase.instance.ref();
 
+  final _user = FirebaseAuth.instance.currentUser;
+
   List<PrivateNotice> lstPrivate = [];
   List<MainNotice> lstMain = [];
 
   Future<void> getPrivateData() async {
-    List<MainNotice> lstM = await DataNotification.getMainData();
+    List<PrivateNotice> lstP =
+        await DataNotification.getPrivateData(_user!.uid);
 
-    lstMain = lstM;
+    lstP.sort((a, b) => b.id.compareTo(a.id));
+
+    lstPrivate = lstP;
   }
 
   Future<void> getMainData() async {
     List<MainNotice> lstM = await DataNotification.getMainData();
+
+    lstM.sort((a, b) => b.id.compareTo(a.id));
 
     lstMain = lstM;
   }
@@ -39,6 +51,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
     setState(() {
       pros = pros2;
     });
+  }
+
+  List<Invoice> invoices = [];
+
+  Future<void> _fetchInvoices(String acc) async {
+    invoices = await DataInvoice().loadInvoices(acc);
+    setState(() {});
   }
 
   @override
@@ -61,6 +80,28 @@ class _NotificationScreenState extends State<NotificationScreen> {
         getMainData();
       });
     });
+
+    // if (widget.isLogin) {
+    //   _database.child('Invoice/${_user!.uid}').onChildAdded.listen((event) {
+    //     setState(() {
+    //       _fetchInvoices(_user!.uid);
+
+    //       DataNotification.createPrivateData(invoices.last);
+
+    //       getPrivateData();
+    //     });
+    //   });
+
+    //   _database.child('Invoice/${_user!.uid}').onChildChanged.listen((event) {
+    //     setState(() {
+    //       _fetchInvoices(_user!.uid);
+
+    //       DataNotification.createPrivateData(invoices.last);
+
+    //       getPrivateData();
+    //     });
+    //   });
+    // }
   }
 
   @override
@@ -130,6 +171,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       time: lstMain[index].date,
                                       title: lstMain[index].title,
                                       content: lstMain[index].content,
+                                      isLogin: widget.isLogin,
                                     );
                                   },
                                   separatorBuilder:
@@ -171,9 +213,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     return NoticeItem(
                                       idInvoice: lstPrivate[index].idInvoice,
                                       status: true,
-                                      time: lstMain[index].date,
-                                      title: lstMain[index].title,
-                                      content: lstMain[index].content,
+                                      time: lstPrivate[index].date,
+                                      title: lstPrivate[index].title,
+                                      content: lstPrivate[index].content,
                                     );
                                   },
                                   separatorBuilder:

@@ -65,23 +65,21 @@ class DataNotification {
     });
   }
 
-  static Future<void> createPrivateData(Invoice inv) async {
+  static Future<void> createPrivateData(String status, int idPro) async {
     final _user = FirebaseAuth.instance.currentUser;
 
-    String content = inv.status.substring(1, inv.status.indexOf(" ")) +
-        "được" +
-        inv.status.substring(inv.status.indexOf(" "));
+    String content =
+        "${status.substring(0, status.indexOf(" ")).toLowerCase()} được${status.substring(status.indexOf(" "))}";
 
     List<PrivateNotice> lstM = await getPrivateData(_user!.uid);
-    final databaseReference = FirebaseDatabase.instance.ref();
-    databaseReference
-        .child(
-            'Notification/private/${_user.uid}/${lstM.length <= 1 ? lstM.length : (lstM.length - 1)}')
-        .set({
+    final databaseReference =
+        FirebaseDatabase.instance.ref('Notification/private');
+
+    databaseReference.child('${_user.uid}/${lstM.length}').update({
       "content": "Đơn hàng của bạn $content",
       "date": DateFormat('dd/MM/yyyy').format(DateTime.now()).toString(),
-      "id": lstM.length <= 1 ? lstM.length : (lstM.length - 1),
-      "idProduct": inv.id,
+      "id": lstM.length,
+      "idProduct": idPro,
       "status": true,
       "title": title[0],
     });

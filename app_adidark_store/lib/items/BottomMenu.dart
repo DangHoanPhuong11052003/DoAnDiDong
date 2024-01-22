@@ -7,19 +7,20 @@ import '../views/ThongBao_CaiDat_CaNhan/notification_screen.dart';
 import '../views/ThongBao_CaiDat_CaNhan/profile_screen.dart';
 import '../views/TrangChu/HomePage.dart';
 
-
 class BottomMenu extends StatefulWidget {
-  const BottomMenu({super.key, 
+  const BottomMenu({
+    super.key,
   });
 
   @override
   _BottomMenuState createState() => _BottomMenuState();
 }
 
-class _BottomMenuState extends State<BottomMenu> with SingleTickerProviderStateMixin  {
+class _BottomMenuState extends State<BottomMenu>
+    with SingleTickerProviderStateMixin {
   int current_index = 0;
   bool isLoggedIn = false; // Biến lưu trạng thái đăng nhập
-   late AnimationController controller;
+  late AnimationController controller;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -57,12 +58,10 @@ class _BottomMenuState extends State<BottomMenu> with SingleTickerProviderStateM
     return [
       const HomePage(),
       const CartScreen(),
-      const NotificationScreen(),
-      const ProfileScreen(),
+      NotificationScreen(isLogin: isLoggedIn),
+      ProfileScreen(isLogin: isLoggedIn),
     ];
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -76,17 +75,17 @@ class _BottomMenuState extends State<BottomMenu> with SingleTickerProviderStateM
           Icon(Icons.person, size: 30),
         ],
         onTap: (index) {
-        setState(() {
-          current_index = index;
-        });
+          setState(() {
+            current_index = index;
+          });
         },
-          letIndexChange: (value){
-        if(!isLoggedIn&&value==1){
-          showFailureDialog();
-          return false;
-        }
-        return true;
-      },
+        letIndexChange: (value) {
+          if (!isLoggedIn && value == 1) {
+            showFailureDialog();
+            return false;
+          }
+          return true;
+        },
       ),
       body: pages[current_index],
     );

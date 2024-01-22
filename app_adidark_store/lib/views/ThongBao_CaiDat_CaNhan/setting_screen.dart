@@ -475,7 +475,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return const CircularProgressIndicator();
+                              // return const CircularProgressIndicator();
                               case ConnectionState.active:
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
@@ -528,7 +528,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return const CircularProgressIndicator();
+                              // return const CircularProgressIndicator();
                               case ConnectionState.active:
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
@@ -584,7 +584,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return const CircularProgressIndicator();
+                              // return const CircularProgressIndicator();
                               case ConnectionState.active:
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
@@ -629,7 +629,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return const CircularProgressIndicator();
+                              // return const CircularProgressIndicator();
                               case ConnectionState.active:
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
@@ -676,7 +676,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return const CircularProgressIndicator();
+                              // return const CircularProgressIndicator();
                               case ConnectionState.active:
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
@@ -723,7 +723,7 @@ class _AccountSettingState extends State<AccountSetting> {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return const CircularProgressIndicator();
+                              // return const CircularProgressIndicator();
                               case ConnectionState.active:
                               case ConnectionState.done:
                                 if (snapshot.hasError) {

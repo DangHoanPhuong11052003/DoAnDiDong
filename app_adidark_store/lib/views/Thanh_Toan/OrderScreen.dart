@@ -1,4 +1,7 @@
 import 'package:app_adidark_store/models/ClassCartUser.dart';
+import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
+import 'package:app_adidark_store/models/DataNotification..dart';
+import 'package:app_adidark_store/models/Invoice.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../items/ItemProOrder.dart';
@@ -10,11 +13,11 @@ import '../../models/ClassUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderScreen extends StatefulWidget {
-  OrderScreen({super.key, required this.address, required this.payMethod, this.carts});
+  OrderScreen(
+      {super.key, required this.address, required this.payMethod, this.carts});
   Address address;
   bool payMethod;
   List<CartUser>? carts;
-  
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();
@@ -23,14 +26,14 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   DateTime now = DateTime.now();
   late String Oderday = '${now.day}/${now.month}/${now.year}';
-  User? user=FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   var result;
-  double total=0;
+  double total = 0;
   @override
   Widget build(BuildContext context) {
-    total=0;
+    total = 0;
     for (var element in widget.carts!) {
-      total+=element.quantity*element.price;
+      total += element.quantity * element.price;
     }
     return Scaffold(
       appBar: AppBar(
@@ -96,7 +99,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                               )));
                                   // ignore: avoid_print
                                   setState(() {
-                                    if(result!=null){
+                                    if (result != null) {
                                       widget.address = result;
                                     }
                                   });
@@ -162,9 +165,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                             )));
                                 // ignore: avoid_print
                                 setState(() {
-                                  if(result!=null){
+                                  if (result != null) {
                                     widget.payMethod =
-                                      bool.parse(result.toString());
+                                        bool.parse(result.toString());
                                   }
                                 });
                               },
@@ -246,7 +249,18 @@ class _OrderScreenState extends State<OrderScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                 DataInvoice().addInvoice("Đang xác nhận", await DataInvoice().getNewId(user!.uid), user!.uid, Oderday, Oderday, total, widget.address!.detail, widget.carts??List.empty());
+                DataInvoice().addInvoice(
+                    "Đang xác nhận",
+                    await DataInvoice().getNewId(user!.uid),
+                    user!.uid,
+                    Oderday,
+                    Oderday,
+                    total,
+                    widget.address!.detail,
+                    widget.carts ?? List.empty());
+
+                DataNotification.createPrivateData(
+                    "Đang xác nhận", await DataInvoice().getNewId(user!.uid));
               },
               child: Container(
                 alignment: Alignment.center,
