@@ -235,7 +235,7 @@ class _HomePageFixState extends State<HomePage> {
                           )),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 15,
                     ),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -79,14 +79,7 @@ class _Login_ScreenState extends State<Login_Screen>
     } else {
       try {
         await _auth.loginAccount(user);
-       showNotifi("Cảnh báo đăng nhập", "Đăng nhập thành công trên thiết bị");
-        // await showDoneDialog();
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const BottomMenu(),
-        //   ),
-        // );
+        showNotifi("Cảnh báo đăng nhập", "Đăng nhập thành công trên thiết bị");
       } on SignUp_AccountFailure catch (e) {
         showFailureDialog(message: e.message);
       } catch (_) {

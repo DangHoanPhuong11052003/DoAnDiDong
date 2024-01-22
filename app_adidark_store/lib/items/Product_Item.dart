@@ -2,11 +2,7 @@ import 'package:app_adidark_store/views/ChiTiet_SanPham/ProDetailScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
-import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lottie/lottie.dart';
-
-import '../views/SignUp_In/SignInScreen.dart';
 
 class ProductItem extends StatefulWidget {
   const ProductItem({super.key, required this.product});
@@ -58,22 +54,21 @@ class _ProducItemState extends State<ProductItem>
         }
       },
       child: Container(
-        width: 100,
-        height: 200,
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: SingleChildScrollView(
+          width: 100,
+          height: 200,
+          padding: EdgeInsets.only(bottom: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -87,7 +82,7 @@ class _ProducItemState extends State<ProductItem>
               SizedBox(height: 16),
               Text(
                 widget.product.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
@@ -101,26 +96,26 @@ class _ProducItemState extends State<ProductItem>
                   color: Colors.grey[800],
                 ),
               ),
-              SizedBox(height: 8,),
-              OverflowBar(
-                
-                alignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  TextButton( 
-                    child: const Text('Mua ngay', style: TextStyle(color: Colors.green),), onPressed: () {
-                     Navigator.push(
-                     context,
-                     MaterialPageRoute(builder: (context) => ProDetailScreen(idPro: widget.product.id,)),
-                         );
-                    
+              TextButton(
+                  child: const Text(
+                    'Mua ngay',
+                    style: TextStyle(
+                        color: Color(0xFFADDDFF), fontWeight: FontWeight.w800),
+                  ),
+                  onPressed: () {
+                    if (isLoggedIn) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProDetailScreen(idPro: widget.product.id)),
+                      );
+                    } else {
+                      showDoneDialog();
+                    }
                   }),
-
-                ],
-              )
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 
@@ -141,7 +136,7 @@ class _ProducItemState extends State<ProductItem>
                 controller.forward();
               },
             ),
-            Text(
+            const Text(
               "Vui lòng đăng nhập để tiếp tục",
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
             ),
