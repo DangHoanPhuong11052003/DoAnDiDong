@@ -89,7 +89,11 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   void initState() {
-    acc= user!.uid;
+    try{
+      acc= user!.uid;
+    }catch(e){
+      acc="";
+    };
     super.initState();
      _setupData();
   }

@@ -456,7 +456,25 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                 .showSnackBar(snackBarFail);
                           } else {
                             _updateOrCreateCart();
-                            showNotifi("Cảnh báo đăng nhập","thiết bị lạ đăng nhập vào máy của bạn");
+                            showNotifi("Bạn vừa thêm sản phẩm mới vào giỏ hàng","Tên: ${pro.name}, ${seledtedColorId== "a"
+                                      ? "Màu: Đen"
+                                      :seledtedColorId == "b"
+                                          ? "Màu: Trắng"
+                                          : seledtedColorId == "c"
+                                              ? "Màu: Vàng"
+                                              : seledtedColorId == "d"
+                                                  ? "Màu: Xanh dương"
+                                                  :seledtedColorId == "e"
+                                                      ? "Màu: Xám"
+                                                      : seledtedColorId == "f"
+                                                          ? "Màu: Nâu"
+                                                          : seledtedColorId == "g"
+                                                              ? "Màu: Cam"
+                                                              : seledtedColorId == "h"
+                                                                  ? "Màu: Tím"
+                                                                  : seledtedColorId == "j"
+                                                                      ? "Màu: Xanh lá"
+                                                                      : "Màu: Hồng"} ,Size: $seledtedSizeId, Số lượng: $sttbuy, Giá:${sttbuy*pro.price}");
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBarSucc);
                           }
