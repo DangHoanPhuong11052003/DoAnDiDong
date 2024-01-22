@@ -2,6 +2,8 @@ import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import '../../items/BottomMenu.dart';
 import '../../items/ItemProOrder.dart';
 import '../../models/ClassAddress.dart';
 import 'OrderAddressScreen.dart';
@@ -14,44 +16,64 @@ import '../../models/DataNotification..dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderScreen extends StatefulWidget {
-  OrderScreen({super.key, required this.address, required this.payMethod, this.carts});
+  OrderScreen(
+      {super.key, required this.address, required this.payMethod, this.carts});
   Address address;
   bool payMethod;
   List<CartUser>? carts;
-  
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
-  static Future<void> updateAllCartItemsStatus(List<CartUser> cartItems, String acc) async {
-  for (var cartItem in cartItems) {
-    cartItem.status = 0;
-    await DataCartUser.updateData(cartItem, acc);
+class _OrderScreenState extends State<OrderScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: const Duration(seconds: 3), vsync: this);
+    controller.addStatusListener((status) async {
+      if (status == AnimationStatus.completed) {
+        Navigator.pop(context);
+        controller.reset();
+      }
+    });
   }
-  
-  
-}
- void updateProduct(List<CartUser> cartItems)  {
-  for (var cartItem in cartItems) {
-    
-     DataProduct().updateQuantityPro(cartItem.idPro, cartItem.color,cartItem.size, cartItem.quantity);
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
-  
-  
-}
+
+  static Future<void> updateAllCartItemsStatus(
+      List<CartUser> cartItems, String acc) async {
+    for (var cartItem in cartItems) {
+      cartItem.status = 0;
+      await DataCartUser.updateData(cartItem, acc);
+    }
+  }
+
+  void updateProduct(List<CartUser> cartItems) {
+    for (var cartItem in cartItems) {
+      DataProduct().updateQuantityPro(
+          cartItem.idPro, cartItem.color, cartItem.size, cartItem.quantity);
+    }
+  }
 
   DateTime now = DateTime.now();
   late String Oderday = '${now.day}/${now.month}/${now.year}';
-  User? user=FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   var result;
-  double total=0;
+  double total = 0;
   @override
   Widget build(BuildContext context) {
-    total=0;
+    total = 0;
     for (var element in widget.carts!) {
-      total+=element.quantity*element.price;
+      total += element.quantity * element.price;
     }
     return Scaffold(
       appBar: AppBar(
@@ -117,7 +139,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                               )));
                                   // ignore: avoid_print
                                   setState(() {
-                                    if(result!=null){
+                                    if (result != null) {
                                       widget.address = result;
                                     }
                                   });
@@ -183,9 +205,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                             )));
                                 // ignore: avoid_print
                                 setState(() {
-                                  if(result!=null){
+                                  if (result != null) {
                                     widget.payMethod =
-                                      bool.parse(result.toString());
+                                        bool.parse(result.toString());
                                   }
                                 });
                               },
@@ -267,14 +289,33 @@ class _OrderScreenState extends State<OrderScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                 DataInvoice().addInvoice("Chờ xác nhận", await DataInvoice().getNewId(user!.uid), user!.uid, Oderday, Oderday, total, widget.address!.detail, widget.carts??List.empty());
-                 DataNotification().addNoiticationPrivate("Bạn đã đặt hàng thành công MHĐ: ${await DataInvoice().getMaxId(user!.uid)}",await DataNotification().getNewId(user!.uid),user!.uid, Oderday,await DataInvoice().getMaxId(user!.uid));
-                 print(await DataInvoice().getMaxId(user!.uid));
-                 print(user!.uid);
-                 updateAllCartItemsStatus(widget.carts??List.empty(), user!.uid);
-                 updateProduct(widget.carts??List.empty());
-               
-                 
+                DataInvoice().addInvoice(
+                    "Chờ xác nhận",
+                    await DataInvoice().getNewId(user!.uid),
+                    user!.uid,
+                    Oderday,
+                    Oderday,
+                    total,
+                    widget.address!.detail,
+                    widget.carts ?? List.empty());
+                DataNotification().addNoiticationPrivate(
+                    "Bạn đã đặt hàng thành công MHĐ: ${await DataInvoice().getMaxId(user!.uid)}",
+                    await DataNotification().getNewId(user!.uid),
+                    user!.uid,
+                    Oderday,
+                    await DataInvoice().getMaxId(user!.uid));
+                print(await DataInvoice().getMaxId(user!.uid));
+                print(user!.uid);
+                updateAllCartItemsStatus(
+                    widget.carts ?? List.empty(), user!.uid);
+                updateProduct(widget.carts ?? List.empty());
+                 await showDoneDialog();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BottomMenu(),
+          ),
+        );
               },
               child: Container(
                 alignment: Alignment.center,
@@ -290,6 +331,33 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),
               ),
             )
+          ],
+        ),
+      ),
+    );
+  }
+    Future<void> showDoneDialog() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              'assets/animations/login_successly.json',
+              repeat: false,
+              controller: controller,
+              onLoaded: (composition) {
+                controller.duration = composition.duration;
+                controller.forward();
+              },
+            ),
+            Text(
+              "Đăng nhập thành công",
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+            ),
+            SizedBox(height: 16.0),
           ],
         ),
       ),
