@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/views/SignUp_In/SignUpScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/VerifiedScreen.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../items/ItemLocalNotification.dart';
 import '../../models/ClassUser.dart';
 import 'controller/SignIn_Controller.dart';
 import 'controller/SignUp_Failure.dart';
@@ -33,6 +36,7 @@ class _Login_ScreenState extends State<Login_Screen>
   @override
   void initState() {
     super.initState();
+    _request();
     controller =
         AnimationController(duration: const Duration(seconds: 3), vsync: this);
     controller.addStatusListener((status) async {
@@ -41,6 +45,16 @@ class _Login_ScreenState extends State<Login_Screen>
         controller.reset();
       }
     });
+  }
+
+  _request() async {
+    await NotificationAPI.requestPermissionLocalNotification();
+  }
+
+  Future<void> showNotifi(String? title, String? body) async {
+    Random random = Random();
+    int id = random.nextInt(100000);
+    NotificationAPI.showNotification(id: id, body: body, title: title);
   }
 
   @override
@@ -65,6 +79,7 @@ class _Login_ScreenState extends State<Login_Screen>
     } else {
       try {
         await _auth.loginAccount(user);
+       showNotifi("Cảnh báo đăng nhập", "Đăng nhập thành công trên thiết bị");
         // await showDoneDialog();
         // Navigator.pushReplacement(
         //   context,
