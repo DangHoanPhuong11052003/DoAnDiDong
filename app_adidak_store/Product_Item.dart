@@ -4,79 +4,84 @@ import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key , required this.product});
+  const ProductItem({super.key, required this.product});
   final Product product;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ProDetailScreen(idPro: product.id,)),
-          );
+        );
       },
       child: Container(
-        width: 200,
-        height: 100,
-        padding: EdgeInsets.only(left: 15, right: 15,top: 15,),
-        margin: EdgeInsets.symmetric(vertical: 4,horizontal: 4),
+        width: 100,
+        height: 200,
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Color(0xFFF6F6F6),
-          borderRadius: BorderRadius.circular(20,)
-        ),
-        child: Column(
-          children: [
-            InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProDetailScreen(idPro: product.id,),),);
-              },
-              child: Container(
-                margin: EdgeInsets.all(10),
-                child: Image.network(
-                  
-                  product.img[0].link, height: 100, width: 100,
-                  ),
-              ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3),
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(bottom: 5),
-              child: Text(
+          ],
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 140,
+                child: Image.network(
+                  product.img[0].link,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(height: 16),
+              Text(
                 product.name,
                 style: TextStyle(
                   fontSize: 12,
-                  //color: Color(0xFF4C53A5),
-                  fontWeight: FontWeight.bold
-      
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                "12.000.000 VND",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+              SizedBox(height: 8,),
+              OverflowBar(
+                
+                alignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  TextButton( 
+                    child: const Text('Mua ngay', style: TextStyle(color: Colors.green),), onPressed: () {
+                     Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (context) => ProDetailScreen(idPro: product.id,)),
+                         );
+                    
+                  }),
+
+                ],
               )
-              ,
-            ),
-            Padding(
-              padding:EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "12.000.000 VND",
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      //color: Color(0xFF4C53A5),
-                    ),
-                  ),
-                  
-      
-              ]),
-              )
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
