@@ -7,7 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class DataInvoiceDetail {
-  Future<List<CartUser>> loadInvoiceDetailsFromLocal() async {
+  Future<List<CartUser>> loadLocalInvoiceDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? invoiceDetailsJson = prefs.getString('local_invoice_details');
     if (invoiceDetailsJson != null) {
@@ -22,7 +22,7 @@ class DataInvoiceDetail {
     String invoiceDetailsJson = json.encode(invoiceDetails.map((invoiceDetail) => invoiceDetail.toJson()).toList());
     prefs.setString('local_invoice_details', invoiceDetailsJson);
   }
-
+  
   Future<List<CartUser>> loadInvoiceDetails(String acc, int id) async {
   try {
     DatabaseReference invoiceRef =

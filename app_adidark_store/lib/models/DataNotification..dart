@@ -1,14 +1,12 @@
 import 'package:app_adidark_store/models/ClassMainNotice.dart';
 import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
-import 'package:app_adidark_store/models/Invoice.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 
 class DataNotification {
   static List<String> title = ["Thông báo", "Sản phẩm mới"];
-
   static Future<List<MainNotice>> getMainData() async {
     DataSnapshot snapshot =
         await FirebaseDatabase.instance.ref().child("Notification/main").get();
@@ -79,9 +77,45 @@ class DataNotification {
       "content": "Đơn hàng của bạn $content",
       "date": DateFormat('dd/MM/yyyy').format(DateTime.now()).toString(),
       "id": lstM.length,
-      "idProduct": idPro,
+      "idInvoice": idPro,
       "status": true,
       "title": title[0],
+    });
+  }
+  Future<int> getNewId(String acc) async {
+    DataSnapshot snapshot =
+        await FirebaseDatabase.instance.ref().child('Notification/private/$acc').get();
+    List<PrivateNotice> allCarts = [];
+    int newId;
+    List<dynamic> values = [];
+    try {
+      values = snapshot.value as List<dynamic>;
+    } catch (e) {
+      return 0;
+    }
+    for (var element in values) {
+      allCarts.add(PrivateNotice.fromJson(element as Map<Object?, Object?>));
+    }
+    newId = allCarts.last.id + 1;
+    return newId;
+  }
+  Future<void> addNoiticationPrivate(
+      String content,
+      int id,
+      String acc,
+      String date,
+      int idInvoice,
+      
+      ) async {
+    final databaseReference = FirebaseDatabase.instance.ref();
+    final invoiceReference = databaseReference.child('Notification/private/$acc/$id');
+    invoiceReference.set({
+      "content": content,
+      "date": date,
+      "id": id,
+      "idInvoice": idInvoice,
+      "status": true,
+      "title": "Thông báo",
     });
   }
 }

@@ -60,7 +60,7 @@ class DataProduct{
       return quantity;
   }
   
-void updateItem(int id, String brand, int size, int newQuantity) async {
+Future<void> updateQuantityPro(int id, String brand, int size, int newQuantity) async {
   final productRef = FirebaseDatabase.instance.ref().child('Products/$id/detail/$brand');
   DataSnapshot snapshot = (await productRef.once()).snapshot;
   if (snapshot.value is List) {

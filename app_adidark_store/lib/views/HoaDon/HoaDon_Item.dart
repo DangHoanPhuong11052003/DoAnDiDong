@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
 import 'package:app_adidark_store/models/ClassInvoiceDetail.dart';
 import 'package:app_adidark_store/models/DataInvoice.dart';
+import 'package:app_adidark_store/models/DataNotification..dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
 import 'package:app_adidark_store/models/DataInvoiceDetail.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -33,7 +34,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
   
   void initState() {
       super.initState();
-      Waitforconfim();
+      
      
     }
   
@@ -47,7 +48,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
     return false;
   }
   void Waitforconfim() {
-    const int autoCancelTimeInSeconds = 30;
+    const int autoCancelTimeInSeconds = 3;
 
     Timer(Duration(seconds: autoCancelTimeInSeconds), () {
       // Kiểm tra xem đơn hàng có trong trạng thái "Chờ xác nhận" không và chưa tự động hủy
@@ -123,7 +124,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
              
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFCBE9FF), // Thay đổi màu nền tại đây
+                    primary: Color(0xFFCBE9FF), 
                   ),
                   onPressed: () {
                       Navigator.push(
@@ -140,49 +141,50 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                         fontWeight: FontWeight.w600),
                   )),
               ElevatedButton(
-  onPressed: () async {
-    bool isConnected = await checkInternetConnection();
-    if (isConnected) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Xác nhận"),
-            content: Text("Bạn có chắc chắn muốn hủy đơn?"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); 
+                onPressed: () async {
+                  bool isConnected = await checkInternetConnection();
+                  if (isConnected) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Xác nhận"),
+                          content: Text("Bạn có chắc chắn muốn hủy đơn?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); 
+                              },
+                              child: Text("Không"),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                DataNotification().addNoiticationPrivate("Hóa đơn ${widget.invoice.id} đã được hủy",await DataNotification().getNewId(user!.uid),user!.uid,widget.invoice.date, widget.invoice.id);
+                                setState(() {
+                                  widget.invoice.status = "Đã hủy";
+                                });
+                                datainvoice.updateInvoiceStatus(user!.uid,widget.invoice.id,'Đã hủy');
+                                Navigator.of(context).pop(); 
+                              },
+                              child: Text("Có"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    
+                  }
                 },
-                child: Text("Không"),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    widget.invoice.status = "Đã hủy";
-                  });
-                  datainvoice.updateInvoiceStatus(user!.uid,widget.invoice.id,'Đã hủy');
-                  Navigator.of(context).pop(); 
-                },
-                child: Text("Có"),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      // Hiển thị thông báo không có kết nối mạng
-    }
-  },
-  child: const Text(
-    "Hủy đơn",
-    style: TextStyle(
-      color: Colors.black,
-      fontSize: 15,
-      fontWeight: FontWeight.w600,
-    ),
-  ),
-)
+                child: const Text(
+                  "Hủy đơn",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              )
             ],          
           )
           : widget.invoice.status == "Đang giao"
@@ -192,7 +194,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
              
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFCBE9FF), // Thay đổi màu nền tại đây
+                   primary: Color(0xFFCBE9FF),
                   ),
                   onPressed: () {
                       Navigator.push(
@@ -209,7 +211,8 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
                         fontWeight: FontWeight.w600),
                   )),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  DataNotification().addNoiticationPrivate("Hóa đơn ${widget.invoice.id} đã được giao",await DataNotification().getNewId(user!.uid),user!.uid,widget.invoice.date, widget.invoice.id);
                   setState(() {
                                 widget.invoice.status = "Đã giao";
                               });
@@ -233,7 +236,7 @@ class _HoaDon_ItemState extends State<HoaDon_Item> {
              
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFCBE9FF), // Thay đổi màu nền tại đây
+                    
                   ),
                   onPressed: () {
                       Navigator.push(
