@@ -11,12 +11,11 @@ class ProfileController extends GetxController {
   final _userRepo = Get.put(UserResposity());
 
   Future<Users> getUserData() async {
-  final email = _authRepo.firebaseUser.value?.email;
-  if (email != null) {
-    return await _userRepo.getUserDetails(email);
-  } else {
-    Get.snackbar('Error', 'Login to continue');
-    throw Exception('User email is null'); // Throw an exception to indicate the error condition
+    final email = _authRepo.firebaseUser.value?.email;
+    if (email != null) {
+      return await _userRepo.getUserDetails(email);
+    } else {
+      throw Exception('User email is null');
+    }
   }
-}
 }

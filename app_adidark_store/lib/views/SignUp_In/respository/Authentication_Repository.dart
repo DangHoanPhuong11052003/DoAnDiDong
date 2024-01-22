@@ -42,6 +42,4 @@ class Auth_Resposity extends GetxController {
       throw SignUp_AccountFailure(ex.message);
     } catch (_) {}
   }
-
-  Future<void> logoutAccount() async => await _auth.signOut();
 }
