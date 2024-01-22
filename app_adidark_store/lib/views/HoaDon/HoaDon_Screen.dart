@@ -57,7 +57,8 @@ class _HoaDon_ScreenState extends State<HoaDon_Screen> {
                 child: TabBarView(
                   children: [
                     Container(
-                      child: TatCa_Screen(),),
+                      child: TatCa_Screen(),
+                    ),
                     Container(
                       child: ChoXacNhan_Screen(),
                     ),

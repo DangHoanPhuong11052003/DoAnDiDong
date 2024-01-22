@@ -158,7 +158,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             case ConnectionState.active:
                             case ConnectionState.done:
                               if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
+                                return Text('');
                               } else {
                                 return ListView.separated(
                                   padding: EdgeInsets.all(2.0),
@@ -171,7 +171,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       time: lstMain[index].date,
                                       title: lstMain[index].title,
                                       content: lstMain[index].content,
-                                      // isLogin: widget.isLogin,
+                                      isLogin: widget.isLogin,
                                     );
                                   },
                                   separatorBuilder:
@@ -203,20 +203,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             case ConnectionState.active:
                             case ConnectionState.done:
                               if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
+                                return Text('');
                               } else {
                                 return ListView.separated(
                                   padding: EdgeInsets.all(2.0),
                                   itemCount: lstPrivate.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    // return NoticeItem(
-                                    //   // idInvoice: lstPrivate[index].idInvoice,
-                                    //   status: true,
-                                    //   time: lstPrivate[index].date,
-                                    //   title: lstPrivate[index].title,
-                                    //   content: lstPrivate[index].content,
-                                    // );
+                                    return NoticeItem(
+                                      idInvoice: lstPrivate[index].idInvoice,
+                                      status: true,
+                                      time: lstPrivate[index].date,
+                                      title: lstPrivate[index].title,
+                                      content: lstPrivate[index].content,
+                                    );
                                   },
                                   separatorBuilder:
                                       (BuildContext context, int index) =>
