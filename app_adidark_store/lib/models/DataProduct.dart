@@ -40,7 +40,7 @@ class DataProduct{
   static Future getDataById(int id) async {
    DataSnapshot  snapshot = await FirebaseDatabase.instance
   .ref()
-  .child("Products").child(id.toString())
+  .child("Products/$id")
   .get();
 
     var prosduct;

@@ -48,7 +48,15 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
     if(mounted){
       setState(() {
       pro=product;
-      maxQuan=pro.quantity;
+      if(seledtedColorId==""||seledtedSizeId==-1){
+        maxQuan=pro.quantity;
+      }else{
+        for (var element in pro.detail[seledtedColorId]!) {
+          if(maxQuan>element.quantity&&element.size==seledtedSizeId){
+            maxQuan=element.quantity;
+          }
+        }
+      }
     });
     }
   }
@@ -262,11 +270,9 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                         if (seledtedColorId == pro.detail.keys.elementAt(i)) {
                                           seledtedColorId = "";
                                           seledtedSizeId=-1;
-                                          maxQuan=pro.quantity;
                                         } else {
                                           seledtedColorId = pro.detail.keys.elementAt(i);
                                           seledtedSizeId=-1;
-                                          maxQuan=pro.quantity;
                                         }
                                       });
                                     },
@@ -285,13 +291,11 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                         setState(() {
                                           seledtedColorId = "";
                                           seledtedSizeId=-1;
-                                          maxQuan=pro.quantity;
                                         });
                                       } else {
                                         setState(() {
                                           seledtedColorId = pro.detail.keys.elementAt(i);
                                           seledtedSizeId=-1;
-                                          maxQuan=pro.quantity;
                                         });
                                       }
                                     },
@@ -309,13 +313,11 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                       setState(() {
                                         seledtedColorId = "";
                                         seledtedSizeId=-1;
-                                        maxQuan=pro.quantity;
                                       });
                                     } else {
                                       setState(() {
                                         seledtedColorId = pro.detail.keys.elementAt(i);
                                         seledtedSizeId=-1;
-                                        maxQuan=pro.quantity;
                                       });
                                     }
                                   },
@@ -342,15 +344,15 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                                     idSize: (seledtedColorId!=""?pro.detail[seledtedColorId]![j].size:j+30),
                                     idSelected: seledtedSizeId,
                                     selected: () {
-                                      if (seledtedSizeId == pro.detail[seledtedColorId]![j].size) {
+                                      if (seledtedSizeId == (seledtedColorId!=""?pro.detail[seledtedColorId]![j].size:j+30)) {
                                         setState(() {
                                           seledtedSizeId = -1;
                                           maxQuan=pro.quantity;
                                         });
                                       } else {
                                         setState(() {
-                                          seledtedSizeId = pro.detail[seledtedColorId]![j].size;
-                                          maxQuan=pro.detail[seledtedColorId]![j].quantity;
+                                          seledtedSizeId = seledtedColorId!=""?pro.detail[seledtedColorId]![j].size:j+30;
+                                          maxQuan=seledtedColorId!=""?pro.detail[seledtedColorId]![j].quantity:pro.quantity;
                                           if(sttbuy>maxQuan){
                                             sttbuy=maxQuan;
                                           }
