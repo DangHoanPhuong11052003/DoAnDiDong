@@ -42,20 +42,14 @@ class _ProducItemState extends State<ProductItem>
 
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-    bool isLoggedIn = user != null;
     return GestureDetector(
       onTap: () {
-        if (isLoggedIn) {
-          Navigator.push(
+        Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
                     ProDetailScreen(idPro: widget.product.id)),
           );
-        } else {
-          showDoneDialog();
-        }
       },
       child: Container(
         width: 100,

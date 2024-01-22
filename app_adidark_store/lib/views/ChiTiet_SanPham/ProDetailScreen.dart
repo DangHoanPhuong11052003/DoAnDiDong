@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/items/ItemImgPro.dart';
 import 'package:app_adidark_store/items/ItemLocalNotification.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
@@ -46,6 +47,17 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
   List<CartUser> allCart=[];
 
   Product pro=Product(cate: Categories(id: -1, name: "", status: false), detail: Map(), id: -1, img: List.empty(), manu: Manufacturer(id: -1, name: "", status: false), name: "", price: 0, quantity: 0, status: 0, infor: "");
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool isLoggedIn=false;
+
+  void checkLoginStatus() {
+    _auth.authStateChanges().listen((user) {
+      setState(() {
+        isLoggedIn = (user != null);
+      });
+    });
+  }
 
   _getData() async{
     Product product=await DataProduct.getDataById(widget.idPro);
@@ -112,6 +124,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
   void initState() {
     _getData();
     _request();
+    checkLoginStatus();
     super.initState();
   }
 
@@ -393,93 +406,39 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
               padding: EdgeInsets.only(top: 10.0, bottom: 10),
               child: Row(
                 children: [
-                  if(pro.quantity>0)
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                      onTap: () {
-                        if (seledtedColorId == "" ||
-                            seledtedSizeId == -1 ||
-                            sttbuy <= 0) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBarFail);
-                        }
-                        else{
-                        _buyPro();
-                        }
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: seledtedColorId == "" ||
-                                    seledtedSizeId == -1 ||
-                                    sttbuy <= 0
-                                ? Colors.grey
-                                : const Color(0xFFADDDFF)),
-                        height: 50,
-                        width: 200,
-                        child: const Text(
-                          "MUA NGAY",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if (seledtedColorId == "" ||
-                            seledtedSizeId == -1 ||
-                            sttbuy <= 0) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBarFail);
-                        } else {
-                          _updateOrCreateCart();
-                          showNotifi("Cảnh báo đăng nhập","thiết bị lạ đăng nhập vào máy của bạn");
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(snackBarSucc);
-                        }
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: seledtedColorId == "" ||
-                                    seledtedSizeId == -1 ||
-                                    sttbuy <= 0
-                                ? Colors.grey
-                                : const Color(0xFFADDDFF)),
-                        height: 50,
-                        width: 120,
-                        child: const Icon(
-                          Icons.shopping_cart,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                      ),
-                    )
-                      ],
-                    ),
-                    )
-                  else
-                    Container(
-                      width:MediaQuery.of(context).size.width,
-                      height: 50,
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
+                  if(isLoggedIn)
+                  
+                    if(pro.quantity>0)
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                        onTap: () {
+                          if (seledtedColorId == "" ||
+                              seledtedSizeId == -1 ||
+                              sttbuy <= 0) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBarFail);
+                          }
+                          else{
+                          _buyPro();
+                          }
+                        },
+                        child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.red),
+                              borderRadius: BorderRadius.circular(5),
+                              color: seledtedColorId == "" ||
+                                      seledtedSizeId == -1 ||
+                                      sttbuy <= 0
+                                  ? Colors.grey
+                                  : const Color(0xFFADDDFF)),
                           height: 50,
                           width: 200,
                           child: const Text(
-                            "HẾT HÀNG",
+                            "MUA NGAY",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -487,7 +446,92 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                    )
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (seledtedColorId == "" ||
+                              seledtedSizeId == -1 ||
+                              sttbuy <= 0) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBarFail);
+                          } else {
+                            _updateOrCreateCart();
+                            showNotifi("Cảnh báo đăng nhập","thiết bị lạ đăng nhập vào máy của bạn");
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBarSucc);
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: seledtedColorId == "" ||
+                                      seledtedSizeId == -1 ||
+                                      sttbuy <= 0
+                                  ? Colors.grey
+                                  : const Color(0xFFADDDFF)),
+                          height: 50,
+                          width: 120,
+                          child: const Icon(
+                            Icons.shopping_cart,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
+                      )
+                        ],
+                      ),
+                      )
+                    else
+                      Container(
+                        width:MediaQuery.of(context).size.width,
+                        height: 50,
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.red),
+                            height: 50,
+                            width: 200,
+                            child: const Text(
+                              "HẾT HÀNG",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                      )
+                  else
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>const BottomMenu(pageindex: 3),));
+                        },
+                        child: Container(
+                        width:MediaQuery.of(context).size.width,
+                        height: 50,
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                            padding: EdgeInsets.all(5),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: const Color(0xFFADDDFF)),
+                            height: 60,
+                            width: MediaQuery.of(context).size.width-30,
+                            child: const Text(
+                              "ĐĂNG NHẬP HOẶC ĐĂNG KÝ ĐỂ TIẾP TỤC",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                      ),
+                      )
                 ],
               ),
             )));
