@@ -1,9 +1,10 @@
+import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:flutter/material.dart';
 import 'package:app_adidark_store/models/ClassInvoiceDetail.dart';
 import 'package:app_adidark_store/models/Invoice.dart';
 class ChiTietHoaDon_Item extends StatefulWidget {
   const ChiTietHoaDon_Item({super.key , required this.invoicedetail});
-  final InvoiceDetail invoicedetail;
+  final CartUser invoicedetail;
 
 
   @override
@@ -54,8 +55,26 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
                   //Hãng, loại
                   Text("${widget.invoicedetail.manufucturer} |${widget.invoicedetail.cate} "),
                   //Màu
-                  Text("Màu: ${widget.invoicedetail.color}"),
-                  //Kích Cỡ
+                  Text("Màu: ${widget.invoicedetail.color}" == "a"
+                      ? "Đen"
+                      : widget.invoicedetail.color== "b"
+                          ? "Trắng"
+                          : widget.invoicedetail.color== "c"
+                              ? "Vàng"
+                              : widget.invoicedetail.color == "d"
+                                  ? "Xanh dương"
+                                  :widget.invoicedetail.color == "e"
+                                      ? "Xám"
+                                      : widget.invoicedetail.color == "f"
+                                          ? "Nâu"
+                                          : widget.invoicedetail.color == "g"
+                                              ? "Cam"
+                                              : widget.invoicedetail.color == "h"
+                                                  ? "Tím"
+                                                  : widget.invoicedetail.color == "j"
+                                                      ? "Xanh lá"
+                                                      : "Hồng",),
+              
                   Text("Size: ${widget.invoicedetail.size}"),
                   //Tăng giảm số lượng
                   Text("Số lượng: ${widget.invoicedetail.quantity}"),
@@ -66,24 +85,7 @@ class _ChiTietHoaDon_ItemState extends State<ChiTietHoaDon_Item> {
                 
             ],
           ),
-          SizedBox(height: 7,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary:Color(0xFFCBE9FF),  // Thay đổi màu nền tại đây
-                ),
-                onPressed: (){},
-                child: Text("Mua lại",style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),)
-                ),
-               ElevatedButton(
-                  onPressed: (){},
-                  child: Text("Đánh giá",style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),)
-                )
-                    
-            ],
-          )
+          
         ],
       ),
     );

@@ -1,7 +1,5 @@
 import 'package:app_adidark_store/models/ClassCartUser.dart';
-import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
-import 'package:app_adidark_store/models/DataNotification..dart';
-import 'package:app_adidark_store/models/Invoice.dart';
+import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../items/ItemProOrder.dart';
@@ -9,31 +7,50 @@ import '../../models/ClassAddress.dart';
 import 'OrderAddressScreen.dart';
 import 'PaymentMethodsScreen.dart';
 import '../../models/DataInvoice.dart';
+import '../../models/DataProduct.dart';
 import '../../models/ClassUser.dart';
+import '../../models/DataProduct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderScreen extends StatefulWidget {
-  OrderScreen(
-      {super.key, required this.address, required this.payMethod, this.carts});
+  OrderScreen({super.key, required this.address, required this.payMethod, this.carts});
   Address address;
   bool payMethod;
   List<CartUser>? carts;
+  
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  static Future<void> updateAllCartItemsStatus(List<CartUser> cartItems, String acc) async {
+  for (var cartItem in cartItems) {
+    cartItem.status = 0;
+    await DataCartUser.updateData(cartItem, acc);
+  }
+  
+  
+}
+ void updateAllCartItemsStatuss(List<CartUser> cartItems)  {
+  for (var cartItem in cartItems) {
+    
+     DataProduct().updateItem(cartItem.idPro, cartItem.color,cartItem.size, cartItem.quantity);
+  }
+  
+  
+}
+
   DateTime now = DateTime.now();
   late String Oderday = '${now.day}/${now.month}/${now.year}';
-  User? user = FirebaseAuth.instance.currentUser;
+  User? user=FirebaseAuth.instance.currentUser;
   var result;
-  double total = 0;
+  double total=0;
   @override
   Widget build(BuildContext context) {
-    total = 0;
+    total=0;
     for (var element in widget.carts!) {
-      total += element.quantity * element.price;
+      total+=element.quantity*element.price;
     }
     return Scaffold(
       appBar: AppBar(
@@ -99,7 +116,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                               )));
                                   // ignore: avoid_print
                                   setState(() {
-                                    if (result != null) {
+                                    if(result!=null){
                                       widget.address = result;
                                     }
                                   });
@@ -165,9 +182,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                             )));
                                 // ignore: avoid_print
                                 setState(() {
-                                  if (result != null) {
+                                  if(result!=null){
                                     widget.payMethod =
-                                        bool.parse(result.toString());
+                                      bool.parse(result.toString());
                                   }
                                 });
                               },
@@ -219,7 +236,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        Text("${total + 25000} VND",
+                        Text("$total VND",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold))
                       ],
@@ -249,18 +266,11 @@ class _OrderScreenState extends State<OrderScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                DataInvoice().addInvoice(
-                    "Đang xác nhận",
-                    await DataInvoice().getNewId(user!.uid),
-                    user!.uid,
-                    Oderday,
-                    Oderday,
-                    total,
-                    widget.address!.detail,
-                    widget.carts ?? List.empty());
-
-                DataNotification.createPrivateData(
-                    "Đang xác nhận", await DataInvoice().getNewId(user!.uid));
+                 DataInvoice().addInvoice("Chờ xác nhận", await DataInvoice().getNewId(user!.uid), user!.uid, Oderday, Oderday, total, widget.address!.detail, widget.carts??List.empty());
+                 updateAllCartItemsStatus(widget.carts??List.empty(), user!.uid);
+                 updateAllCartItemsStatuss(widget.carts??List.empty());
+               
+                 
               },
               child: Container(
                 alignment: Alignment.center,
