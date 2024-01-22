@@ -1,4 +1,5 @@
 import 'package:app_adidark_store/items/ItemImgPro.dart';
+import 'package:app_adidark_store/items/ItemLocalNotification.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/ClassCategories.dart';
 import 'package:app_adidark_store/models/ClassManufacturer.dart';
@@ -12,6 +13,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../../items/ItemSelectedColor.dart';
 import '../../items/ItemSelectedSize.dart';
 import '../../items/TextWrapper.dart';
+
 
 class ProDetailScreen extends StatefulWidget {
   const ProDetailScreen({super.key, this.idPro=0});
@@ -92,6 +94,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
     // ignore: use_build_context_synchronously
     Navigator.push(context, MaterialPageRoute(builder: (context) => OrderAddressScreen(carts: carts),));
   }
+
 
   @override
   void initState() {
@@ -425,6 +428,7 @@ class _ProDetailScreenState extends State<ProDetailScreen> {
                               .showSnackBar(snackBarFail);
                         } else {
                           _updateOrCreateCart();
+                          NotificationAPI.showNotifi(title: 'aaaa',body: 'aaaa',payload: 'aea');
                           ScaffoldMessenger.of(context)
                               .showSnackBar(snackBarSucc);
                         }

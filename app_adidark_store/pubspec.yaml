@@ -53,6 +53,7 @@ dependencies:
   shared_preferences: ^2.2.2
   intl: ^0.17.0
   connectivity_plus: ^5.0.2
+  flutter_local_notifications: ^16.3.1+1
 
 
 dev_dependencies:

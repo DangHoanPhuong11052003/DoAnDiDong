@@ -119,26 +119,26 @@ class _ItemCartState extends State<ItemCart> {
                 Text("${widget.cart.manufucturer} | Giày ${widget.cart.cate}"),
                 //Màu
                 Text(widget.cart.color == "a"
-                      ? "Đen"
+                      ? "Màu: Đen"
                       : widget.cart.color == "b"
-                          ? "Trắng"
+                          ? "Màu: Trắng"
                           : widget.cart.color == "c"
-                              ? "Vàng"
+                              ? "Màu: Vàng"
                               : widget.cart.color == "d"
-                                  ? "Xanh dương"
+                                  ? "Màu: Xanh dương"
                                   :widget.cart.color == "e"
-                                      ? "Xám"
+                                      ? "Màu: Xám"
                                       : widget.cart.color == "f"
-                                          ? "Nâu"
+                                          ? "Màu: Nâu"
                                           : widget.cart.color == "g"
-                                              ? "Cam"
+                                              ? "Màu: Cam"
                                               : widget.cart.color == "h"
-                                                  ? "Tím"
+                                                  ? "Màu: Tím"
                                                   : widget.cart.color == "j"
-                                                      ? "Xanh lá"
-                                                      : "Hồng",),
+                                                      ? "Màu: Xanh lá"
+                                                      : "Màu: Hồng",),
                 //Kích Cỡ
-                Text(widget.cart.size.toString()),
+                Text("Cõ: ${widget.cart.size}"),
                 //Tăng giảm số lượng
                 Row(
                   children: [
