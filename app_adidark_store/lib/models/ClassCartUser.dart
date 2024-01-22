@@ -12,6 +12,7 @@ class CartUser{
   int status;
 
   CartUser({required this.color,required this.id,required this.img,required this.manufucturer,required this.quantity,required this.size,required this.namePro, required this.idPro,required this.price,required this.cate,required this.status});
+  
 
   CartUser.fromJson(Map<Object?,Object?> js)
     :id=int.parse(js['id'].toString()),
@@ -25,4 +26,21 @@ class CartUser{
     price=double.parse(js['price'].toString()),
     cate=js['cate'].toString(),
     status=int.parse(js['status'].toString());
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'color': color,
+      'img': img,
+      'manufacturer': manufucturer,
+      'namePro': namePro,
+      'quantity': quantity,
+      'size': size,
+      'idPro': idPro,
+      'price': price,
+      'cate': cate,
+      'status': status,
+    };
+  }
 }

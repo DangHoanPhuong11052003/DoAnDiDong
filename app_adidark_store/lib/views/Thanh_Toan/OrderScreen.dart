@@ -1,4 +1,5 @@
 import 'package:app_adidark_store/models/ClassCartUser.dart';
+import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../items/ItemProOrder.dart';
@@ -6,7 +7,9 @@ import '../../models/ClassAddress.dart';
 import 'OrderAddressScreen.dart';
 import 'PaymentMethodsScreen.dart';
 import '../../models/DataInvoice.dart';
+import '../../models/DataProduct.dart';
 import '../../models/ClassUser.dart';
+import '../../models/DataProduct.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -21,6 +24,23 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  static Future<void> updateAllCartItemsStatus(List<CartUser> cartItems, String acc) async {
+  for (var cartItem in cartItems) {
+    cartItem.status = 0;
+    await DataCartUser.updateData(cartItem, acc);
+  }
+  
+  
+}
+ void updateAllCartItemsStatuss(List<CartUser> cartItems)  {
+  for (var cartItem in cartItems) {
+    
+     DataProduct().updateItem(cartItem.idPro, cartItem.color,cartItem.size, cartItem.quantity);
+  }
+  
+  
+}
+
   DateTime now = DateTime.now();
   late String Oderday = '${now.day}/${now.month}/${now.year}';
   User? user=FirebaseAuth.instance.currentUser;
@@ -216,7 +236,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        Text("${total + 25000} VND",
+                        Text("$total VND",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold))
                       ],
@@ -246,7 +266,11 @@ class _OrderScreenState extends State<OrderScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                 DataInvoice().addInvoice("Đang xác nhận", await DataInvoice().getNewId(user!.uid), user!.uid, Oderday, Oderday, total, widget.address!.detail, widget.carts??List.empty());
+                 DataInvoice().addInvoice("Chờ xác nhận", await DataInvoice().getNewId(user!.uid), user!.uid, Oderday, Oderday, total, widget.address!.detail, widget.carts??List.empty());
+                 updateAllCartItemsStatus(widget.carts??List.empty(), user!.uid);
+                 updateAllCartItemsStatuss(widget.carts??List.empty());
+               
+                 
               },
               child: Container(
                 alignment: Alignment.center,

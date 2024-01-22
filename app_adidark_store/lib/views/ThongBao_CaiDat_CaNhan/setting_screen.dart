@@ -19,7 +19,11 @@ class _AccountSettingState extends State<AccountSetting> {
   late String password;
   late String address;
 
-  Users user = Users(fullName: "", email: "", password: "", address: "");
+  Users user = Users(fullName: "", email: "", password: "",  address: {
+      "home": null,
+      "company": null,
+      "etc": null,
+    },);
 
   final _user = FirebaseAuth.instance.currentUser;
 
@@ -93,7 +97,11 @@ class _AccountSettingState extends State<AccountSetting> {
       fullName: fullName,
       email: email,
       password: password,
-      address: address,
+       address: {
+      "home": null,
+      "company": null,
+      "etc": null,
+    },
     );
   }
 
@@ -240,7 +248,7 @@ class _AccountSettingState extends State<AccountSetting> {
                       TextField(
                         controller: txtAddress,
                         decoration: InputDecoration(
-                          hintText: user.address,
+                          hintText: user.address?["Home"],
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -252,7 +260,7 @@ class _AccountSettingState extends State<AccountSetting> {
                           onPressed: () {
                             setState(() {
                               updateUser("Address", txtAddress.text.trim());
-                              user.address = address;
+                              user.address = user.address?["Home"];
                               Navigator.pop(context);
                             });
                           },

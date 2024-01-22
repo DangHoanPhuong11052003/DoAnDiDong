@@ -1,6 +1,7 @@
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:app_adidark_store/models/DataProduct.dart';
+import 'package:app_adidark_store/views/SignUp_In/SignInScreen.dart';
 import 'package:app_adidark_store/views/TimKiem/TimKiemScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:app_adidark_store/items/List_Product_Items.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/ClassUser.dart';
 import '../SignUp_In/controller/ProfileController.dart';
 
@@ -19,6 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageFixState extends State<HomePage> {
+  Future<Users>? userData;
   _getNewid() async {
     User? user = FirebaseAuth.instance.currentUser;
     bool flag = await DataCartUser.checkUs(user!.uid);
@@ -40,6 +43,7 @@ class _HomePageFixState extends State<HomePage> {
     _getData();
     super.initState();
     _getNewid();
+    userData = controller.getUserData();
   }
 
   final controller = Get.put(ProfileController());
@@ -53,67 +57,85 @@ class _HomePageFixState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
                             child: FutureBuilder(
-                                future: controller.getUserData(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<void> snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                    case ConnectionState.waiting:
-                                      return Center(
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              10,
-                                          child: null,
-                                        ),
-                                      );
-                                    case ConnectionState.active:
-                                    case ConnectionState.done:
-                                      if (snapshot.hasError) {
-                                        return Text('Error: ${snapshot.error}');
-                                      } else {
-                                        Users user = snapshot.data as Users;
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(height: 20),
-                                            Row(
+                          future: userData,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<void> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                              case ConnectionState.waiting:
+                                return Center(
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 10,
+                                    child: null,
+                                  ),
+                                );
+                              case ConnectionState.active:
+                              case ConnectionState.done:
+                                if (snapshot.hasError) {
+                                  return Text(
+                                    'Hey Welcome !',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  );
+                                } else {
+                                  Users user = snapshot.data as Users;
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 15),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "Hey ${user.fullName}",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 20),
-                                                      ),
-                                                      Text(
-                                                        "Tìm kiếm đôi giày của bạn",
-                                                        style: TextStyle(
-                                                            fontSize: 19),
-                                                      ),
-                                                    ],
+                                                Text(
+                                                  "Hey ${user.fullName}",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Tìm kiếm đôi giày của bạn",
+                                                  style: TextStyle(
+                                                    fontSize: 19,
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        );
-                                      }
-                                  }
-                                })),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                }
+                            }
+                          },
+                        )),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login_Screen()),
+                            );
+                          },
+                          child: Icon(
+                            Icons.person,
+                            size: 30,
+                          ),
+                        ),
 
                         ///bỏ icon user
                       ],

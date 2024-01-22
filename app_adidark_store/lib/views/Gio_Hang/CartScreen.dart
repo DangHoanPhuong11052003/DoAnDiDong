@@ -1,11 +1,12 @@
-import 'dart:math';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_adidark_store/models/ClassCartUser.dart';
 import 'package:app_adidark_store/models/DataCartUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../items/ItemCart.dart';
 import '../Thanh_Toan/OrderAddressScreen.dart';
+
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key,});
@@ -22,23 +23,68 @@ class _CartScreenState extends State<CartScreen> {
   bool isSelectedAll = false;
   User? user=FirebaseAuth.instance.currentUser;
   String acc="";
+  
+  Future<bool> checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    }
+    return false;
+  }
+  
 
   _setupData() async{
-    List<CartUser> lstCartsData=await DataCartUser.getData(acc);
-    if(mounted){
-       setState(() {
-      lstCarts=lstCartsData;
-    });
+    if(await checkInternetConnection()){
+      List<CartUser> lstCartsData=await DataCartUser.getData(acc);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if(lstCartsData.isNotEmpty){
+        await prefs.setInt('lstLenght', lstCartsData.length);
+        for (var i=0 ;i< lstCartsData.length;i++) {
+          await prefs.setInt('cartId$i', lstCartsData[i].id);
+          await prefs.setInt('cartIdPro$i', lstCartsData[i].idPro);
+          await prefs.setString('cartCate$i', lstCartsData[i].cate);
+          await prefs.setString('cartColor$i', lstCartsData[i].color);
+          await prefs.setString('cartImg$i', lstCartsData[i].img);
+          await prefs.setString('cartManufucturer$i', lstCartsData[i].manufucturer);
+          await prefs.setString('cartNamePro$i', lstCartsData[i].namePro);
+          await prefs.setDouble('cartPrice$i', lstCartsData[i].price);
+          await prefs.setInt('cartQuantity$i', lstCartsData[i].quantity);
+          await prefs.setInt('cartSize$i', lstCartsData[i].size);
+        }}
+      if(mounted){
+        setState(() {
+        lstCarts=lstCartsData;
+      });
+      }
+      }
+    else{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? sl=prefs.getInt('lstLenght');
+       if(mounted){
+        setState(() {
+        if(sl!>0){
+        for(int i=0;i<sl;i++){
+          CartUser cart=CartUser(color: prefs.getString('cartColor$i')??"", id: prefs.getInt('cartId$i')??-1, img: prefs.getString('cartImg$i')??"", manufucturer: prefs.getString('cartManufucturer$i')??"", quantity: prefs.getInt('cartQuantity$i')??-1, size:  prefs.getInt('cartSize$i')??-1, namePro: prefs.getString('cartNamePro$i')??"", idPro:  prefs.getInt('cartIdPro$i')??-1, price:  prefs.getDouble('cartPrice$i')??-1, cate: prefs.getString('cartCate$i')??"", status: 1);
+          lstCarts.add(cart);
+        }
+      }
+      });
+      }
+      
     }
+
+    
   }
 
   _updatePrice(){
     totalPrice=0;
-    lstCarts.forEach((element) {
+    for (var element in lstCarts) {
       if(lst_vtSum.contains(element.id)){
         totalPrice+=element.price*element.quantity;
       }
-    },);
+    }
   }
 
   @override

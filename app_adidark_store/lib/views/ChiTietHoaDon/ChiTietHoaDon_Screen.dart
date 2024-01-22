@@ -11,6 +11,7 @@ class ChiTietHoaDon_Screen extends StatefulWidget {
 }
 
 class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
+  late double totalPrice = double.parse(widget.invoice.totalPrice);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +72,7 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               Text(
-                "Tổng tiền: ${widget.invoice.totalPrice}",
+                "Tổng tiền: ${widget.invoice.totalPrice} VND",
                 style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
               ),
               Text(
@@ -79,7 +80,7 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
                 style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
               ),
               Text(
-                "Phí vận chuyển: 0 VND",
+                "Phí vận chuyển: 25000 VND",
                 style: TextStyle(color: Color(0xFF7F7F7F), fontSize: 15),
               ),
               SizedBox(
@@ -90,7 +91,7 @@ class _ChiTietHoaDon_ScreenState extends State<ChiTietHoaDon_Screen> {
                 height: 15,
               ),
               Text(
-                "Tổng hóa đơn: ${widget.invoice.totalPrice} ",
+                "Tổng hóa đơn: ${totalPrice + 25000} VND",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ],

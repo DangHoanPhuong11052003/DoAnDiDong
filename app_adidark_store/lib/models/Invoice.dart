@@ -12,6 +12,7 @@ class Invoice {
   Invoice( { required this.date, required this.id, required this.invoiceDetail, required this.shipdate, required this.status, required this.totalPrice, required this.address});
   factory Invoice.fromJson(Map<Object?, Object?> json){
     var CartUserList = json['ivoiceDetail'] as List;
+
     List<CartUser> CartUserTemp = CartUserList.map((i) => CartUser.fromJson(i)).toList();
     return Invoice(
       date: json['date'] as String,
@@ -23,5 +24,16 @@ class Invoice {
       address: json['address'] as String
 
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date,
+      'id': id,
+      'ivoiceDetail': invoiceDetail.map((cartUser) => cartUser.toJson()).toList(),
+      'shipdate': shipdate,
+      'status': status,
+      'totalPrice': totalPrice,
+      'address': address,
+    };
   }
 }

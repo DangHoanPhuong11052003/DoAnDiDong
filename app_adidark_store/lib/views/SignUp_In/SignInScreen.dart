@@ -44,8 +44,8 @@ class _Login_ScreenState extends State<Login_Screen>
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
+    controller.dispose();
   }
 
   bool isValidEmail(String email) {
@@ -64,6 +64,7 @@ class _Login_ScreenState extends State<Login_Screen>
         await _auth.loginAccount(user);
         await showDoneDialog();
         _auth.route(context, const BottomMenu());
+        prefs.setString("Email", emailController.text.trim());
         prefs.setString("Password", passwordController.text.trim());
         print('Success');
       } on SignUp_AccountFailure catch (e) {

@@ -1,9 +1,24 @@
 import 'package:app_adidark_store/models/Invoice.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'ClassCartUser.dart';
+import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 
 class DataInvoice {
-  //load tat ca hoa don
+  Future<List<Invoice>> loadLocalInvoices() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? invoicesJson = prefs.getString('local_invoices');
+    if (invoicesJson != null) {
+      List<dynamic> invoicesMap = json.decode(invoicesJson);
+      return invoicesMap.map((map) => Invoice.fromJson(map)).toList();
+    }
+    return [];
+  }
+  Future<void> saveLocalInvoices(List<Invoice> invoices) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String invoicesJson = json.encode(invoices.map((invoice) => invoice.toJson()).toList());
+    prefs.setString('local_invoices', invoicesJson);
+  }
   Future<List<Invoice>> loadInvoices(String acc) async {
     try {
       DatabaseReference invoiceRef =
@@ -16,7 +31,9 @@ class DataInvoice {
       values.forEach((element) {
         invoices.add(Invoice.fromJson(element as Map<Object?,Object?>));
       });
+       await saveLocalInvoices(invoices);
       return invoices;
+      
     } catch (e) {
       print('Error loading invoices: $e');
       return [];
@@ -41,7 +58,7 @@ class DataInvoice {
         newId=allCarts.last.id+1;
         return newId;
   }
-  Future <void> addInvoice(String status,int id,String acc, String date,String shipdate, double TotaPrice , String address, List<CartUser> invoiceDetails) async {
+  Future<void> addInvoice(String status,int id,String acc, String date,String shipdate, double TotaPrice , String address, List<CartUser> invoiceDetails) async {
     final databaseReference = FirebaseDatabase.instance.ref();
     final invoiceReference = databaseReference.child('Invoice/$acc/$id');
     invoiceReference.set({
@@ -52,8 +69,10 @@ class DataInvoice {
       'totalPrice': TotaPrice.toString(),
       'status': status          
     });
-     for (var i=0;i<invoiceDetails.length; i++) {
-          final invoiceDetailReference =  invoiceReference.child('ivoiceDetail/$i').set({
+    
+
+    for (var i=0;i<invoiceDetails.length; i++) {
+        final invoiceDetailReference =  invoiceReference.child('ivoiceDetail/$i').set({
             "id": invoiceDetails[i].id,
             "color": invoiceDetails[i].color,
             "img": invoiceDetails[i].img,
@@ -64,12 +83,13 @@ class DataInvoice {
             "idPro": invoiceDetails[i].idPro,
             "price":invoiceDetails[i].price,
             "cate":invoiceDetails[i].cate,
-            "status":1
-          });
-     }
-    
-  }
-  //load hoa don the trang thai
+            "status":0
+        });                
+    }
+
+   
+}
+//load hoa don theo trang thai
   Future<List<Invoice>> loadInvoicesSTT(String acc, String status) async {
     try {
       DatabaseReference invoiceRef =
@@ -97,8 +117,20 @@ class DataInvoice {
       'status': status,
     }).then((value) {
       print('Cập nhật trạng thái thành công');
+      updateLocalInvoiceStatus(idInvoice, status);
     }).catchError((error) {
       print('Lỗi khi cập nhật trạng thái: $error');
     });
   }
+  //local:
+  Future<void> updateLocalInvoiceStatus(int IdInvoice , String status) async {
+    List<Invoice> localInvoice = await loadLocalInvoices();
+    for(var invoice in localInvoice){
+      if(invoice.id == IdInvoice){
+        invoice.status = status;
+      }
+    }
+    await saveLocalInvoices(localInvoice);
+  }
+  
 }

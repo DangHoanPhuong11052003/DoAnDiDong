@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/items/BottomMenu.dart';
 import 'package:app_adidark_store/items/profile_item.dart';
 import 'package:app_adidark_store/models/ClassUser.dart';
 import 'package:app_adidark_store/views/HoaDon/HoaDon_Screen.dart';
@@ -25,7 +26,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String password;
   late String address;
 
-  Users user = Users(fullName: "", email: "", password: "", address: "");
+  Users user =  Users(
+    fullName: "",
+    email: "",
+    password: "",
+    address: {
+      "Home": null,
+      "Company": null,
+      "Etc": null,
+    },
+  );
 
   final _user = FirebaseAuth.instance.currentUser;
 
@@ -63,7 +73,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       fullName: fullName,
       email: email,
       password: password,
-      address: address,
+      address: {
+        "home": null,
+        "company": null,
+        "etc": null,
+      },
     );
   }
 
@@ -77,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => Login_Screen(),
+        builder: (context) => BottomMenu(),
       ),
     );
   }
@@ -138,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment:
+                                      mainAxisAlignment:                                     
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
