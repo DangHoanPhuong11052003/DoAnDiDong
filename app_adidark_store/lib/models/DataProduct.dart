@@ -48,6 +48,17 @@ class DataProduct{
     prosduct=Product.fromJson(values);
     return prosduct;
   }
+
+  static Future<int> getQuanPro(int id,String color,int idSize,) async {
+    DataSnapshot  snapshot = await FirebaseDatabase.instance
+    .ref()
+    .child("Products/$id/detail/$color/$id/size")
+    .get();
+
+      int quantity;
+      quantity = snapshot.value as int;
+      return quantity;
+  }
   
 void updateItem(int id, String brand, int size, int newQuantity) async {
   final productRef = FirebaseDatabase.instance.ref().child('Products/$id/detail/$brand');
