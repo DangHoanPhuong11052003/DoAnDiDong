@@ -58,7 +58,37 @@ class DataInvoice {
         newId=allCarts.last.id+1;
         return newId;
   }
+<<<<<<< Updated upstream
   Future<void> addInvoice(String status,int id,String acc, String date,String shipdate, double TotaPrice , String address, List<CartUser> invoiceDetails) async {
+=======
+  Future<int> getMaxId(String acc) async {
+    DataSnapshot snapshot =
+        await FirebaseDatabase.instance.ref().child("Invoice/$acc").get();
+    List<Invoice> allCarts = [];
+    int newId;
+    List<dynamic> values = [];
+    try {
+      values = snapshot.value as List<dynamic>;
+    } catch (e) {
+      return 0;
+    }
+    for (var element in values) {
+      allCarts.add(Invoice.fromJson(element as Map<Object?, Object?>));
+    }
+    newId = allCarts.last.id;
+    return newId;
+  }
+
+  Future<void> addInvoice(
+      String status,
+      int id,
+      String acc,
+      String date,
+      String shipdate,
+      double TotaPrice,
+      String address,
+      List<CartUser> invoiceDetails) async {
+>>>>>>> Stashed changes
     final databaseReference = FirebaseDatabase.instance.ref();
     final invoiceReference = databaseReference.child('Invoice/$acc/$id');
     invoiceReference.set({
@@ -111,8 +141,15 @@ class DataInvoice {
       return [];
     }
   }
+<<<<<<< Updated upstream
    void updateInvoiceStatus(String acc , int idInvoice,String status) {
    DatabaseReference invoiceRef = FirebaseDatabase.instance.ref().child('Invoice').child(acc);
+=======
+
+  Future<void> updateInvoiceStatus(String acc, int idInvoice, String status) async{
+    DatabaseReference invoiceRef =
+        FirebaseDatabase.instance.ref().child('Invoice').child(acc);
+>>>>>>> Stashed changes
     invoiceRef.child(idInvoice.toString()).update({
       'status': status,
     }).then((value) {

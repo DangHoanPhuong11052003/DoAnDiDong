@@ -10,6 +10,7 @@ import '../../models/DataInvoice.dart';
 import '../../models/DataProduct.dart';
 import '../../models/ClassUser.dart';
 import '../../models/DataProduct.dart';
+import '../../models/DataNotification..dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -32,10 +33,10 @@ class _OrderScreenState extends State<OrderScreen> {
   
   
 }
- void updateAllCartItemsStatuss(List<CartUser> cartItems)  {
+ void updateProduct(List<CartUser> cartItems)  {
   for (var cartItem in cartItems) {
     
-     DataProduct().updateItem(cartItem.idPro, cartItem.color,cartItem.size, cartItem.quantity);
+     DataProduct().updateQuantityPro(cartItem.idPro, cartItem.color,cartItem.size, cartItem.quantity);
   }
   
   
@@ -267,8 +268,11 @@ class _OrderScreenState extends State<OrderScreen> {
             GestureDetector(
               onTap: () async {
                  DataInvoice().addInvoice("Chờ xác nhận", await DataInvoice().getNewId(user!.uid), user!.uid, Oderday, Oderday, total, widget.address!.detail, widget.carts??List.empty());
+                 DataNotification().addNoiticationPrivate("Bạn đã đặt hàng thành công MHĐ: ${await DataInvoice().getMaxId(user!.uid)}",await DataNotification().getNewId(user!.uid),user!.uid, Oderday,await DataInvoice().getMaxId(user!.uid));
+                 print(await DataInvoice().getMaxId(user!.uid));
+                 print(user!.uid);
                  updateAllCartItemsStatus(widget.carts??List.empty(), user!.uid);
-                 updateAllCartItemsStatuss(widget.carts??List.empty());
+                 updateProduct(widget.carts??List.empty());
                
                  
               },

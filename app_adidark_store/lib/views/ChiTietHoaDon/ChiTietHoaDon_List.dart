@@ -35,7 +35,7 @@ class _ChiTietHoaDon_ListState extends State<ChiTietHoaDon_List> {
     setState(() {});
   }
   Future<void> _fetchLocalInvoiceDetail(String acc, int id) async {
-    listcthhd1 = await DataInvoiceDetail().loadInvoiceDetailsFromLocal();
+    listcthhd1 = await DataInvoiceDetail().loadLocalInvoiceDetails();
     for(var ct in listcthhd1){
       print(ct.id);
       print(ct.namePro);
