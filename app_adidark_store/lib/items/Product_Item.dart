@@ -52,9 +52,8 @@ class _ProducItemState extends State<ProductItem>
           );
       },
       child: Container(
-        width: 100,
         height: 200,
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -67,26 +66,26 @@ class _ProducItemState extends State<ProductItem>
             ),
           ],
         ),
-        child: SingleChildScrollView(
-          child: Column(
+        child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
+                width: 150,
                 height: 140,
                 child: Image.network(
                   widget.product.img[0].link,
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 5),
               Text(
                 widget.product.name,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 5),
               Text(
                 "12.000.000 VND",
                 style: TextStyle(
@@ -95,12 +94,7 @@ class _ProducItemState extends State<ProductItem>
                   color: Colors.grey[800],
                 ),
               ),
-              SizedBox(height: 8,),
-              OverflowBar(
-                
-                alignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  TextButton( 
+              TextButton( 
                     child: const Text('Mua ngay', style: TextStyle(color: Colors.green),), onPressed: () {
                      Navigator.push(
                      context,
@@ -108,12 +102,8 @@ class _ProducItemState extends State<ProductItem>
                          );
                     
                   }),
-
-                ],
-              )
             ],
           ),
-        ),
       ),
     );
   }
