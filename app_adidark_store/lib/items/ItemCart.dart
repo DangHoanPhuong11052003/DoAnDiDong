@@ -28,7 +28,7 @@ class ItemCart extends StatefulWidget {
 
 class _ItemCartState extends State<ItemCart> {
   bool isPressed = false;
-  int maxslsp=0;
+  int maxslsp=-1;
   Future<bool> checkInternetConnection() async {
       var connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult == ConnectivityResult.mobile) {
@@ -44,8 +44,8 @@ class _ItemCartState extends State<ItemCart> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 5),(){
-      _getQuanPro();
+    Future.delayed(const Duration(seconds: 5),()async{
+      await _getQuanPro();
       if(widget.cart.quantity>maxslsp){
         widget.cart.quantity=maxslsp;
         DataCartUser.updateData(widget.cart, widget.acc);
