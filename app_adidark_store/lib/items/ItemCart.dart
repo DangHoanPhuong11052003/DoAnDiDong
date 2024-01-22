@@ -145,7 +145,7 @@ class _ItemCartState extends State<ItemCart> {
                     GestureDetector(
                       onTap: () {
                         if (widget.cart.quantity > 1) {
-                          setState(() async{
+                          setState(() {
                             widget.cart.quantity--;
                             //Cập nhật lại số luong sản phẩm
                             setState(() {

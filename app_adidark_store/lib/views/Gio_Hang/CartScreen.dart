@@ -240,8 +240,10 @@ class _CartScreenState extends State<CartScreen> {
                   if (slspchon > 0) {
                     List<CartUser> lstSelectedCart = [];
                     setState(() {
-                      for (int element in lst_vtSum) {
-                        lstSelectedCart.add(lstCarts[element]);
+                      for( var value in lstCarts){
+                        if(lst_vtSum.contains(value.id)){
+                          lstSelectedCart.add(value);
+                        }
                       }
                     });
                     Navigator.push(
