@@ -1,8 +1,12 @@
 import 'package:app_adidark_store/models/ClassMainNotice.dart';
 import 'package:app_adidark_store/models/ClassPrivateNotice.dart';
+import 'package:app_adidark_store/models/ClassProduct.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
 
 class DataNotification {
+  static List<String> title = ["Thông báo", "Sản phẩm mới"];
   static Future<List<MainNotice>> getMainData() async {
     DataSnapshot snapshot =
         await FirebaseDatabase.instance.ref().child("Notification/main").get();
@@ -45,9 +49,6 @@ class DataNotification {
     return notices;
   }
 
-<<<<<<< Updated upstream
-  static Future<void> createMainData() async {}
-=======
   static Future<void> createMainData(Product pro) async {
     List<MainNotice> lstM = await getMainData();
     final databaseReference = FirebaseDatabase.instance.ref();
@@ -117,5 +118,4 @@ class DataNotification {
       "title": "Thông báo",
     });
   }
->>>>>>> Stashed changes
 }
