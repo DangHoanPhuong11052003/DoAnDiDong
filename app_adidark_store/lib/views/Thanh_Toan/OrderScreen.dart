@@ -32,16 +32,15 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
-  _request() async{
+  _request() async {
     await NotificationAPI.requestPermissionLocalNotification();
   }
 
-  Future<void> showNotifi(String? title,String?body) async{
-    Random random=Random();
-    int id=random.nextInt(100000);
-    NotificationAPI.showNotification(id: id,body: body,title: title);
+  Future<void> showNotifi(String? title, String? body) async {
+    Random random = Random();
+    int id = random.nextInt(100000);
+    NotificationAPI.showNotification(id: id, body: body, title: title);
   }
-  
 
   @override
   void initState() {
@@ -303,37 +302,39 @@ class _OrderScreenState extends State<OrderScreen>
             ),
             GestureDetector(
               onTap: () async {
-                 await showDoneDialog();
+                int getnewid = await DataInvoice().getNewId(user!.uid);
+                int getmaxid = await DataInvoice().getMaxId(user!.uid);
+                await showDoneDialog();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const BottomMenu(),
                   ),
                 );
-                showNotifi("Trạng thái hóa đơn","Đơn hàng ${await DataInvoice().getMaxId(user!.uid)} đã được đặt thành công");
                 DataInvoice().addInvoice(
                     "Chờ xác nhận",
-                    await DataInvoice().getNewId(user!.uid),
+                    getnewid,
                     user!.uid,
                     Oderday,
                     Oderday,
                     total,
                     widget.address!.detail,
                     widget.carts ?? List.empty());
+                showNotifi("Trạng thái hóa đơn",
+                    "Đơn hàng $getmaxid đã được đặt thành công");
+
                 DataNotification().addNoiticationPrivate(
-                    "Bạn đã đặt hàng thành công MHĐ: ${await DataInvoice().getMaxId(user!.uid)}",
+                    "Bạn đã đặt hàng thành công MHĐ: ${getmaxid}",
                     await DataNotification().getNewId(user!.uid),
                     user!.uid,
                     Oderday,
-                    await DataInvoice().getMaxId(user!.uid));
+                    getmaxid);
                 print(await DataInvoice().getMaxId(user!.uid));
                 print(user!.uid);
                 updateAllCartItemsStatus(
                     widget.carts ?? List.empty(), user!.uid);
 
                 updateProduct(widget.carts ?? List.empty());
-
-                
               },
               child: Container(
                 alignment: Alignment.center,
@@ -354,7 +355,8 @@ class _OrderScreenState extends State<OrderScreen>
       ),
     );
   }
-    Future<void> showDoneDialog() async {
+
+  Future<void> showDoneDialog() async {
     await showDialog(
       barrierDismissible: false,
       context: context,
@@ -372,7 +374,7 @@ class _OrderScreenState extends State<OrderScreen>
               },
             ),
             Text(
-              "Đăng nhập thành công",
+              "Đặt hàng thành công",
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
             ),
             SizedBox(height: 16.0),
