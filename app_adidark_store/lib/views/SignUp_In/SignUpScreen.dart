@@ -62,13 +62,6 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       if (isChecked == true) {
         try {
           await _user.createUser(user);
-          await showDoneDialog();
-          await Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const Login_Screen(),
-            ),
-          );
         } on SignUp_AccountFailure catch (e) {
           showFailureDialog(message: e.message);
         } catch (_) {

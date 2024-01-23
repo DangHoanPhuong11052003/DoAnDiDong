@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:app_adidark_store/items/ItemLocalNotification.dart';
 import 'package:app_adidark_store/models/ClassProduct.dart';
 import 'package:app_adidark_store/models/ClassUser.dart';
 import 'package:app_adidark_store/models/DataNotification..dart';
@@ -16,6 +19,16 @@ class AccountSetting extends StatefulWidget {
 }
 
 class _AccountSettingState extends State<AccountSetting> {
+  _request() async {
+    await NotificationAPI.requestPermissionLocalNotification();
+  }
+
+  Future<void> showNotifi(String? title, String? body) async {
+    Random random = Random();
+    int id = random.nextInt(100000);
+    NotificationAPI.showNotification(id: id, body: body, title: title);
+  }
+
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   late String email;
@@ -189,6 +202,8 @@ class _AccountSettingState extends State<AccountSetting> {
                             setState(() {
                               updateUser("FullName", txtName.text.trim());
                               user.fullName = fullName;
+                              showNotifi(
+                                  "Thông tin cá nhân", "Bạn vừa đổi tên");
                               Navigator.pop(context);
                             });
                           },

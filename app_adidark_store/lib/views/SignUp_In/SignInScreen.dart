@@ -79,6 +79,8 @@ class _Login_ScreenState extends State<Login_Screen>
     } else {
       try {
         await _auth.loginAccount(user);
+        await prefs.setString("Email", emailController.text.trim());
+        await prefs.setString("Password", passwordController.text.trim());
         showNotifi("Cảnh báo đăng nhập", "Đăng nhập thành công trên thiết bị");
       } on SignUp_AccountFailure catch (e) {
         showFailureDialog(message: e.message);

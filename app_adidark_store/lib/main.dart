@@ -1,3 +1,4 @@
+import 'package:app_adidark_store/items/ItemLocalNotification.dart';
 import 'package:app_adidark_store/views/Gio_Hang/CartScreen.dart';
 import 'package:app_adidark_store/views/SignUp_In/respository/Authentication_Repository.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await NotificationAPI.initializaLocalNotifications();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
       .then((value) => Get.put(Auth_Resposity()));
   runApp(const MyApp());
