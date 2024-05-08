@@ -9,7 +9,6 @@
   "products":[
       {"id":1,"name":"Nike Air Force 1 '07","url":"https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/29a93e9c-0279-47c8-abc3-9f7a2f475c88/air-force-1-07-shoes-0XGfD7.png","price":13990000,"promotion":9490000,"cat":{"id":1,"name":"Nike"}},
       {"id":2,"name":"Nike Air Force 1 '07","url":"https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/29a93e9c-0279-47c8-abc3-9f7a2f475c88/air-force-1-07-shoes-0XGfD7.png","price":890000,"promotion":490000,"cat":{"id":3,"name":"Nike"}},
-      {"id":3,"name":"Nike Air Force 1 '07","url":"https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/29a93e9c-0279-47c8-abc3-9f7a2f475c88/air-force-1-07-shoes-0XGfD7.png","price":890000,"promotion":490000,"cat":{"id":4,"name":"Nike"}},
-      {"id":4,"name":"Nike Air Force 1 '07","url":"https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/29a93e9c-0279-47c8-abc3-9f7a2f475c88/air-force-1-07-shoes-0XGfD7.png","price":3190000,"promotion":2390000,"cat":{"id":2,"name":"Nike"}}
+      {"id":3,"name":"Nike Air Force 1 '07","url":"https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/29a93e9c-0279-47c8-abc3-9f7a2f475c88/air-force-1-07-shoes-0XGfD7.png","price":890000,"promotion":490000,"cat":{"id":4,"name":"Nike"}}
   ]
 }
